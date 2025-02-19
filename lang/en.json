@@ -36,6 +36,10 @@
         "CraftingCreatedItemNotice": "Sent {itemName} to {actorName}",
         "PlayerSelectWindowTitle": "Select a Player",
         "StatisticsLabel": "View Stats",
-        "StatisticsWindowTitle": "Heliana's Harvesting Statistics"
+        "StatisticsWindowTitle": "Heliana's Harvesting Statistics",
+        "SettingsPlayerRecipes": "Allow Players to view all crafting recipes",
+        "SettingsPlayerCrafting": "Allow Players to Craft Items",
+        "InfoPlayerCraftingNoPermission": "You do not have permission to craft items.",
+        "SettingsPlayerHarvesting": "Allow Players to access Harvesting"
     }
 }
