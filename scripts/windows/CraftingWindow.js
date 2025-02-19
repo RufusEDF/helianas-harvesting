@@ -128,23 +128,30 @@ export default class CraftingWindow extends Application {
     }
 
     async send(itemName, itemLink) {
-        const psw = new PlayerSelectWindow(`Select a player to send ${itemName}`);
-        const playerSelect = await psw.selectPlayer();
-        const actor = game.actors.get(playerSelect);
-        const craftedItem = await fromUuid(itemLink);
-        if (actor && craftedItem) {
-            const recipe = this.recipeDatabase.getRecipeFromName(itemName);
-            const createdItems = await actor.createEmbeddedDocuments("Item", [craftedItem]);
-            const updates = [{
-                "_id": createdItems[0].id,
-                "name": recipe.name,
-                "system.quantity": recipe.qty,
-                "system.rarity": recipe.rarity,
-                "system.price": { value: recipe.price, denomination: 'gp' }
-            }];
-            await actor.updateEmbeddedDocuments("Item", updates);
+        // Check if the user has permission to craft. It may be better to move this check to the on click above...
+        if (!game.user.isGM && !game.settings.get("helianas-harvesting", "playerCrafting")) {
+            ui.notifications.info(game.i18n.format("HelianasHarvest.InfoPlayerCraftingNoPermission"));
+            return;
+        }
+        else {
+            const psw = new PlayerSelectWindow(`Select a player to send ${itemName}`);
+            const playerSelect = await psw.selectPlayer();
+            const actor = game.actors.get(playerSelect);
+            const craftedItem = await fromUuid(itemLink);
+            if (actor && craftedItem) {
+                const recipe = this.recipeDatabase.getRecipeFromName(itemName);
+                const createdItems = await actor.createEmbeddedDocuments("Item", [craftedItem]);
+                const updates = [{
+                    "_id": createdItems[0].id,
+                    "name": recipe.name,
+                    "system.quantity": recipe.qty,
+                    "system.rarity": recipe.rarity,
+                    "system.price": { value: recipe.price, denomination: 'gp' }
+                }];
+                await actor.updateEmbeddedDocuments("Item", updates);
 
-            this.sendChatMessage(game.i18n.format("HelianasHarvest.CraftingCreatedItemNotice", { actorName: actor.name, itemName: craftedItem.name }));
+                this.sendChatMessage(game.i18n.format("HelianasHarvest.CraftingCreatedItemNotice", { actorName: actor.name, itemName: craftedItem.name }));
+            }
         }
     }
 
