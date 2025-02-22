@@ -55,6 +55,7 @@ export default class CraftingWindow extends Application {
     getData() {
         let data = super.getData();
         data.rarityNames = game.system.config.itemRarity;
+        data.displaySearchBar = game.user.isGM;
 
         data.recipes = this.recipeDatabase
             .searchItems(this.searchText)
