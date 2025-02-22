@@ -1,5 +1,20 @@
 {
     "HelianasHarvest" : {
+        "Settings": {
+            "PlayerRecipes": {
+                "Name": "Allow Players to view recipes",
+                "Hint": "If enabled, players can access the Crafting Recipes window and view all crafting recipes in the system. \n Recommended - Enabled"
+            },
+            "PlayerCrafting": {
+                "Name": "Allow Players to Craft Items",
+                "Hint": "If enabled, players can use the Crafting Recipes window to send items to their inventory. \n Recommended - Disabled",
+                "Denied": "You do not have permission to craft items."
+            },
+            "PlayerHarvesting": {
+                "Name": "Allow Players to access Harvesting",
+                "Hint": "If enabled, players can access the Harvest Creature - Harvest Controls window. \n Recommended - Disabled"
+            }
+        },
         "CreatureTypeLabel": "Creature Type",
         "CreatureNameLabel": "Creature Name",
         "CreatureCRLabel": "Creature CR Rating",
@@ -36,13 +51,6 @@
         "CraftingCreatedItemNotice": "Sent {itemName} to {actorName}",
         "PlayerSelectWindowTitle": "Select a Player",
         "StatisticsLabel": "View Stats",
-        "StatisticsWindowTitle": "Heliana's Harvesting Statistics",
-        "SettingsPlayerRecipes": "Allow Players to view recipes",
-        "SettingsPlayerRecipesHint": "If enabled, players can access the Crafting Recipes window and view all crafting recipes in the system. \n Recommended - Enabled",
-        "SettingsPlayerCrafting": "Allow Players to Craft Items",
-        "SettingsPlayerCraftingHint": "If enabled, players can use the Crafting Recipes window to send items to their inventory. \n Recommended - Disabled",
-        "InfoPlayerCraftingNoPermission": "You do not have permission to craft items.",
-        "SettingsPlayerHarvesting": "Allow Players to access Harvesting",
-        "SettingsPlayerHarvestingHint": "If enabled, players can access the Harvest Creature - Harvest Controls window. \n Recommended - Disabled"
+        "StatisticsWindowTitle": "Heliana's Harvesting Statistics"
     }
 }
