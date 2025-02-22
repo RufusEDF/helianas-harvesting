@@ -130,7 +130,7 @@ export default class CraftingWindow extends Application {
     async send(itemName, itemLink) {
         // Check if the user has permission to craft. It may be better to move this check to the on click above...
         if (!game.user.isGM && !game.settings.get("helianas-harvesting", "playerCrafting")) {
-            ui.notifications.info(game.i18n.format("HelianasHarvest.InfoPlayerCraftingNoPermission"));
+            ui.notifications.info(game.i18n.format("HelianasHarvest.Settings.PlayerCrafting.Denied"));
             return;
         }
         else {
