@@ -37,9 +37,12 @@
         "PlayerSelectWindowTitle": "Select a Player",
         "StatisticsLabel": "View Stats",
         "StatisticsWindowTitle": "Heliana's Harvesting Statistics",
-        "SettingsPlayerRecipes": "Allow Players to view all crafting recipes",
+        "SettingsPlayerRecipes": "Allow Players to view recipes",
+        "SettingsPlayerRecipesHint": "If enabled, players can access the Crafting Recipes window and view all crafting recipes in the system. \n Recommended - Enabled",
         "SettingsPlayerCrafting": "Allow Players to Craft Items",
+        "SettingsPlayerCraftingHint": "If enabled, players can use the Crafting Recipes window to send items to their inventory. \n Recommended - Disabled",
         "InfoPlayerCraftingNoPermission": "You do not have permission to craft items.",
-        "SettingsPlayerHarvesting": "Allow Players to access Harvesting"
+        "SettingsPlayerHarvesting": "Allow Players to access Harvesting",
+        "SettingsPlayerHarvestingHint": "If enabled, players can access the Harvest Creature - Harvest Controls window. \n Recommended - Disabled"
     }
 }
