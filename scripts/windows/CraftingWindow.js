@@ -57,6 +57,10 @@ export default class CraftingWindow extends Application {
             .searchItems(this.searchText)
             .sort((a, b) => a.name.localeCompare(b.name));
         data.searchText = this.searchText;
+        data.test = "testdata";
+        data.characters = game.actors.filter(a => a.type === "character")
+        console.log("data.characters:");
+        console.log(data.characters);
         return data;
     }
 

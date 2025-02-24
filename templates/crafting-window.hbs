@@ -19,6 +19,8 @@
         <th scope="col">{{localize "HelianasHarvest.ItemPriceHeader"}}</th>
         <th scope="col">{{localize "HelianasHarvest.RecipeMetatag"}}</th>
         <th scope="col">{{localize "HelianasHarvest.RequiredComponents"}}</th>
+        <th scope="col">{{localize "HelianasHarvest.HeldComponents1"}}</th>
+        <th scope="col">{{localize "HelianasHarvest.HeldComponents2"}}</th>
       </tr>
     </thead>
     <tbody>
@@ -56,6 +58,21 @@
                 <img src="{{ this.img }}" style="max-height: 1rem"/>
                 <span>{{this.name}}</span>
               </p>
+            {{/each}}
+          </td>
+          <td>
+            {{#each this.components}}
+              {{#each ../../characters}}
+                {{#each this.items}}
+                  {{#ifContains this.name ../../name}}
+                    <p>{{../../name}}:{{../system.quantity}}*{{../name}}</p>
+                  {{/ifContains}}
+                  {{!-- this.name = the item in the actors inventory - {{this.name}}--}}
+                  {{!-- ../name = the actor {{../name}}--}}
+                  {{!-- ../../name = the component in the recipe - {{../../name}}--}}
+                  {{!-- ../../../name = the item to be crafted in the recipe - {{../../../name}}--}}
+                {{/each}}
+              {{/each}}
             {{/each}}
           </td>
         </tr>

@@ -131,6 +131,7 @@ export class ComponentDatabase {
             "flags": {
                 "helianas-harvesting": {
                     "id": item.id,
+                    "name": item.name,
                     "source": creatureName
                 }
             }

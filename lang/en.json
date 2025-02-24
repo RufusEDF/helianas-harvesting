@@ -31,6 +31,7 @@
         "ItemPriceHeader": "Value",
         "RecipeMetatag": "Metatag",
         "RequiredComponents": "Required Components",
+        "HeldComponents": "Held Components",
         "RecipeSearch": "Search Recipes",
         "CraftingCreatedItemNotice": "Sent {itemName} to {actorName}",
         "PlayerSelectWindowTitle": "Select a Player",
