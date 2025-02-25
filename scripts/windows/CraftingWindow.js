@@ -64,18 +64,14 @@ export default class CraftingWindow extends Application {
 
     mapHeldComponents(data) {
         //Is this logic best here or in ComponentDatabase.js?
-        //Would filter be better than contains?
         data.recipes.forEach(recipe => {
             recipe.components.forEach(component => {
-                let heldComponents = [];
+                component.held = [];
                 data.characters.forEach(character => {
-                    character.items.forEach(item => {
-                        if (item.name.toLowerCase().includes(component.name.toLowerCase())){
-                            heldComponents.push(item);
-                        }
-                    });
+                    component.held = component.held.concat(character.items.filter(item =>
+                        item.name.toLowerCase().includes(component.name.toLowerCase())
+                    ));
                 });
-                component.held = heldComponents;
             });
         });
         return data;
