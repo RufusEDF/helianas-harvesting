@@ -66,17 +66,21 @@
               {{#if this.held.items}}
                 {{this.held.count}} {{localize "HelianasHarvest.InInventory"}}
               {{/if}}
+      {{!--
               {{#each ../../characters}}
                 {{#each this.items}}
                   {{#ifContains this.name ../../name}}
                     <p>{{../../name}}:{{../system.quantity}}*{{../name}}</p>
                   {{/ifContains}}
+      --}}
                   {{!-- this.name = the item in the actors inventory - {{this.name}}--}}
                   {{!-- ../name = the actor {{../name}}--}}
                   {{!-- ../../name = the component in the recipe - {{../../name}}--}}
                   {{!-- ../../../name = the item to be crafted in the recipe - {{../../../name}}--}}
+      {{!--
                 {{/each}}
               {{/each}}
+      --}}
             {{/each}}
           </td>
         </tr>
