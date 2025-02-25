@@ -58,6 +58,26 @@ export default class CraftingWindow extends Application {
             .sort((a, b) => a.name.localeCompare(b.name));
         data.searchText = this.searchText;
         data.characters = game.actors.filter(a => a.type === "character")
+        data = this.mapHeldComponents(data);
+        return data;
+    }
+
+    mapHeldComponents(data) {
+        //Is this logic best here or in ComponentDatabase.js?
+        //Would filter be better than contains?
+        data.recipes.forEach(recipe => {
+            recipe.components.forEach(component => {
+                let heldComponents = [];
+                data.characters.forEach(character => {
+                    character.items.forEach(item => {
+                        if (item.name.toLowerCase().includes(component.name.toLowerCase())){
+                            heldComponents.push(item);
+                        }
+                    });
+                });
+                component.held = heldComponents;
+            });
+        });
         return data;
     }
 
