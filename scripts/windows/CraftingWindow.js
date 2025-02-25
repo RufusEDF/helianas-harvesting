@@ -78,12 +78,15 @@ export default class CraftingWindow extends Application {
             recipe.components.forEach(component => {
                 component.held = {
                     items : [],
-                    get count() {return this.items.length;}
+                    get count() {
+                        let quantity = 0;
+                        this.items.forEach(item => {quantity += item.system.quantity});
+                        return quantity;
+                    }
                 };
                 data.characters.forEach(character => {
                     component.held.items = component.held.items.concat(character.items.filter(item =>
-                        item.name.toLowerCase().includes(component.name.toLowerCase())
-                    ));
+                        item.name.toLowerCase().includes(component.name.toLowerCase())));
                 });
             });
         });
