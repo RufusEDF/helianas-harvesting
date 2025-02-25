@@ -32,6 +32,8 @@
         "RecipeMetatag": "Metatag",
         "RequiredComponents": "Required Components",
         "HeldComponents": "Held Components",
+        "InInventory": "Held in Inventory",
+        "FilterComponents": "View Only Held Components",
         "RecipeSearch": "Search Recipes",
         "CraftingCreatedItemNotice": "Sent {itemName} to {actorName}",
         "PlayerSelectWindowTitle": "Select a Player",

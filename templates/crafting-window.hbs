@@ -19,8 +19,9 @@
         <th scope="col">{{localize "HelianasHarvest.ItemPriceHeader"}}</th>
         <th scope="col">{{localize "HelianasHarvest.RecipeMetatag"}}</th>
         <th scope="col">{{localize "HelianasHarvest.RequiredComponents"}}</th>
-        <th scope="col">{{localize "HelianasHarvest.HeldComponents"}}</th>
-        <th scope="col">{{localize "HelianasHarvest.HeldComponents"}}</th>
+        <th scope="col">{{localize "HelianasHarvest.HeldComponents"}}
+          <input type="checkbox" class="helianas-harvesting-module" title="{{localize "HelianasHarvest.FilterComponents"}}" id="filterComponentsHeld" name="filterComponentsHeld" data-dtype="Boolean" {{checked filterComponentsHeld}}>
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -62,6 +63,9 @@
           </td>
           <td>
             {{#each this.components}}
+              {{#if this.held.items}}
+                {{this.held.count}} {{localize "HelianasHarvest.InInventory"}}
+              {{/if}}
               {{#each ../../characters}}
                 {{#each this.items}}
                   {{#ifContains this.name ../../name}}
