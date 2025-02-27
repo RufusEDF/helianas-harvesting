@@ -64,8 +64,16 @@
           <td>
             {{#each this.components}}
               {{#if this.held.items}}
-                {{this.held.count}} {{localize "HelianasHarvest.InInventory"}}
+                <p><strong>{{this.held.count}} {{localize "HelianasHarvest.InInventory"}}</p></strong>
+                {{#each this.held.items}}
+                  {{#if this.parent}}
+                    <p>{{this.parent.name}} : {{this.name}} : {{this.system.quantity}}</p>
+          {{!--        {{else}}
+                    <p>party-loot : {{this.name}} : {{this.system.quantity}}</p>  --}}
+                  {{/if}}
+                {{/each}}
               {{/if}}
+
       {{!--
               {{#each ../../characters}}
                 {{#each this.items}}

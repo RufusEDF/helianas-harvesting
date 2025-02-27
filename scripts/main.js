@@ -14,7 +14,7 @@ Hooks.on("getHarvestWindowHeaderButtons", bindStatisticsButton);
 Hooks.on("getCraftingWindowHeaderButtons", bindStatisticsButton);
 
 Handlebars.registerHelper('ifContains', (string1, string2, options) => {
-    return (string1.includes(string2)) ? options.fn(this) : options.inverse(this);
+    return (string1.toLowerCase().includes(string2.toLowerCase())) ? options.fn(this) : options.inverse(this);
 });
 
 Handlebars.registerHelper('ifEquals', (string1, string2, options) => {

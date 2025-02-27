@@ -73,9 +73,14 @@ export default class CraftingWindow extends Application {
     }
 
     mapHeldComponents(data) {
+
+        let partyInventory = game.settings.get("party-inventory", 'scratchpad');
+        console.log(partyInventory);
+
         //Is this logic best here or in ComponentDatabase.js?
         data.recipes.forEach(recipe => {
             recipe.components.forEach(component => {
+                let componentLowerCase = component.name.toLowerCase()
                 component.held = {
                     items : [],
                     get count() {
@@ -86,10 +91,37 @@ export default class CraftingWindow extends Application {
                 };
                 data.characters.forEach(character => {
                     component.held.items = component.held.items.concat(character.items.filter(item =>
-                        item.name.toLowerCase().includes(component.name.toLowerCase())));
+                        item.name.toLowerCase().includes(componentLowerCase)));
                 });
+                // Search for components in the party-inventory module
+                // https://github.com/teroparvinen/foundry-party-inventory
+                // game.modules.get("party-inventory", 'scratchpad');
+
+                // create a for loop to iterate through the properties of the partyInventory.items object
+                // if the item has a source data property then it is likely dragged from an inventory and will have all the necessary data
+                // if the item has a sourceData property compare the name of the sourceData.name to the component name
+                // if the name includes the component name then add it to the component.held.items array
+                for (let order of partyInventory.order) {
+                    let item = partyInventory.items[order];
+                    if (item.sourceData && item.sourceData.name.toLowerCase().includes(componentLowerCase)) {
+                        component.held.items.push(item.sourceData);
+                    }
+                    else if (item.parent && item.system && item.name.toLowerCase().includes(componentLowerCase)) {
+                        component.held.items.push(item);
+                    }
+                    else if (item.name.toLowerCase().includes(componentLowerCase)) {
+                        console.log("manual item", item);
+                        item.system = {quantity: 1};  // quantity may not actually be 1, need to look through how party-inventory calculates quantity
+                        item.parent = {name: "Party-Inventory"};
+                        console.log("manual item additional properties", item);
+                        component.held.items.push(item);
+                    }
+                }
+
+
             });
         });
+        console.log(data)
         return data;
     }
 
