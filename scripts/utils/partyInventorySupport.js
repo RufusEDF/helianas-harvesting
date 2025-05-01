@@ -17,6 +17,9 @@ function detectQuantity(input) {
 }
 
 
+                    // Search for components in the party-inventory module
+                    // https://github.com/teroparvinen/foundry-party-inventory
+                    // game.modules.get("party-inventory", 'scratchpad');
 export default function getPartyInventoryItems() {
     let partyInventoryAll
     try {
@@ -29,8 +32,6 @@ export default function getPartyInventoryItems() {
     let partyInventory = {items: {}, order: []};
 
     for (let order of partyInventoryAll.order) {
-        console.log("Party Inventory order", order);
-        console.log("Party Inventory item", partyInventoryAll.items[order]);
         let item = partyInventoryAll.items[order];
         if (!item.name) {
             console.warn("Item without a name detected and skipped:", item);
@@ -39,16 +40,12 @@ export default function getPartyInventoryItems() {
                 item.system = {};
             }
             item.system.quantity = detectQuantity(item.name).quantity;
-            //if (!item.parent) {
-            console.log("Item.parent", item.parent);
-            item.parent = {name: "Party-Inventory2"};
-            console.log("Item.parent.name", item.parent.name);
-            //}
-
+            if (!item.parent) {
+                item.parent = {name: "Party-Inventory"};
+            }
             partyInventory.order.push(order);
             partyInventory.items[order] = item;
         }
     }
-    console.warn("Party Inventory", partyInventory);
     return partyInventory;
 }

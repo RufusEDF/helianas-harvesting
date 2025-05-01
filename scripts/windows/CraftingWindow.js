@@ -104,13 +104,7 @@ export default class CraftingWindow extends Application {
                         item.name.toLowerCase().includes(componentLowerCase)));
                 });
                 if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
-                    // Search for components in the party-inventory module
-                    // https://github.com/teroparvinen/foundry-party-inventory
-                    // game.modules.get("party-inventory", 'scratchpad');
-
                     // create a for loop to iterate through the properties of the partyInventory.items object
-                    // if the item has a source data property then it is likely dragged from an inventory and will have all the necessary data
-                    // if the item has a sourceData property compare the name of the sourceData.name to the component name
                     // if the name includes the component name then add it to the component.held.items array
 
                     for (let order of partyInventory.order) {
@@ -120,27 +114,10 @@ export default class CraftingWindow extends Application {
                                 component.held.items.push(item);
                             }
                         } catch (error) {
-                            console.warn("Item checking item", item);
+                            console.error("Issue checking item error", error);
+                            console.warn("Issue checking item", item);
                         }
                     }
-
-                    //for (let order of partyInventory.order) {
-                    //    let item = partyInventory.items[order];
-                    //    // ignore items without a name as likely all other properties will also be missing.
-                    //    if (!item.name) {
-                    //        console.warn("skipping", item)
-                    //    }
-                    //    else if (item.sourceData && item.sourceData.name.toLowerCase().includes(componentLowerCase)) {
-                    //        component.held.items.push(item.sourceData);
-                    //    }
-                    //    else if (item.parent && item.system && item.name.toLowerCase().includes(componentLowerCase)) {
-                    //        component.held.items.push(item);
-                    //    }
-                    //    else if (item.name.toLowerCase().includes(componentLowerCase)) {
-                    //        console.warn("Item matches but missing necessary properties to be included", item);
-                    //    }
-                    //}
-
                 }
 
 
