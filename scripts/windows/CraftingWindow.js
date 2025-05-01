@@ -1,6 +1,7 @@
 import { Config } from "../config.js";
 import PlayerSelectWindow from "./PlayerSelectWindow.js";
 import { RecipeDatabase } from "../RecipeDatabase.js";
+import getPartyInventoryItems from "../utils/partyInventorySupport.js";
 
 export default class CraftingWindow extends Application {
     /**
@@ -44,6 +45,13 @@ export default class CraftingWindow extends Application {
      */
     filterComponentsHeld = false;
 
+    /**
+     * Game settings used to determine if the held components column should be shown
+     * @type {boolean}
+     *
+     */
+    showHeldComponents = game.settings.get("helianas-harvesting", "heldComponents");
+
     #activeElementId = false;
     #cursorPosition = { start: 0, end: 0 };
     #debounceSchedule = false;
@@ -66,16 +74,18 @@ export default class CraftingWindow extends Application {
             .sort((a, b) => a.name.localeCompare(b.name));
         data.searchText = this.searchText;
         data.characters = game.actors.filter(a => a.type === "character")
-        data = this.mapHeldComponents(data);
+        if(game.settings.get("helianas-harvesting", "heldComponents")){data = this.mapHeldComponents(data);}
         data.filterComponentsHeld = this.filterComponentsHeld;
+        data.showHeldComponents = this.showHeldComponents;
         if(this.filterComponentsHeld){data.recipes = this.filterOutRecipes(data.recipes)};
         return data;
     }
 
-    mapHeldComponents(data) {
-
-        let partyInventory = game.settings.get("party-inventory", 'scratchpad');
-        console.log(partyInventory);
+    mapHeldComponents(data){
+        let partyInventory = {items: {}, order: []};
+        if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
+            partyInventory = getPartyInventoryItems();
+        }
 
         //Is this logic best here or in ComponentDatabase.js?
         data.recipes.forEach(recipe => {
@@ -93,35 +103,49 @@ export default class CraftingWindow extends Application {
                     component.held.items = component.held.items.concat(character.items.filter(item =>
                         item.name.toLowerCase().includes(componentLowerCase)));
                 });
-                // Search for components in the party-inventory module
-                // https://github.com/teroparvinen/foundry-party-inventory
-                // game.modules.get("party-inventory", 'scratchpad');
+                if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
+                    // Search for components in the party-inventory module
+                    // https://github.com/teroparvinen/foundry-party-inventory
+                    // game.modules.get("party-inventory", 'scratchpad');
 
-                // create a for loop to iterate through the properties of the partyInventory.items object
-                // if the item has a source data property then it is likely dragged from an inventory and will have all the necessary data
-                // if the item has a sourceData property compare the name of the sourceData.name to the component name
-                // if the name includes the component name then add it to the component.held.items array
-                for (let order of partyInventory.order) {
-                    let item = partyInventory.items[order];
-                    if (item.sourceData && item.sourceData.name.toLowerCase().includes(componentLowerCase)) {
-                        component.held.items.push(item.sourceData);
+                    // create a for loop to iterate through the properties of the partyInventory.items object
+                    // if the item has a source data property then it is likely dragged from an inventory and will have all the necessary data
+                    // if the item has a sourceData property compare the name of the sourceData.name to the component name
+                    // if the name includes the component name then add it to the component.held.items array
+
+                    for (let order of partyInventory.order) {
+                        let item = partyInventory.items[order];
+                        try {
+                            if (item.name.toLowerCase().includes(componentLowerCase)){
+                                component.held.items.push(item);
+                            }
+                        } catch (error) {
+                            console.warn("Item checking item", item);
+                        }
                     }
-                    else if (item.parent && item.system && item.name.toLowerCase().includes(componentLowerCase)) {
-                        component.held.items.push(item);
-                    }
-                    else if (item.name.toLowerCase().includes(componentLowerCase)) {
-                        console.log("manual item", item);
-                        item.system = {quantity: 1};  // quantity may not actually be 1, need to look through how party-inventory calculates quantity
-                        item.parent = {name: "Party-Inventory"};
-                        console.log("manual item additional properties", item);
-                        component.held.items.push(item);
-                    }
+
+                    //for (let order of partyInventory.order) {
+                    //    let item = partyInventory.items[order];
+                    //    // ignore items without a name as likely all other properties will also be missing.
+                    //    if (!item.name) {
+                    //        console.warn("skipping", item)
+                    //    }
+                    //    else if (item.sourceData && item.sourceData.name.toLowerCase().includes(componentLowerCase)) {
+                    //        component.held.items.push(item.sourceData);
+                    //    }
+                    //    else if (item.parent && item.system && item.name.toLowerCase().includes(componentLowerCase)) {
+                    //        component.held.items.push(item);
+                    //    }
+                    //    else if (item.name.toLowerCase().includes(componentLowerCase)) {
+                    //        console.warn("Item matches but missing necessary properties to be included", item);
+                    //    }
+                    //}
+
                 }
 
 
             });
         });
-        console.log(data)
         return data;
     }
 

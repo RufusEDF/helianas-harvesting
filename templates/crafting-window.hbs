@@ -19,9 +19,11 @@
         <th scope="col">{{localize "HelianasHarvest.ItemPriceHeader"}}</th>
         <th scope="col">{{localize "HelianasHarvest.RecipeMetatag"}}</th>
         <th scope="col">{{localize "HelianasHarvest.RequiredComponents"}}</th>
+        {{#if showHeldComponents}}
         <th scope="col">{{localize "HelianasHarvest.HeldComponents"}}
           <input type="checkbox" class="helianas-harvesting-module" title="{{localize "HelianasHarvest.FilterComponents"}}" id="filterComponentsHeld" name="filterComponentsHeld" data-dtype="Boolean" {{checked filterComponentsHeld}}>
         </th>
+        {{/if}}
       </tr>
     </thead>
     <tbody>
@@ -62,34 +64,42 @@
             {{/each}}
           </td>
           <td>
-            {{#each this.components}}
-              {{#if this.held.items}}
-                <p><strong>{{this.held.count}} {{localize "HelianasHarvest.InInventory"}}</p></strong>
-                {{#each this.held.items}}
-                  {{#if this.parent}}
-                    <p>{{this.parent.name}} : {{this.name}} : {{this.system.quantity}}</p>
-          {{!--        {{else}}
-                    <p>party-loot : {{this.name}} : {{this.system.quantity}}</p>  --}}
-                  {{/if}}
-                {{/each}}
-              {{/if}}
+            {{#if ../showHeldComponents}}
+              {{#each this.components}}
+                {{#if this.held.items}}
+                {{!--
+                  {{log this}}
+                  {{log this.held.count}}
+                --}}
+                  <p><strong>{{this.held.count}} {{localize "HelianasHarvest.InInventory"}}</p></strong>
+                  {{#each this.held.items}}
+                    {{log this}}
+                    {{#if this.parent}}
+                      <p>{{this.parent.name}} : {{this.name}} : {{this.system.quantity}}</p>
+            {{!--        {{else}}
+                      <p>party-loot : {{this.name}} : {{this.system.quantity}}</p>  --}}
+                    {{/if}}
+                  {{/each}}
+                {{/if}}
 
-      {{!--
-              {{#each ../../characters}}
-                {{#each this.items}}
-                  {{#ifContains this.name ../../name}}
-                    <p>{{../../name}}:{{../system.quantity}}*{{../name}}</p>
-                  {{/ifContains}}
-      --}}
-                  {{!-- this.name = the item in the actors inventory - {{this.name}}--}}
-                  {{!-- ../name = the actor {{../name}}--}}
-                  {{!-- ../../name = the component in the recipe - {{../../name}}--}}
-                  {{!-- ../../../name = the item to be crafted in the recipe - {{../../../name}}--}}
-      {{!--
+        {{!--
+                {{#each ../../characters}}
+                  {{#each this.items}}
+                    {{#ifContains this.name ../../name}}
+                      <p>{{../../name}}:{{../system.quantity}}*{{../name}}</p>
+                    {{/ifContains}}
+        --}}
+                    {{!-- this.name = the item in the actors inventory - {{this.name}}--}}
+                    {{!-- ../name = the actor {{../name}}--}}
+                    {{!-- ../../name = the component in the recipe - {{../../name}}--}}
+                    {{!-- ../../../name = the item to be crafted in the recipe - {{../../../name}}--}}
+        {{!--
+                  {{/each}}
                 {{/each}}
+                           {{log  this}}
+        --}}
               {{/each}}
-      --}}
-            {{/each}}
+            {{/if}}
           </td>
         </tr>
       {{/each}}
