@@ -1,6 +1,7 @@
 import { Config } from "../config.js";
 import PlayerSelectWindow from "./PlayerSelectWindow.js";
 import { RecipeDatabase } from "../RecipeDatabase.js";
+import getPartyInventoryItems from "../utils/partyInventorySupport.js";
 
 export default class CraftingWindow extends Application {
     /**
@@ -40,6 +41,20 @@ export default class CraftingWindow extends Application {
      */
     //searchText = "";
 
+    /**
+     * Filter for components held by characters
+     *
+     * @type {boolean}
+     */
+    filterComponentsHeld = false;
+
+    /**
+     * Game settings used to determine if the held components column should be shown
+     * @type {boolean}
+     *
+     */
+    showHeldComponents = game.settings.get("helianas-harvesting", "heldComponents");
+
     #activeElementId = false;
     #cursorPosition = { start: 0, end: 0 };
     #debounceSchedule = false;
@@ -48,7 +63,9 @@ export default class CraftingWindow extends Application {
         if (typeof newValues.searchText === "string") {
             this.searchText = newValues.searchText;
         }
-
+        if (typeof newValues.filterComponentsHeld === "boolean") {
+            this.filterComponentsHeld = newValues.filterComponentsHeld;
+        }
         if (this.rendered) this.render();
     }
 
@@ -61,7 +78,63 @@ export default class CraftingWindow extends Application {
             .searchItems(this.searchText)
             .sort((a, b) => a.name.localeCompare(b.name));
         data.searchText = this.searchText;
+        data.characters = game.actors.filter(a => a.type === "character")
+        if(game.settings.get("helianas-harvesting", "heldComponents")){data = this.mapHeldComponents(data);}
+        data.filterComponentsHeld = this.filterComponentsHeld;
+        data.showHeldComponents = this.showHeldComponents;
+        if(this.filterComponentsHeld){data.recipes = this.filterOutRecipes(data.recipes)};
         return data;
+    }
+
+    mapHeldComponents(data){
+        let partyInventory = {items: {}, order: []};
+        if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
+            partyInventory = getPartyInventoryItems();
+        }
+
+        //Is this logic best here or in ComponentDatabase.js?
+        data.recipes.forEach(recipe => {
+            recipe.components.forEach(component => {
+                let componentLowerCase = component.name.toLowerCase()
+                component.held = {
+                    items : [],
+                    get count() {
+                        let quantity = 0;
+                        this.items.forEach(item => {quantity += item.system.quantity});
+                        return quantity;
+                    }
+                };
+                data.characters.forEach(character => {
+                    component.held.items = component.held.items.concat(character.items.filter(item =>
+                        item.name.toLowerCase().includes(componentLowerCase)));
+                });
+                if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
+                    // create a for loop to iterate through the properties of the partyInventory.items object
+                    // if the name includes the component name then add it to the component.held.items array
+
+                    for (let order of partyInventory.order) {
+                        let item = partyInventory.items[order];
+                        try {
+                            if (item.name.toLowerCase().includes(componentLowerCase)){
+                                component.held.items.push(item);
+                            }
+                        } catch (error) {
+                            console.error("Issue checking item error", error);
+                            console.warn("Issue checking item", item);
+                        }
+                    }
+                }
+
+
+            });
+        });
+        return data;
+    }
+
+    filterOutRecipes(recipes) {
+        return recipes.filter(recipe => {
+            return recipe.components.every(component => component.held.count > 0);
+        });
     }
 
     // Define the logic for activating listeners in the rendered HTML
@@ -77,6 +150,12 @@ export default class CraftingWindow extends Application {
                 });
             }
         }
+
+        // filter toggle
+        const filterToggle = html.find('#filterComponentsHeld');
+        filterToggle.on('click', event => {
+            this.updateForm({ filterComponentsHeld: !this.filterComponentsHeld });
+        });
 
         // Numeric and text inputs
         const managedInputs = html.find('.managed-input');

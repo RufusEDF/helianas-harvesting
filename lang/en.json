@@ -13,6 +13,12 @@
             "PlayerHarvesting": {
                 "Name": "Allow Players to access Harvesting",
                 "Hint": "If enabled, players can access the Harvest Creature - Harvest Controls window. \n Recommended - Disabled"
+            },
+            "HeldComponents": {
+                "HeldComponentsName": "Display Held Components",
+                "HeldComponentsHint": "If enabled, an extra column will be added to the crafting window recipe table to display a breakdown of who is holding the required components.  This also adds a button to toggle filtering held components. \n Recommended - Client specific, may result in the table loading slower",
+                "PartyInventorySupportName": "Party-Inventory Module Support",
+                "PartyInventorySupportHint": "If enabled, items within the Party-Inventory module will be included in the Held Components column. \nRequires Display Held Components to be enabled.\nRequires https://github.com/teroparvinen/foundry-party-inventory\n"
             }
         },
         "CreatureTypeLabel": "Creature Type",
@@ -47,6 +53,9 @@
         "ItemPriceHeader": "Value",
         "RecipeMetatag": "Metatag",
         "RequiredComponents": "Required Components",
+        "HeldComponents": "Held Components",
+        "InInventory": "Held in Inventory",
+        "FilterComponents": "View Only Held Components",
         "RecipeSearch": "Search Recipes",
         "CraftingCreatedItemNotice": "Sent {itemName} to {actorName}",
         "PlayerSelectWindowTitle": "Select a Player",

@@ -6,6 +6,7 @@ import { setupModuleAPI } from "./utils/setupModuleAPI.js";
 import { setupSettings } from "./utils/settings.js";
 import { relevantRecipes } from "./utils/relevantRecipes.js";
 
+Hooks.on("init", setupSettings);
 
 Hooks.on("setup", setupModuleAPI);
 
@@ -16,6 +17,12 @@ Hooks.on("getSceneControlButtons", bindSceneControlButtons);
 Hooks.on("getHarvestWindowHeaderButtons", bindStatisticsButton);
 Hooks.on("getCraftingWindowHeaderButtons", bindStatisticsButton);
 
-Hooks.on("init", setupSettings);
-
 Hooks.on('renderChatMessage', relevantRecipes);
+
+Handlebars.registerHelper('ifContains', (string1, string2, options) => {
+    return (string1.toLowerCase().includes(string2.toLowerCase())) ? options.fn(this) : options.inverse(this);
+});
+
+Handlebars.registerHelper('ifEquals', (string1, string2, options) => {
+    return (string1 === string2) ? options.fn(this) : options.inverse(this);
+});
