@@ -8,11 +8,13 @@ export default class CraftingWindow extends Application {
      *
      * @param {RecipeDatabase} recipeDatabase
      * @param {ActorToken} token
+     * @param {string} searchText
      */
-    constructor(recipeDatabase) {
+    constructor(recipeDatabase, searchText = "") {
         super();
 
         this.recipeDatabase = recipeDatabase;
+        this.searchText = searchText
     }
 
     static get defaultOptions() {
@@ -35,8 +37,9 @@ export default class CraftingWindow extends Application {
 
     /**
      * Search Text Field
+     * (This has been moved to the class constructor to allow the search text to be passed in from other functions)
      */
-    searchText = "";
+    //searchText = "";
 
     /**
      * Filter for components held by characters
@@ -69,6 +72,8 @@ export default class CraftingWindow extends Application {
     getData() {
         let data = super.getData();
         data.rarityNames = game.system.config.itemRarity;
+        data.displaySearchBar = game.user.isGM;
+
         data.recipes = this.recipeDatabase
             .searchItems(this.searchText)
             .sort((a, b) => a.name.localeCompare(b.name));
@@ -195,9 +200,16 @@ export default class CraftingWindow extends Application {
 
         const itemLinks = html.find(".recipe-item-name");
         itemLinks.on("click", async (event) => {
-            event.preventDefault();
-            const { itemName, itemLink } = event.currentTarget.dataset;
-            await this.send(itemName, itemLink);
+            // Check if the user has permission to craft.
+            if (!game.user.isGM && !game.settings.get("helianas-harvesting", "playerCrafting")) {
+                ui.notifications.info(game.i18n.format("HelianasHarvest.Settings.PlayerCrafting.Denied"));
+                return;
+            }
+            else {
+                event.preventDefault();
+                const { itemName, itemLink } = event.currentTarget.dataset;
+                await this.send(itemName, itemLink);
+            }
         });
     }
 

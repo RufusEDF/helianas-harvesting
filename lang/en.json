@@ -1,6 +1,19 @@
 {
     "HelianasHarvest" : {
         "Settings": {
+            "PlayerRecipes": {
+                "Name": "Allow Players to view recipes",
+                "Hint": "If enabled, players can access the Crafting Recipes window and view all crafting recipes in the system. \n Recommended - Enabled"
+            },
+            "PlayerCrafting": {
+                "Name": "Allow Players to Craft Items",
+                "Hint": "If enabled, players can use the Crafting Recipes window to send items to their inventory. \n Recommended - Disabled",
+                "Denied": "You do not have permission to craft items."
+            },
+            "PlayerHarvesting": {
+                "Name": "Allow Players to access Harvesting",
+                "Hint": "If enabled, players can access the Harvest Creature - Harvest Controls window. \n Recommended - Disabled"
+            },
             "HeldComponents": {
                 "HeldComponentsName": "Display Held Components",
                 "HeldComponentsHint": "If enabled, an extra column will be added to the crafting window recipe table to display a breakdown of who is holding the required components.  This also adds a button to toggle filtering held components. \n Recommended - Client specific, may result in the table loading slower",
@@ -32,6 +45,7 @@
         "ChatRollCheckInstructions": "Roll your combined check and enter the total into the harvest window.",
         "ChatHarvestTableMessage": "Harvest DC Table for {creatureName}",
         "ChatComponentsInstructions": "Discuss what you would like to attempt to harvest and what order. Each additional item you attempt to harvest will increase the DC.",
+        "ShowRelevantRecipes": "Show Relevant Recipes",
         "ChatComponentsMessage": "The following items can be harvested from {creatureName}:",
         "CraftControl": "Crafting Recipes",
         "CraftWindowTitle": "Heliana's Crafting Recipes",
