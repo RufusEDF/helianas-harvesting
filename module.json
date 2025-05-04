@@ -1,8 +1,8 @@
 {
   "id": "helianas-harvesting",
   "title": "Heliana's Harvesting",
-  "description": "<p>Initial Testing Version of a Harvesting Module to aid with Heliana's Harvesting Rules.</p>",
-  "version": "0.4.2",
+  "description": "<p>Harvesting Module to aid with Heliana's Harvesting Rules.</p><p>Fork of https://github.com/Loot-Foundry/helianas-harvesting</p>",
+  "version": "0.1.0",
   "compatibility": {
     "minimum": "10",
     "verified": "12.324",
@@ -12,6 +12,9 @@
     {
       "name": "Kage",
       "discord": "Kage#6375"
+    },
+    {
+      "name": "Rufus"
     }
   ],
   "flags": {
@@ -78,7 +81,7 @@
   "esmodules": [
     "./scripts/main.js"
   ],
-  "url": "https://github.com/KageJittai/helianas-harvesting",
-  "manifest": "https://github.com/KageJittai/helianas-harvesting/releases/latest/download/module.json",
-  "download": "https://github.com/KageJittai/helianas-harvesting/releases/latest/download/module.zip"
+  "url": "https://github.com/RufusEDF/helianas-harvesting",
+  "manifest": "https://github.com/RufusEDF/helianas-harvesting/releases/latest/download/module.json",
+  "download": "https://github.com/RufusEDF/helianas-harvesting/releases/latest/download/module.zip"
 }
