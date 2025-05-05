@@ -11,6 +11,15 @@ export function setupSettings() {
         default: true
     });
 
+    game.settings.register("helianas-harvesting", "showRelevantRecipesButton", {
+        name: "HelianasHarvest.Settings.ShowRelevantRecipes.Name",
+        hint: "HelianasHarvest.Settings.ShowRelevantRecipes.Hint",
+        scope: "world",
+        config: true,
+        type: new foundry.data.fields.BooleanField(),
+        default: true
+    });
+
     game.settings.register("helianas-harvesting", "playerCrafting", {
         name: "HelianasHarvest.Settings.PlayerCrafting.Name",
         hint: "HelianasHarvest.Settings.PlayerCrafting.Hint",
