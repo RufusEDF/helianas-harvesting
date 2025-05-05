@@ -72,7 +72,7 @@ export default class CraftingWindow extends Application {
     getData() {
         let data = super.getData();
         data.rarityNames = game.system.config.itemRarity;
-        data.displaySearchBar = game.user.isGM;
+        data.displaySearchBar = game.user.isGM || game.settings.get("helianas-harvesting", "playerRecipes");
 
         data.recipes = this.recipeDatabase
             .searchItems(this.searchText)
