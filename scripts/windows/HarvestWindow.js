@@ -207,11 +207,12 @@ export default class HarvestWindow extends Application {
     message += `</ul>
       <p>${game.i18n.localize("HelianasHarvest.ChatComponentsInstructions")}</p>
       `;
+
     if (game.settings.get("helianas-harvesting", "showRelevantRecipesButton")) {
       message += `<button class="helianas-harvest-relevant-recipes-button" title="${searchQuery}">${game.i18n.localize("HelianasHarvest.ShowRelevantRecipes")}</button>`;
+    }
 
     this.sendChatMessage(message);
-
     this.formData.getHarvestComponents();
   }
 
