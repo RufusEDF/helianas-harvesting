@@ -30,9 +30,9 @@ This module helps you harvest, craft and cook following the rule set from Helian
 
 ![Select the item you want to create](/images/crafting/step2.png)
 
-![There is a local "Display Held Components" setting to allow players to see which recipes they have the required components](/images/crafting/heldcomponentsunfiltered.PNG)
+![There is a local "Display Held Components" setting to allow players to see which recipes they have the required components](/images/crafting/heldcomponentsunfiltered.png)
 
-![The local "Display Held Components" setting also allows you to hide recipes you don't have components for.  It also supports the Foundry-Party-Inventory module. ](/images/crafting/heldcomponentsfiltered.PNG)
+![The local "Display Held Components" setting also allows you to hide recipes you don't have components for.  It also supports the Foundry-Party-Inventory module. ](/images/crafting/heldcomponentsfiltered.png)
 
 ![Select the player to send the item to](/images/crafting/step3.png)
 
