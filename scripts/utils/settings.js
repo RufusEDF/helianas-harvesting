@@ -46,11 +46,6 @@ export function setupSettings() {
         type: new foundry.data.fields.BooleanField(),
         default: true,
         requiresReload: true,
-        onchange: () => {
-            if (game.settings.get("helianas-harvesting", "heldComponents") === false){
-                game.settings.set("helianas-harvesting", "partyInventorySupport", false);
-            }
-        }
     });
 
     if(game.modules.get("party-inventory")){
