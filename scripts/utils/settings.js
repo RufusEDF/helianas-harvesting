@@ -67,4 +67,22 @@ export function setupSettings() {
             default: false
         });
     }
+
+    game.settings.register("helianas-harvesting", "craftingWindowWidth", {
+        name: "HelianasHarvest.Settings.CraftingWindowWidth.Name",
+        hint: "HelianasHarvest.Settings.CraftingWindowWidth.Hint",
+        scope: "client",
+        config: true,
+        default: 800,
+        //type: new foundry.data.fields.NumberField(),
+        type: Number,
+        range: {
+            min: 400,
+            max: 1600,
+            step: 50,
+            initial : 800,
+            nullable: false
+        },
+        requiresReload: false
+    });
 }

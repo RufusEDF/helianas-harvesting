@@ -18,10 +18,19 @@ export default class CraftingWindow extends Application {
     }
 
     static get defaultOptions() {
+        try {
+            let widthsetting = game.settings.get("helianas-harvesting", "craftingWindowWidth");
+            if (widthsetting > 0 && widthsetting < 10000) {
+                var width = widthsetting;
+            }
+        } catch (error) {
+            let width = 800;
+        }
+
         return foundry.utils.mergeObject(super.defaultOptions, {
             template: Config.CraftWindowTemplate,
             classes: ['helianas-harvesting-module'],
-            width: 800,
+            width: width,
             height: 600,
             resizable: true,
             title: "HelianasHarvest.CraftWindowTitle"

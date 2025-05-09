@@ -23,6 +23,10 @@
                 "HeldComponentsHint": "If enabled, an extra column will be added to the crafting window recipe table to display a breakdown of who is holding the required components.  This also adds a button to toggle filtering held components. \n Recommended - Client specific, may result in the table loading slower",
                 "PartyInventorySupportName": "Party-Inventory Module Support",
                 "PartyInventorySupportHint": "If enabled, items within the Party-Inventory module will be included in the Held Components column. \nRequires Display Held Components to be enabled.\nRequires https://github.com/teroparvinen/foundry-party-inventory\n"
+            },
+            "CratingWindowWidth": {
+                "Name": "Crafting Window Width",
+                "Hint": "The width of the crafting window. Min 400.  Max 1600. \n Recommended - Client specific"
             }
         },
         "CreatureTypeLabel": "Creature Type",
