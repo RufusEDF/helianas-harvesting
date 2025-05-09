@@ -24,7 +24,7 @@
                 "PartyInventorySupportName": "Party-Inventory Module Support",
                 "PartyInventorySupportHint": "If enabled, items within the Party-Inventory module will be included in the Held Components column. \nRequires Display Held Components to be enabled.\nRequires https://github.com/teroparvinen/foundry-party-inventory\n"
             },
-            "CratingWindowWidth": {
+            "CraftingWindowWidth": {
                 "Name": "Crafting Window Width",
                 "Hint": "The width of the crafting window. Min 400.  Max 1600. \n Recommended - Client specific"
             }
