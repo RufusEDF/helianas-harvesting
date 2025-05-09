@@ -2,7 +2,7 @@
     "HelianasHarvest" : {
         "Settings": {
             "PlayerRecipes": {
-                "Name": "Allow Players to view crafting recipe list",
+                "Name": "Allow Players to search crafting recipe list",
                 "Hint": "If enabled, players can access the Crafting Recipes window at anytime and view all crafting recipes in the system.  If disabled, the Crafting window search bar will be hidden when showing Relevant Recipes. \n Recommended - Enabled"
             },
             "ShowRelevantRecipes": {
