@@ -19,7 +19,6 @@ export default class CreateRecipeWindow extends Application {
      * @property {string} recipeDraft.variants - currently unsupported
      */
     constructor(recipeDraft = {}) {
-        console.log("CreateRecipeWindow - recipeDraftbefore", recipeDraft);
         super();
         this.recipe = {
             name: recipeDraft?.name ?? "",
@@ -35,7 +34,6 @@ export default class CreateRecipeWindow extends Application {
             qty: recipeDraft?.qty ?? 1,
             variants: recipeDraft?.variants ?? ""
         };
-        console.log("CreateRecipeWindow - recipeDraftafter", this.recipe);
     }
 
     static get defaultOptions() {
