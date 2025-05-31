@@ -5,6 +5,7 @@ import { initializeDatabases } from "./utils/initializeDatabases.js";
 import { setupModuleAPI } from "./utils/setupModuleAPI.js";
 import { setupSettings } from "./utils/settings.js";
 import { relevantRecipes } from "./utils/relevantRecipes.js";
+import { bindCreateCustomRecipeButtons } from "./utils/bindCreateCustomRecipeButtons.js";
 
 Hooks.on("init", setupSettings);
 
@@ -16,6 +17,24 @@ Hooks.on("getSceneControlButtons", bindSceneControlButtons);
 
 Hooks.on("getHarvestWindowHeaderButtons", bindStatisticsButton);
 Hooks.on("getCraftingWindowHeaderButtons", bindStatisticsButton);
+
+Hooks.on("ready", () => {
+    switch (game.settings.get("helianas-harvesting", "createCustomRecipes")) {
+        case "off":
+            break;
+        case "gm":
+            if (game.user.isGM){
+                bindCreateCustomRecipeButtons();
+            }
+            break;
+        case "gmp":
+            bindCreateCustomRecipeButtons();
+            break;
+        default:
+            break;
+    }
+});
+
 
 Hooks.on('renderChatMessage', relevantRecipes);
 

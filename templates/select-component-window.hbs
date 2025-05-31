@@ -1,0 +1,83 @@
+<div>
+    <form id="select-component-form">
+        <table style="width: 100%; table-layout: fixed; border-collapse: collapse;" class="helianas-harvesting-module">
+            <thead>
+                <tr>
+                    <th scope="col" width="40%"></th>
+                    <th scope="col" width="60%"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Component Creature Type</td>
+                    <td>
+                        <div class="form-fields" style="width: 100%;">
+                            <select
+                                name="componentCreatureType"
+                                type="text"
+                                class="helianas-harvesting-module managed-input form-control"
+                                id="componentCreatureType"
+                                style="width: 100%;"
+                            >
+                                <option value=""></option>
+                                {{#each componentCreatureTypes}}
+                                    <option value="{{this}}" {{#if (eq this ../componentCreatureType)}}selected{{/if}}>{{this}}</option>
+                                {{/each}}
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Component Name</td>
+                    <td>
+                        <div class="form-fields" style="width: 100%;">
+                            <select
+                                name="componentName"
+                                type="text"
+                                class="helianas-harvesting-module managed-input form-control"
+                                id="componentName"
+                                style="width: 100%;"
+                            >
+                                <option value=""></option>
+                                {{#each componentNames}}
+                                    <option value="{{this}}" {{#if (eq this ../componentName)}}selected{{/if}}>{{this}}</option>
+                                    {{log this}}
+                                {{/each}}
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Component UUID</td>
+                    <td>
+                        <div
+                            class="helianas-harvesting-module"
+                            id="componentUUID"
+                            name="componentUUID"
+                            style="flex: 1 1 auto;"
+                        >
+                            {{componentUUID}}
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Component Image</td>
+                    <td>
+                        <div>
+                            <img
+                                class="helianas-harvesting-module managed-input"
+                                id="componentImage"
+                                src="{{componentImage}}"
+                                alt="Component Image"
+                                style="max-height: 3rem; max-width: 3rem;"
+                            />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div>
+            <button id="select-component-button">{{localize "HelianasHarvest.SelectComponentTitle"}}</button>
+        </div>
+    </form>
+</div>

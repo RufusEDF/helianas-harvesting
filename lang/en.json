@@ -27,6 +27,10 @@
             "CraftingWindowWidth": {
                 "Name": "Crafting Window Width",
                 "Hint": "The width of the crafting window. Min 400.  Max 1600. \n Recommended - Client specific"
+            },
+            "CreateCustomRecipes": {
+                "Name": "Create Custom Recipes",
+                "Hint": "If enabled, you can create custom recipes for items that are not in the system. \n Recommended - Disabled"
             }
         },
         "CreatureTypeLabel": "Creature Type",
@@ -68,6 +72,9 @@
         "CraftingCreatedItemNotice": "Sent {itemName} to {actorName}",
         "PlayerSelectWindowTitle": "Select a Player",
         "StatisticsLabel": "View Stats",
-        "StatisticsWindowTitle": "Heliana's Harvesting Statistics"
+        "StatisticsWindowTitle": "Heliana's Harvesting Statistics",
+        "CreateRecipeTitle": "Create Custom Recipe",
+        "CreateRecipeControl": "Create Custom Recipe",
+        "SelectComponentTitle": "Select Component"
     }
 }

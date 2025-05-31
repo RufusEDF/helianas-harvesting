@@ -85,4 +85,20 @@ export function setupSettings() {
         },
         requiresReload: false
     });
+
+    game.settings.register("helianas-harvesting", "createCustomRecipes", {
+        name: "HelianasHarvest.Settings.CreateCustomRecipes.Name",
+        hint: "HelianasHarvest.Settings.CreateCustomRecipes.Hint",
+        scope: "world",
+        config: true,
+        type: new foundry.data.fields.StringField({
+            choices: {
+                "off": "Disabled",
+                "gm": "GM Only",
+                "gmp": "GM + Players",
+            },
+        }),
+        default: "off",
+        requiresReload: true
+    });
 }
