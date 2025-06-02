@@ -38,7 +38,7 @@ export function bindSceneControlButtons(controls) {
         }
     });
 
-    let createRecipeSetting = game.settings.get("helianas-harvesting", "createCustomRecipes");
+    let createRecipeSetting = game.settings.get("helianas-harvesting-custom-recipes", "createCustomRecipes");
     actorControl.tools.push({
         name: "create-recipe",
         title: "HelianasHarvest.CreateRecipeControl",

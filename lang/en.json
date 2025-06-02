@@ -30,7 +30,19 @@
             },
             "CreateCustomRecipes": {
                 "Name": "Create Custom Recipes",
-                "Hint": "If enabled, you can create custom recipes for items that are not in the system. \n Recommended - Disabled"
+                "Hint": "If enabled, a button will be added to compendium items to help create custom recipes for additional items.  This setting will not effect the loading of additional recipes. \n Recommended - Disabled"
+            },
+            "CustomRecipes": {
+                "Name": "Custom Recipes JSON",
+                "Hint": "Stores custom crafting recipes created in this world in JSON format.  Suggest regularly copying this to a safe location to avoid losing your custom recipes."
+            },
+            "CustomRecipesPriority": {
+                "Name": "Custom Recipes Priority",
+                "Hint": "The priority of these custom recipes.  If recipes are loaded with the same name, the one with the highest priority will be used (Inversed if Prevent Recipe Replacement is enabled). \n Recommended - 20"
+            },
+            "PreventRecipeReplacement": {
+                "Name": "Prevent Recipe Replacement",
+                "Hint": "If enabled, recipes loaded first will not be replaced by subsequent recipes with the same name. If using default priorities, you will not be able to replace existing recipes with custom recipes. \n Recommended - Disabled"
             }
         },
         "CreatureTypeLabel": "Creature Type",

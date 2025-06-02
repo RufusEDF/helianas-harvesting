@@ -1,16 +1,37 @@
 /**
  * Loads a JSON array file of elements into a map indexed by `resourceKeyName`
  *
- * @param {string} filename
+ * @param {string} filenameOrElements
  * @param {Map<string, any>} resourceMap
  * @param {string} resourceKeyName
  * @param {string} source
  *
  * @returns
  */
-export async function loadResourceFile(filename, resourceMap, resourceKeyName, source) {
-    const contents = await fetch(filename);
-    const elements = await contents.json();
+export async function loadResourceFile(filenameOrElements, resourceMap, resourceKeyName, source) {
+    let elements;
+    console.log(`Loading resource file or elements:`, filenameOrElements);
+    console.log(`Resource map size before loading:`, resourceMap);
+    console.log(`Resource key name: ${resourceKeyName}`);
+    console.log(`Source: ${source}`);
+
+    // If it's a string ending in .json, fetch and parse as the file.
+    if (typeof filenameOrElements === "string" && filenameOrElements.endsWith(".json")) {
+        console.log(`Loading resource file: ${filenameOrElements}`);
+        const contents = await fetch(filenameOrElements);
+        elements = await contents.json();
+    } else if (Array.isArray(filenameOrElements)) {
+        // If it's already an array, use it directly
+        // I don't think an array will ever be passed here, but just in case
+        console.log(`Using provided array of elements`, filenameOrElements);
+        elements = filenameOrElements;
+    } else if (typeof filenameOrElements === "object" && filenameOrElements !== null) {
+        // If it's a single object, wrap it in an array
+        console.log(`Wrapping single object into an array`, filenameOrElements);
+        elements = [filenameOrElements];
+    } else {
+        throw new Error("Invalid resource input: must be a .json file path, array, or object", filenameOrElements);
+    }
 
     const stats = { loaded: 0, replaced: 0, errors: 0 };
 

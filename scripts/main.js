@@ -18,7 +18,7 @@ Hooks.on("getHarvestWindowHeaderButtons", bindStatisticsButton);
 Hooks.on("getCraftingWindowHeaderButtons", bindStatisticsButton);
 
 Hooks.on("ready", () => {
-    switch (game.settings.get("helianas-harvesting", "createCustomRecipes")) {
+    switch (game.settings.get("helianas-harvesting-custom-recipes", "createCustomRecipes")) {
         case "off":
             break;
         case "gm":
