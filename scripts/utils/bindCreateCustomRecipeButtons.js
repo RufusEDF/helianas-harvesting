@@ -7,26 +7,24 @@ export function bindCreateCustomRecipeButtons(controls) {
         let index = await pack.getIndex(itemid);
         let uuid = await index.find(i => i._id === itemid).uuid;
         return uuid;
-        }
+    }
 
     Hooks.on("getItemSheetHeaderButtons", (app, html, data) => {
-        console.log("getItemSheetHeaderButtons", app, html, data);
         // Check if a recipe already exists
         let name = app.object.name
         let packref = app.object.pack
         let id = app.object.id
         let recipeDatabase = game.modules.get("helianas-harvesting").api.recipeDatabase
         let recipe = recipeDatabase._recipes.find(recipe => recipe.name === name);
-        console.log("recipe", recipe);
 
         let newButton = null
 
 
         if (!packref) {
-            console.log("Item is not a compendium item");
+            //console.log("Item is not a compendium item");
             return;
         }else if (recipe) {
-            // if it does, add a button which does nothing or opens the recipe
+            // if it does, add a button which does nothing.
             newButton = {
             label: "Recipe Exists",
             class: "custom-header-button",
@@ -61,22 +59,26 @@ export function bindCreateCustomRecipeButtons(controls) {
                             //assuming the item hasn't been cached, otherwise this will need to be awaited
                             // Get the item from the compendium to get the required properties for the recipe
                             //await let compendiumItem = game.packs.get(packref).getDocument(id);
+                            //as we have the UUID we can use "await fromUuid(UUID)" instead.
                             console.log("compendiumItem", compendiumItem);
 
                             let recipeDraft = {
-                                name: name,  // recipe name (must be unique)
-                                item: uuid,  // single string or array of strings eg. "Compendium.dnd5e.items.aXsfZvDCdpuv3Yvb"
-                                rarity: compendiumItem?.system?.rarity ?? "", // Use "" if rarity is undefined or inaccessible
-                                price: compendiumItem?.system?.price?.valueInGP ?? 0, // Use 0 if price is undefined or inaccessible
-                                component: "", // UUID of the component, see harvesting-component.json
+                                name: name,
+                                item: uuid,
+                                itemName: name,
+                                rarity: compendiumItem?.system?.rarity ?? "",
+                                price: compendiumItem?.system?.price?.valueInGP ?? 0,
+                                component: "",
                                 metatag: "",
-                                qty: compendiumItem?.system?.quantity ?? 1 // Use 1 if quantity is undefined or inaccessible
+                                qty: compendiumItem?.system?.quantity ?? 1
                                 //variants: "currently unsupported"
-                            }
+                            };
+
+                            let itemImage = compendiumItem?.img ?? ""; // Use empty string if img is undefined or inaccessible
 
                             console.log("recipeDraft", recipeDraft);
                             // Open the CreateRecipeWindow with the recipeDraft
-                            const crw = new CreateRecipeWindow(recipeDraft);
+                            const crw = new CreateRecipeWindow(name, itemImage, recipeDraft);
                             console.log("crw", crw);
                             crw.render(true);
                         })
@@ -90,54 +92,3 @@ export function bindCreateCustomRecipeButtons(controls) {
         html.unshift(newButton);
     });
 }
-
-// Recipes need the following properties:
-// - recipe name (must be unique)
-// - item (UUID of the item)
-// - rarity (string)
-// - price (number)
-// - component (UUID of the component)
-// - metatag (string)
-
-// Optional properties:
-// - qty (number, default 1)
-// - variants (array of objects with item, price, rarity, metatag)
-
-
-//    [{
-//        "name": "Amulet of Health",
-//        "item": "Compendium.dnd5e.items.iiQxTvDOhPGW5spF",
-//        "rarity": "rare",
-//        "price": 7000,
-//        "component": "0bibGJfScx8Kh2Wv",
-//        "metatag": "Mammoth"
-//    },
-//    {
-//        "name": "+1 Ammunition",
-//        "item": [
-//            "Compendium.dnd5e.items.tEWhsb2lYF4uvF0z",
-//            "Compendium.dnd5e.items.ZjUOHSyND2VFXQeP",
-//            "Compendium.dnd5e.items.NYIib9KEYDUFe9GY"
-//        ],
-//        "rarity": "uncommon",
-//        "qty": 10,
-//        "price": 25,
-//       "component": "EmhhpOFAHtZEO3hb"
-//    },
-//    {
-//        "name": "Belt of Giant Strength",
-//        "component": "2ugxh5VDYE9BSQyn",
-//        "variants": [
-//            {
-//                "item": "Compendium.dnd5e.items.bq9YKwEHLQ7p7ric",
-//                "price": 24000,
-//                "rarity": "veryRare",
-//                "metatag": "Fire"
-//            },
-//            {
-//                "item": "Compendium.dnd5e.items.ORKf6RRcalrdD6Qp",
-//                "price": 16000,
-//                "rarity": "veryRare",
-//                "metatag": "Frost"
-//            }]]
-//

@@ -108,7 +108,8 @@ export function setupSettings() {
         scope: "world",
         config: true,
         type: new foundry.data.fields.StringField(),
-        default: "[]"
+        default: "[]",
+        requiresReload: true
     });
 
     game.settings.register("helianas-harvesting-custom-recipes", "customRecipesPriority", {
@@ -117,7 +118,8 @@ export function setupSettings() {
         scope: "world",
         config: true,
         type: new foundry.data.fields.NumberField(),
-        default: 50
+        default: -5,
+        requiresReload: true
     });
 
     game.settings.register("helianas-harvesting-custom-recipes", "preventRecipeReplacement", {
@@ -126,7 +128,8 @@ export function setupSettings() {
         scope: "world",
         config: true,
         type: new foundry.data.fields.BooleanField(),
-        default: false
+        default: false,
+        requiresReload: true
     });
 
 

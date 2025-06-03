@@ -55,3 +55,8 @@
   border: 2px solid red !important;
   background: #ffeaea;
 }
+
+.helianas-harvesting-module .warn {
+  border: 2px solid yellow !important;
+  background: #ffeaea;
+}

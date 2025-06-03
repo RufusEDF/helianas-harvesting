@@ -36,13 +36,18 @@ export async function loadResourceFile(filenameOrElements, resourceMap, resource
     const stats = { loaded: 0, replaced: 0, errors: 0 };
 
     elements.forEach(element => {
-        const key = element[resourceKeyName];
-        element.source = source;
-        stats.loaded++;
-        if (resourceMap.has(key)) {
-            stats.replaced++;
+        try {
+            const key = element[resourceKeyName];
+            element.source = source;
+            stats.loaded++;
+            if (resourceMap.has(key)) {
+                stats.replaced++;
+            }
+            resourceMap.set(key, element);
+        } catch (e) {
+            stats.errors++;
+            console.warn(`Failed to add resource "${element?.name || '[unknown]'}": ${e.message}`);
         }
-        resourceMap.set(key, element);
     });
 
     return stats;

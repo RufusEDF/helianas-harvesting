@@ -1,4 +1,15 @@
 <div>
+    <div>
+        <img
+            class="helianas-harvesting-module managed-input"
+            id="componentImage"
+            src="{{itemImage}}"
+            name="componentImage"
+            alt="Component Image"
+            style="max-height: 3rem; max-width: 3rem;"
+        />
+        {{itemName}}
+    </div>
 <form id="create-recipe-form" autocomplete="off">
     <table style="width: 100%; table-layout: fixed; border-collapse: collapse;" class="helianas-harvesting-module">
         <thead>
@@ -9,6 +20,20 @@
         </thead>
         <tbody>
             <tr>
+                <td>Item UUID</td>
+                <td>
+                    <div class="form-fields">
+                        <input
+                            type="text"
+                            class="helianas-harvesting-module managed-input form-control"
+                            id="item"
+                            value="{{recipe.item}}"
+                            name="item"
+                        />
+                    </div>
+                </td>
+            </tr>
+            <tr>
                 <td>Recipe Name</td>
                 <td>
                     <div class="form-fields">
@@ -18,20 +43,6 @@
                             id="recipe-name"
                             name="name"
                             value="{{recipe.name}}"
-                        />
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Recipe UUID</td>
-                <td>
-                    <div class="form-fields">
-                        <input
-                            type="text"
-                            class="helianas-harvesting-module managed-input form-control"
-                            id="recipeUUID"
-                            value="{{recipe.item}}"
-                            name="item"
                         />
                     </div>
                 </td>
@@ -128,9 +139,9 @@
                         <input
                             type="text"
                             class="helianas-harvesting-module managed-input form-control"
-                            id="componentUUID"
-                            name="componentUUID"
-                            value="{{recipe.componentUUID}}"
+                            id="component"
+                            name="component"
+                            value="{{recipe.component}}"
                             style="flex: 1 1 auto; margin-left: 0.5em;"
                         />
                     </div>
@@ -143,12 +154,12 @@
                         <img
                             class="helianas-harvesting-module managed-input"
                             id="componentImage"
-                            src="{{recipe.componentImage}}"
+                            src="{{componentImage}}"
                             name="componentImage"
                             alt="Component Image"
                             style="max-height: 3rem; max-width: 3rem;"
                         />
-                        {{recipe.componentName}}
+                        {{componentName}}
                     </div>
                 </td>
             </tr>

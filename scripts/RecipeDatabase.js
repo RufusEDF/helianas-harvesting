@@ -74,8 +74,18 @@ export class RecipeDatabase {
 
         const nameExtension = recipe.mod ? ` (${recipe.mod})` : ''
         const name = item.name + nameExtension;
-        if (this.getRecipeFromName(name)) {
-            throw new Error(`Heliana's Harvesting | Duplicated name for item: ${name}`)
+        const preventReplacement = game.settings.get("helianas-harvesting-custom-recipes", "preventRecipeReplacement");
+
+        if (this.getRecipeFromName(name) && preventReplacement) {
+            //throw new Error(`Heliana's Harvesting | Preventing replacement of item: ${name}`)
+            return
+        } else if (this.getRecipeFromName(name)) {
+            //remove the existing recipe if we are not preventing replacement
+            const existingIndex = this._recipes.findIndex(r => r.name === name);
+            if (existingIndex !== -1) {
+                console.warn(`Heliana's Harvesting | Removing existing recipe for item: ${name}, to be ready for replacement.`, this.getRecipeFromName(name));
+                this._recipes.splice(existingIndex, 1);
+            }
         }
 
         this._recipes.push({
@@ -121,4 +131,16 @@ export class RecipeDatabase {
     getRecipeFromName(name) {
         return this._recipes.find((r => (r.name === name)));
     }
+
+
+    /**
+     * Returns the recipe that matches the given item UUID.
+     * @param {string} uuid The UUID of the item
+     * @return {object|null} The recipe object if found, otherwise null
+     */
+    getRecipeFromItemUuid(uuid) {
+        return this._recipes.find((r => r.link === uuid));
+    }
+
+
 }

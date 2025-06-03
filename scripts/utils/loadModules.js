@@ -25,8 +25,9 @@ export async function loadModules() {
                 recipes: customRecipes,
                 components: []
             },
-            priority: game.settings.get("helianas-harvesting-custom-recipes", "customRecipesPriority") || -50
+            priority: game.settings.get("helianas-harvesting-custom-recipes", "customRecipesPriority") || -5
         });
+        modulesToLoad.sort((a, b) => a.priority - b.priority)
     }
     // --- End virtual module addition ---
 

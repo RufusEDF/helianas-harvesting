@@ -7,7 +7,20 @@ export async function initializeDatabases() {
 
     api.stats = moduleStats;
 
-    Array.from(components).forEach(i => api.componentDatabase.addItem(i[1]));
-    Array.from(craftingRecipes).forEach(r => api.recipeDatabase.addRecipe(r[1]));
+    Array.from(components).forEach(i => {
+        try {
+            api.componentDatabase.addItem(i[1]);
+        } catch (e) {
+            console.warn(`Failed to add component "${i[1]?.name || '[unknown]'}": ${e.message}`);
+        }
+    });
+
+    Array.from(craftingRecipes).forEach(r => {
+        try {
+            api.recipeDatabase.addRecipe(r[1]);
+        } catch (e) {
+            console.warn(`Failed to add recipe "${r[1]?.name || '[unknown]'}": ${e.message}`);
+        }
+    });
 }
 ;
