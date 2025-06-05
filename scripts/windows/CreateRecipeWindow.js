@@ -91,14 +91,17 @@ export default class CreateRecipeWindow extends Application {
             saveFormValues(); // Save all current values
 
             const UUID = event.target.value;
+            console.log("CreateRecipeWindow - 93 UUID = event.target.value", UUID);
             // Update the recipe object
             this.item = UUID;
+            console.log("CreateRecipeWindow - 96 this.item = UUID", this.item);
 
             console.log("CreateRecipeWindow - item UUID", this.recipe.item);
             console.log(fromUuidSync(this.recipe.item))
 
             // Update itemName and itemImage based on the input UUID
             const item = fromUuidSync(UUID);
+            console.log("CreateRecipeWindow - 103 item = fromUuidSync", item);
             if (item) {
                 this.itemName = item.name || "unnamed item";
                 this.recipe.name = item.name || "unnamed item";
@@ -106,7 +109,7 @@ export default class CreateRecipeWindow extends Application {
 
                 try {
                 const itemData = await fromUuid(UUID);
-                console.log("CreateRecipeWindow - itemData", itemData);
+                console.log("CreateRecipeWindow - 111 itemData = fromUuid(UUID)", itemData);
                 if (itemData) {
                     if (itemData.system?.rarity) {this.recipe.rarity = itemData.system.rarity; };
                     if (itemData.system?.price?.valueInGP) {this.recipe.price = itemData.system.price.valueInGP}

@@ -139,8 +139,28 @@ export class RecipeDatabase {
      * @return {object|null} The recipe object if found, otherwise null
      */
     getRecipeFromItemUuid(uuid) {
-        return this._recipes.find((r => r.link === uuid));
+        function normalizeUuid(uuid) {
+        // Remove ".Item." if present
+            return uuid.replace(/\.Item\./, '.');
+        }
+        let recipe = this._recipes.find((r => r.link === uuid));
+        console.log("getRecipeFromItemUuid", uuid, recipe);
+        // If the recipe is not found, try again after stripping .Item to normalize the UUID
+        if (recipe) {
+            let matchType = "exact";
+            console.log("getRecipeFromItemUuid found exact match", uuid, recipe);
+            return recipe, matchType;
+        } else {
+            recipe = this._recipes.find((r => r.link === normalizeUuid(uuid)));
+            if (recipe) {
+                let matchType = "normalized";
+                console.log("getRecipeFromItemUuid found normalized match", uuid, recipe);
+                return recipe, matchType;
+            } else {
+                console.warn(`Heliana's Harvesting | Unable to find recipe for item UUID: ${uuid}`);
+                let matchType = "none";
+                return null, matchType;
+            }
+        }
     }
-
-
 }
