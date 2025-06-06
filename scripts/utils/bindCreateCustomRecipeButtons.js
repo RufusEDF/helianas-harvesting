@@ -12,16 +12,16 @@ export function bindCreateCustomRecipeButtons(controls) {
     Hooks.on("getItemSheetHeaderButtons", (app, html, data) => {
 
         let packref = app.object.pack
-        console.log("packref", packref);
+        //console.log("packref", packref);
         if (!packref) {return}; // If the item is not from a compendium, we don't need to add a button
 
 
         // Check if a recipe already exists with the same name (compendium uuid may differ which may cause bugs)
         let name = app.object.name
-        console.log("name", name);
+        //console.log("name", name);
 
         let id = app.object.id
-        console.log("id", id);
+        //console.log("id", id);
 
         // Get the item from the compendium to get the required properties for the recipe
         let compendiumItem = game.packs.get(packref).find(i => i._id === id);
@@ -30,17 +30,17 @@ export function bindCreateCustomRecipeButtons(controls) {
             console.error(`Item with id ${id} not found in pack ${packref}.  This is likely a caching issue.  Please close the item and try again.`);
             return;
         }
-        console.log("compendiumItem", compendiumItem);
+        //console.log("compendiumItem", compendiumItem);
 
         let uuid = `Compendium.${packref}.${id}`;
-        console.log("uuid", uuid);
+        //console.log("uuid", uuid);
 
         let recipeDatabase = game.modules.get("helianas-harvesting").api.recipeDatabase
-        console.log("recipeDatabase", recipeDatabase);
+        //console.log("recipeDatabase", recipeDatabase);
         let { recipeFromUUID, matchType } = recipeDatabase.getRecipeFromItemUuid(uuid);
-        console.log("recipeFromUUID", recipeFromUUID);
+        //console.log("recipeFromUUID", recipeFromUUID);
         let recipeFromName = recipeDatabase._recipes.find(recipe => recipe.name === name);
-        console.log("recipeFromName", recipeFromName);
+        //console.log("recipeFromName", recipeFromName);
 
         let label, icon, recipeDraft;
         if (recipeFromUUID) {
@@ -51,23 +51,23 @@ export function bindCreateCustomRecipeButtons(controls) {
             label = "Similar Recipe Exists (Same Name) (Create Duplicate)";
             icon = "fa-brands fa-hire-a-helper fa-fade";
             recipeDraft = {...recipeFromName};
-            console.log("recipeDraftBefore", recipeDraft);
+            // console.log("recipeDraftBefore", recipeDraft);
 
             // Use the new compendium item's values with the old recipe's component values
             recipeDraft.name = name; // Will multiple recipes with the same name cause issues?
-            console.log("uuid", uuid);
-            console.log("recipeDraft.itemBefore", recipeDraft.item);
-            console.log("recipeDraft.linkBefore", recipeDraft.link);
+            // console.log("uuid", uuid);
+            // console.log("recipeDraft.itemBefore", recipeDraft.item);
+            // console.log("recipeDraft.linkBefore", recipeDraft.link);
             recipeDraft.item = uuid;
-            console.log("recipeDraft.itemAfter", recipeDraft.item);
+            // console.log("recipeDraft.itemAfter", recipeDraft.item);
             recipeDraft.link = uuid;
-            console.log("recipeDraft.linkAfter", recipeDraft.link);
+            // console.log("recipeDraft.linkAfter", recipeDraft.link);
             recipeDraft.itemName = name;
             recipeDraft.rarity = app.object.system?.rarity ?? recipeDraft.rarity;
             recipeDraft.price = app.object.system?.price?.valueInGP ?? recipeDraft.price;
             // Component and metatag should already be on recipeDraft, so no need to change them
             recipeDraft.qty = app.object.system?.quantity ?? recipeDraft.qty;
-            console.log("recipeDraftAfter", recipeDraft);
+            // console.log("recipeDraftAfter", recipeDraft);
         } else {
             label = "Create New Recipe";
             icon = "fa-brands fa-hackerrank fa-beat-fade";
@@ -83,7 +83,7 @@ export function bindCreateCustomRecipeButtons(controls) {
             };
         }
 
-        console.log("recipeDraft", recipeDraft);
+        // console.log("recipeDraft", recipeDraft);
         if(recipeDraft.components && recipeDraft.components.length > 0) {
             recipeDraft.component = recipeDraft.components[0].id; // Use the first component's id if available
             recipeDraft.componentName = recipeDraft.components[0].name;
@@ -94,9 +94,9 @@ export function bindCreateCustomRecipeButtons(controls) {
             recipeDraft.item = recipeDraft.link; // Ensure the link is set to the item UUID
         }
 
-        console.log("icon", icon);
-        console.log("label", label);
-        console.log("recipeDraft", recipeDraft);
+        // console.log("icon", icon);
+        // console.log("label", label);
+        // console.log("recipeDraft", recipeDraft);
 
         html.unshift({
             label,

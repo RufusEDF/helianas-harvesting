@@ -79,7 +79,7 @@ export default class CreateRecipeWindow extends Application {
             // Get all input/select/textarea fields with a name attribute
             html.find('input[name], select[name], textarea[name]').each((_, el) => {
                 const name = el.name;
-                console.log("Saving field:", name, el);
+                // console.log("Saving field:", name, el);
                 if (!name) return;
                 let value = el.value;
                 // Convert number fields
@@ -93,17 +93,17 @@ export default class CreateRecipeWindow extends Application {
             saveFormValues(); // Save all current values
 
             const UUID = event.target.value;
-            console.log("CreateRecipeWindow - 93 UUID = event.target.value", UUID);
+            // console.log("CreateRecipeWindow - 93 UUID = event.target.value", UUID);
             // Update the recipe object
             this.item = UUID;
-            console.log("CreateRecipeWindow - 96 this.item = UUID", this.item);
+            // console.log("CreateRecipeWindow - 96 this.item = UUID", this.item);
 
-            console.log("CreateRecipeWindow - item UUID", this.recipe.item);
-            console.log(fromUuidSync(this.recipe.item))
+            // console.log("CreateRecipeWindow - item UUID", this.recipe.item);
+            // console.log(fromUuidSync(this.recipe.item))
 
             // Update itemName and itemImage based on the input UUID
             const item = fromUuidSync(UUID);
-            console.log("CreateRecipeWindow - 103 item = fromUuidSync", item);
+            // console.log("CreateRecipeWindow - 103 item = fromUuidSync", item);
             if (item) {
                 this.itemName = item.name || "unnamed item";
                 this.recipe.name = item.name || "unnamed item";
@@ -111,7 +111,7 @@ export default class CreateRecipeWindow extends Application {
 
                 try {
                 const itemData = await fromUuid(UUID);
-                console.log("CreateRecipeWindow - 111 itemData = fromUuid(UUID)", itemData);
+                // console.log("CreateRecipeWindow - 111 itemData = fromUuid(UUID)", itemData);
                 if (itemData) {
                     if (itemData.system?.rarity) {this.recipe.rarity = itemData.system.rarity; };
                     if (itemData.system?.price?.valueInGP) {this.recipe.price = itemData.system.price.valueInGP}
@@ -209,8 +209,8 @@ export default class CreateRecipeWindow extends Application {
 
 
             // --- Item UUID validity check ---
-            console.log("CreateRecipeWindow - item UUID", this.recipe.item);
-            console.log(fromUuidSync(this.recipe.item))
+            // console.log("CreateRecipeWindow - item UUID", this.recipe.item);
+            // console.log(fromUuidSync(this.recipe.item))
             //Add a warning if there is an existing recipe with the same item UUID (as it will overwrite it depending on priorities on module.json)
             if(fromUuidSync(this.recipe.item) === null) {
                 const el = html.find('input[name="item"]');
@@ -232,7 +232,7 @@ export default class CreateRecipeWindow extends Application {
             // --- Component UUID validity check ---
             const allComponents = game.modules.get('helianas-harvesting').api.componentDatabase.items;
             const isComponentValid = allComponents.some(item => item.id === this.recipe.component);
-            console.log("CreateRecipeWindow - isComponentValid", isComponentValid);
+            // console.log("CreateRecipeWindow - isComponentValid", isComponentValid);
 
             if (!isComponentValid) {
                 const el = html.find('input[name="component"]');
@@ -266,7 +266,7 @@ export default class CreateRecipeWindow extends Application {
                 // Highlight missing fields
                 missing.forEach(field => {
                     const el = html.find(field.selector);
-                    console.log("Highlighting invalid field:", field.selector, el);
+                    // console.log("Highlighting invalid field:", field.selector, el);
                     el.addClass('invalid');
                 });
                 ui.notifications.error("Please fill in all required fields.");
@@ -292,8 +292,8 @@ export default class CreateRecipeWindow extends Application {
             }
             customRecipes.push(this.recipe);
             let response = await game.settings.set("helianas-harvesting-custom-recipes", "customRecipes", JSON.stringify(customRecipes));
-            console.log("CreateRecipeWindow - customRecipes", customRecipes);
-            console.log("CreateRecipeWindow - response from setting customRecipes", response);
+            // console.log("CreateRecipeWindow - customRecipes", customRecipes);
+            // console.log("CreateRecipeWindow - response from setting customRecipes", response);
 
 
             //recipeDatabase.addRecipe(this.recipe);
@@ -313,7 +313,7 @@ export default class CreateRecipeWindow extends Application {
         data.itemName = this.itemName || "Enter a compendium item UUID";
         data.componentImage = this.componentImage || "icons/magic/symbols/question-stone-yellow.webp";
         data.componentName = this.componentName || "Select a component";
-        console.log("CreateRecipeWindow getData - data", data);
+        // console.log("CreateRecipeWindow getData - data", data);
         return data;
     }
 
