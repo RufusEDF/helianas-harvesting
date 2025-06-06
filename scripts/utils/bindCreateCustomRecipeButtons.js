@@ -48,7 +48,7 @@ export function bindCreateCustomRecipeButtons(controls) {
             icon = "fa-brands fa-hire-a-helper";
             recipeDraft = {...recipeFromUUID};
         } else if (recipeFromName) {
-            label = "Similar Recipe Exists (Same Name) (Create Duplicate)";
+            label = "Similar Recipe Exists (Same Name) (Create Replacement)";
             icon = "fa-brands fa-hire-a-helper fa-fade";
             recipeDraft = {...recipeFromName};
             // console.log("recipeDraftBefore", recipeDraft);
