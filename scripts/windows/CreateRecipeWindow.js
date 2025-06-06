@@ -34,6 +34,8 @@ export default class CreateRecipeWindow extends Application {
         };
         this.itemName = itemName || "Enter a compendium item UUID";
         this.itemImage = itemImage || "icons/magic/symbols/question-stone-yellow.webp"; // Fallback image if item has no image
+        this.componentImage = recipeDraft?.componentImage || "icons/magic/symbols/question-stone-yellow.webp"; // Fallback image if component has no image
+        this.componentName = recipeDraft?.componentName || "Select a component"; // Default text if no component is selected
 
         Object.defineProperty(this, "isExistingRecipe", {
             get: function() {
@@ -180,6 +182,7 @@ export default class CreateRecipeWindow extends Application {
         });
 
         html.find('#create-recipe-form').on('submit', async event => {
+            const preventReplacement = game.settings.get("helianas-harvesting-custom-recipes", "preventRecipeReplacement");
             event.preventDefault();
             saveFormValues(); // Save all current values
 
@@ -218,7 +221,7 @@ export default class CreateRecipeWindow extends Application {
             // Check if the item exists in the compendium
             //const item = fromUuidSync(this.recipe.item);
 
-            if (this.isExistingRecipe) {
+            if (this.isExistingRecipe && preventReplacement) {
                 const el = html.find('input[name="item"]');
                 el.addClass('warn');
                 ui.notifications.warn("A recipe with this item already exists. Please choose a unique item UUID.");

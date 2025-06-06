@@ -76,17 +76,51 @@ export class RecipeDatabase {
         const name = item.name + nameExtension;
         const preventReplacement = game.settings.get("helianas-harvesting-custom-recipes", "preventRecipeReplacement");
 
-        if (this.getRecipeFromName(name) && preventReplacement) {
-            //throw new Error(`Heliana's Harvesting | Preventing replacement of item: ${name}`)
-            return
-        } else if (this.getRecipeFromName(name)) {
-            //remove the existing recipe if we are not preventing replacement
+        if (preventReplacement) {
+            console.log(`Heliana's Harvesting | Adding recipe for item: ${name} with preventReplacement set to true`);
+            const {recipeFromUUID, matchType} = this.getRecipeFromItemUuid(recipe.item);
+            if (name === "Armor of Invulnerability") {
+                console.log(`Heliana's Harvesting | ${name} Recipe from UUID: ${recipeFromUUID}, Match Type: ${matchType}`);
+
+                console.log("Checking for duplicate by name:", JSON.stringify(name), "against", this._recipes.map(r => JSON.stringify(r.name)));
+            }
+            const recipeFromName = this.getRecipeFromName(name);
+            if( name === "Armor of Invulnerability"){
+                console.log(`recipe list is currently:`, this._recipes);
+
+                console.log(`Heliana's Harvesting | ${name} Recipe from UUID: ${recipeFromUUID}, Recipe from Name: ${recipeFromName}, Match Type: ${matchType}`);
+            }
+
+            // We want recipes with the same UUID as this could be for items with variants such as Robe of the Archmagi
+            // if (recipeFromUUID) {
+            //     console.warn(`Heliana's Harvesting | Recipe for item: ${name} already exists with matchType: ${matchType}. Preventing replacement.`);
+            //     return;
+            // }
+
+            if (recipeFromName) {
+                console.warn(`Heliana's Harvesting | Recipe for item: ${name} already exists. Preventing replacement.`);
+                return;
+            }
+        } else if (preventReplacement === false) {
+            console.log(`Heliana's Harvesting | Adding recipe for item: ${name} with preventReplacement set to false`);
             const existingIndex = this._recipes.findIndex(r => r.name === name);
             if (existingIndex !== -1) {
                 console.warn(`Heliana's Harvesting | Removing existing recipe for item: ${name}, to be ready for replacement.`, this.getRecipeFromName(name));
                 this._recipes.splice(existingIndex, 1);
             }
         }
+
+        // if (this.getRecipeFromName(name) && preventReplacement) {
+        //     //throw new Error(`Heliana's Harvesting | Preventing replacement of item: ${name}`)
+        //     return
+        // } else if (this.getRecipeFromName(name)) {
+        //     //remove the existing recipe if we are not preventing replacement
+        //     const existingIndex = this._recipes.findIndex(r => r.name === name);
+        //     if (existingIndex !== -1) {
+        //         console.warn(`Heliana's Harvesting | Removing existing recipe for item: ${name}, to be ready for replacement.`, this.getRecipeFromName(name));
+        //         this._recipes.splice(existingIndex, 1);
+        //     }
+        // }
 
         this._recipes.push({
             name,
@@ -129,6 +163,13 @@ export class RecipeDatabase {
      * @param {*} name The recipe's name
      */
     getRecipeFromName(name) {
+        console.log("getRecipeFromName", name);
+        name.trim().toLowerCase();
+        console.log("getRecipeFromName", name);
+        console.log("this._recipes", {...this._recipes});
+        console.log("this._recipes.find", this._recipes.find((r => (r.name === name))));
+
+
         return this._recipes.find((r => (r.name === name)));
     }
 
@@ -143,23 +184,24 @@ export class RecipeDatabase {
         // Remove ".Item." if present
             return uuid.replace(/\.Item\./, '.');
         }
-        let recipe = this._recipes.find((r => r.link === uuid));
-        console.log("getRecipeFromItemUuid", uuid, recipe);
+        let recipeFromUUID = this._recipes.find((r => r.link === uuid));
+        console.log("1getRecipeFromItemUuid", uuid, recipeFromUUID);
         // If the recipe is not found, try again after stripping .Item to normalize the UUID
-        if (recipe) {
+        if (recipeFromUUID) {
             let matchType = "exact";
-            console.log("getRecipeFromItemUuid found exact match", uuid, recipe);
-            return recipe, matchType;
+            console.log("2getRecipeFromItemUuid found exact match", uuid, recipeFromUUID);
+            console.log("3getRecipeFromItemUuid matchType", matchType);
+            return { recipeFromUUID, matchType };
         } else {
-            recipe = this._recipes.find((r => r.link === normalizeUuid(uuid)));
-            if (recipe) {
+            recipeFromUUID = this._recipes.find((r => r.link === normalizeUuid(uuid)));
+            if (recipeFromUUID) {
                 let matchType = "normalized";
-                console.log("getRecipeFromItemUuid found normalized match", uuid, recipe);
-                return recipe, matchType;
+                console.log("getRecipeFromItemUuid found normalized match", uuid, recipeFromUUID);
+                return { recipeFromUUID, matchType };
             } else {
                 console.warn(`Heliana's Harvesting | Unable to find recipe for item UUID: ${uuid}`);
                 let matchType = "none";
-                return null, matchType;
+                return { recipeFromUUID: null, matchType };
             }
         }
     }

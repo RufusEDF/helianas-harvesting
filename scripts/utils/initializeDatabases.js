@@ -15,6 +15,8 @@ export async function initializeDatabases() {
         }
     });
 
+    console.log("Crafting Recipes:", craftingRecipes);
+
     Array.from(craftingRecipes).forEach(r => {
         try {
             api.recipeDatabase.addRecipe(r[1]);
