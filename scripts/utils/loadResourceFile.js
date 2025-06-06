@@ -35,11 +35,24 @@ export async function loadResourceFile(filenameOrElements, resourceMap, resource
 
     const stats = { loaded: 0, replaced: 0, errors: 0 };
 
+    const preventReplacement = game.settings.get("helianas-harvesting-custom-recipes", "preventRecipeReplacement");
+
     elements.forEach(element => {
         try {
             const key = element[resourceKeyName];
+            console.log(`Processing element with key: ${key}`);
             element.source = source;
-            stats.loaded++;
+            stats.loaded++;  //Should this go here or after the check for preventOverwrite?
+
+
+            if (preventReplacement) {
+                if( resourceMap.has(key)) {
+                    stats.errors++;
+                    console.warn(`Preventing overwrite of duplicate resource with key "${key}" from source "${source}".`);
+                    return; // Skip adding this duplicate
+                }
+            }
+
             if (resourceMap.has(key)) {
                 stats.replaced++;
             }
