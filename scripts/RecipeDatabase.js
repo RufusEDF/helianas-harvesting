@@ -118,10 +118,11 @@ export class RecipeDatabase {
         keywords = keywords.map(word => word.trim()).filter(word => word.length > 0);
         if (keywords.length === 0) return this._recipes;
         return this._recipes.filter(r => {
+            const searchFields = [r.searchText, r.metatag?.toLowerCase(), r.rarity?.toLowerCase()];
             if (matchAll) {
-                return keywords.every(word => (r.searchText.includes(word)));
+                return keywords.every(word => (searchFields.includes(word)));
             } else {
-                return keywords.some(word => (r.searchText.includes(word)));
+                return keywords.some(word => (searchFields.includes(word)));
             }
         });
     }
