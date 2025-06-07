@@ -122,20 +122,19 @@ export class RecipeDatabase {
             const metatag = r.metatag?.toLowerCase() ?? "";
             const rarity = r.rarity?.toLowerCase() ?? "";
 
-            if (matchAll) {
-                return keywords.every(word =>
-                    searchText.includes(word) ||
-                    metatag.includes(word) ||
-                    //rarity.includes(word)
-                    rarity === word // exact match for rarity to distinguish between rare and very rare
-                );
-            } else {
-                return keywords.some(word =>
-                    searchText.includes(word) ||
-                    metatag.includes(word) ||
-                    rarity.includes(word)
-                );
-            }
+            // For searchText and metatag: AND/OR logic
+            const textMatch = matchAll
+                ? keywords.every(word => searchText.includes(word) || metatag.includes(word))
+                : keywords.some(word => searchText.includes(word) || metatag.includes(word));
+
+            // For rarity: OR logic, exact match only
+            const rarityMatch = keywords.some(word => rarity === word);
+
+            // Return true if either text/metatag match, or rarity matches exactly
+            console.log(`Heliana's Harvesting | Searching for: ${text}, Match All: ${matchAll}, Delimiter: ${delimiter}`);
+            console.log(`Heliana's Harvesting | Recipe: ${r.name}, Text Match: ${textMatch}, Rarity Match: ${rarityMatch}`);
+            console.log(`Heliana's Harvesting | Search Text: ${searchText}, Metatag: ${metatag}, Rarity: ${rarity}`);
+            return textMatch || rarityMatch;
         });
     }
 
