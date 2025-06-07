@@ -118,14 +118,51 @@ export class RecipeDatabase {
         keywords = keywords.map(word => word.trim()).filter(word => word.length > 0);
         if (keywords.length === 0) return this._recipes;
         return this._recipes.filter(r => {
-            const searchFields = [r.searchText, r.metatag?.toLowerCase(), r.rarity?.toLowerCase()];
+            const searchText = r.searchText ?? "";
+            const metatag = r.metatag?.toLowerCase() ?? "";
+            const rarity = r.rarity?.toLowerCase() ?? "";
+
             if (matchAll) {
-                return keywords.every(word => (searchFields.includes(word)));
+                return keywords.every(word =>
+                    searchText.includes(word) ||
+                    metatag.includes(word) ||
+                    //rarity.includes(word)
+                    rarity === word // exact match for rarity to distinguish between rare and very rare
+                );
             } else {
-                return keywords.some(word => (searchFields.includes(word)));
+                return keywords.some(word =>
+                    searchText.includes(word) ||
+                    metatag.includes(word) ||
+                    rarity.includes(word)
+                );
             }
         });
     }
+
+    /**
+     * Searches all recipes to find.  Default behaviour returns all recipes if no search string is provided.
+     *
+     * @param {string} text Search string
+     * @param {boolean} [matchAll=true] Whether to match all keywords (AND logic) or any keyword (OR logic)
+     * @param {string} [delimiter=" "] Delimiter used to split the search string into keywords.  " " for AND logic, "," for OR logic
+     *
+     * @returns {any[]} results
+     */
+    // searchItems(text, matchAll = false, delimiter = ",") {
+    //     let keywords = text.toLowerCase().split(delimiter)
+    //     keywords = keywords.map(word => word.trim()).filter(word => word.length > 0);
+    //     if (keywords.length === 0) return this._recipes;
+    //     return this._recipes.filter(r => {
+    //         if (matchAll) {
+    //             return keywords.every(word => (r.searchText.includes(word)));
+    //         } else {
+    //             return keywords.some(word => (r.searchText.includes(word)));
+    //         }
+    //     });
+    // }
+
+
+
 
     /**
      *
