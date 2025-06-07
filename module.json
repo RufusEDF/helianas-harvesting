@@ -2,7 +2,7 @@
   "id": "helianas-harvesting",
   "title": "Heliana's Harvesting",
   "description": "<p>Harvesting Module to aid with Heliana's Harvesting Rules.</p><p>Fork of https://github.com/Loot-Foundry/helianas-harvesting</p>",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "compatibility": {
     "minimum": "10",
     "verified": "12.324",
