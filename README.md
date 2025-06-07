@@ -38,9 +38,23 @@ This module helps you harvest, craft and cook following the rule set from Helian
 
 ![A confirmation message will show in the chat!](/images/crafting/step4.png)
 
+## Create Custom Recipes
+Included is an example helianas-harvesting-custom-recipes-module which can be copied into your module folder and wont be overwritten when you update this module.
+
+There is also a basic (and likely buggy) recipe creator which can be enabled in the settings.  Recipes created in this way will be stored in the settings page.  It is recomended to back these up in a JSON file.  The Recipe Creator can be opened by clicking compendium item's H Header Button.  If possible the details will be prefilled from the Compendium.
+
+![Header Button and Create Recipe form](/images/customrecipes/recipeform.png)
+
+If there is an existing recipe for that compendium item or one with the same name, the metatag and component details will be prefilled too.  Otherwise, click the magnifying glass icon to select a component.
+
+![Component Select Window](/images/customrecipes/selectcomponent.png)
+
+By default the priority for recipes will be This Module Recipes -> Other Module Recipes -> Settings Recipes.  This can be reversed by disabling "Prevent "
+
 ## Options / Features
 
 ![There are several settings which can be configured](/images/settings.png)
+![Additional Create Custom Recipes Settings](/images/customrecipes/customrecipesettings.png)
 
 ## TODO
 
