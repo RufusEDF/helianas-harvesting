@@ -128,12 +128,14 @@ export class RecipeDatabase {
                 : keywords.some(word => searchText.includes(word) || metatag.includes(word));
 
             // For rarity: OR logic, exact match only
+            // This assumes rarity is a single word, e.g. "veryrare"
+            // "very rare" will not match "veryrare"
             const rarityMatch = keywords.some(word => rarity === word);
 
             // Return true if either text/metatag match, or rarity matches exactly
-            console.log(`Heliana's Harvesting | Searching for: ${text}, Match All: ${matchAll}, Delimiter: ${delimiter}`);
-            console.log(`Heliana's Harvesting | Recipe: ${r.name}, Text Match: ${textMatch}, Rarity Match: ${rarityMatch}`);
-            console.log(`Heliana's Harvesting | Search Text: ${searchText}, Metatag: ${metatag}, Rarity: ${rarity}`);
+            //console.log(`Heliana's Harvesting | Searching for: ${text}, Match All: ${matchAll}, Delimiter: ${delimiter}`);
+            //console.log(`Heliana's Harvesting | Recipe: ${r.name}, Text Match: ${textMatch}, Rarity Match: ${rarityMatch}`);
+            //console.log(`Heliana's Harvesting | Search Text: ${searchText}, Metatag: ${metatag}, Rarity: ${rarity}`);
             return textMatch || rarityMatch;
         });
     }
