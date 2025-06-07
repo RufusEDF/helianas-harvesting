@@ -7,7 +7,6 @@ export async function loadModules() {
     const components = new Map();
 
     const modulesToLoad = findHarvestingCompatibleModules();
-    console.log("Found the following modules to load:", modulesToLoad);
 
     // --- Add a "virtual module" for custom recipes stored in settings ---
     const customRecipesSetting = game.settings.get("helianas-harvesting-custom-recipes", "customRecipes");

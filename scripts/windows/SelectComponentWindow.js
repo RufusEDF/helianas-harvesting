@@ -18,7 +18,6 @@ export default class SelectComponentWindow extends Application {
         this.componentUUID = options.componentUUID || "";  // Default to empty string if not provided
         this.selectedComponent = null;  // Will hold the selected component object
         this.onSelect = options.onSelect || (() => {});  // Default to a no-op function if no callback is provided
-        console.log("CreateRecipeWindow - recipeDraftafter", this.recipe);
     }
 
     static get defaultOptions() {

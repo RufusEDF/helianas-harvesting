@@ -10,24 +10,17 @@
  */
 export async function loadResourceFile(filenameOrElements, resourceMap, resourceKeyName, source) {
     let elements;
-    console.log(`Loading resource file or elements:`, filenameOrElements);
-    console.log(`Resource map size before loading:`, resourceMap);
-    console.log(`Resource key name: ${resourceKeyName}`);
-    console.log(`Source: ${source}`);
 
     // If it's a string ending in .json, fetch and parse as the file.
     if (typeof filenameOrElements === "string" && filenameOrElements.endsWith(".json")) {
-        console.log(`Loading resource file: ${filenameOrElements}`);
         const contents = await fetch(filenameOrElements);
         elements = await contents.json();
     } else if (Array.isArray(filenameOrElements)) {
         // If it's already an array, use it directly
         // I don't think an array will ever be passed here, but just in case
-        console.log(`Using provided array of elements`, filenameOrElements);
         elements = filenameOrElements;
     } else if (typeof filenameOrElements === "object" && filenameOrElements !== null) {
         // If it's a single object, wrap it in an array
-        console.log(`Wrapping single object into an array`, filenameOrElements);
         elements = [filenameOrElements];
     } else {
         throw new Error("Invalid resource input: must be a .json file path, array, or object", filenameOrElements);
@@ -40,7 +33,6 @@ export async function loadResourceFile(filenameOrElements, resourceMap, resource
     elements.forEach(element => {
         try {
             const key = element[resourceKeyName];
-            // console.log(`Processing element with key: ${key}`);
             element.source = source;
             stats.loaded++;  //Should this go here or after the check for preventOverwrite?
 

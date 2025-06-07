@@ -81,7 +81,6 @@ export default class CreateRecipeWindow extends Application {
             // Get all input/select/textarea fields with a name attribute
             html.find('input[name], select[name], textarea[name]').each((_, el) => {
                 const name = el.name;
-                // console.log("Saving field:", name, el);
                 if (!name) return;
                 let value = el.value;
                 // Convert number fields
@@ -95,17 +94,11 @@ export default class CreateRecipeWindow extends Application {
             saveFormValues(); // Save all current values
 
             const UUID = event.target.value;
-            // console.log("CreateRecipeWindow - 93 UUID = event.target.value", UUID);
             // Update the recipe object
             this.item = UUID;
-            // console.log("CreateRecipeWindow - 96 this.item = UUID", this.item);
-
-            // console.log("CreateRecipeWindow - item UUID", this.recipe.item);
-            // console.log(fromUuidSync(this.recipe.item))
 
             // Update itemName and itemImage based on the input UUID
             const item = fromUuidSync(UUID);
-            // console.log("CreateRecipeWindow - 103 item = fromUuidSync", item);
             if (item) {
                 this.itemName = item.name || "unnamed item";
                 this.recipe.name = item.name || "unnamed item";
@@ -113,10 +106,8 @@ export default class CreateRecipeWindow extends Application {
 
                 try {
                 const itemData = await fromUuid(UUID);
-                // console.log("CreateRecipeWindow - 111 itemData = fromUuid(UUID)", itemData);
+
                 if (itemData) {
-                    console.log("CreateRecipeWindow - itemData", itemData);
-                    console.log("CreateRecipeWindow - thhis", this);
                     if (itemData.system?.rarity) {this.recipe.rarity = itemData.system.rarity; };
                     if (itemData.system?.price?.valueInGP) {this.recipe.price = itemData.system.price.valueInGP}
                     if (itemData.system?.quantity) {this.recipe.qty = itemData.system.quantity; }
@@ -124,7 +115,6 @@ export default class CreateRecipeWindow extends Application {
                     if (this.isExistingRecipe || game.modules.get('helianas-harvesting').api.recipeDatabase.getRecipeFromItemUuid(UUID) ) {
                         // If this is an existing recipe, we can set the component to the existing component
                         const { recipeFromUUID } = game.modules.get('helianas-harvesting').api.recipeDatabase.getRecipeFromItemUuid(UUID);
-                        console.log(" recipeFromUUID", recipeFromUUID);
                         const existingRecipe = recipeFromUUID || game.modules.get('helianas-harvesting').api.recipeDatabase.getRecipeFromName(item.name);
 
                         const componentArr =
@@ -133,8 +123,6 @@ export default class CreateRecipeWindow extends Application {
                         : existingRecipe.component ? [existingRecipe.component]
                         : existingRecipe.components ? [existingRecipe.components]
                         : [];
-
-                        console.log("CreateRecipeWindow - existingRecipe", existingRecipe);
 
                         if (componentArr.length > 0 && componentArr[0]) {
                             this.recipe.component = componentArr[0].id || componentArr[0];
@@ -147,23 +135,8 @@ export default class CreateRecipeWindow extends Application {
                             this.componentImage = "icons/magic/symbols/question-stone-yellow.webp";
                         }
 
-
-                        // if (existingRecipe && existingRecipe.component && existingRecipe.component.length > 0) {
-                        //     this.recipe.component = existingRecipe.component[0].id; // Assuming component is an array, take the first one
-                        //     this.componentName = existingRecipe.component[0].name;
-                        //     this.componentImage = existingRecipe.component[0].img;
-                        //     console.log("CreateRecipeWindow - this.recipe.component", this.recipe.component);
-                        //     console.log("CreateRecipeWindow - this.componentName", this.componentName);
-                        //     console.log("CreateRecipeWindow - this.componentImage", this.componentImage);
-                        // } else {
-                        //     console.warn("CreateRecipeWindow - No existing component found for this recipe. Resetting component.");
-                        //     this.recipe.component = "";
-                        //     this.componentName = "";
-                        //     this.componentImage = "icons/magic/symbols/question-stone-yellow.webp"; // Fallback image
-                        // }
                         if (existingRecipe && existingRecipe.metatag) {
-                            console.log("CreateRecipeWindow - existingRecipe.metatag", existingRecipe.metatag);
-                            this.recipe.metatag = existingRecipe.metatag;
+                             this.recipe.metatag = existingRecipe.metatag;
                         } else {
                             console.warn("CreateRecipeWindow - No existing metatag found for this recipe. Resetting metatag.");
                             this.recipe.metatag = "";
@@ -185,6 +158,7 @@ export default class CreateRecipeWindow extends Application {
                 console.warn(`Item with UUID ${UUID} not found.`);
                 ui.notifications.error("Item UUID is not valid. Please enter a valid item UUID.");
                 this.itemImage = "icons/magic/symbols/question-stone-yellow.webp"; // Fallback image
+                this.itemName = "Enter a compendium item UUID"; // Reset item name
             }
 
             // Re-render to update the select options
@@ -224,27 +198,7 @@ export default class CreateRecipeWindow extends Application {
             html.find('.invalid').removeClass('invalid');
             html.find('.warn').removeClass('warn');
 
-
-
-            // --- Recipe name uniqueness check ---
-            //removing as it is not needed.  The recipe name is not used in the database, only the compendium item name is used.
-            //const recipeDatabase = game.modules.get('helianas-harvesting').api.recipeDatabase;
-            //const nameExists = recipeDatabase._recipes.some(r => r.name === this.recipe.name);
-            //console.log("CreateRecipeWindow - recipe name", this.recipe.name);
-            //console.log("CreateRecipeWindow - nameExists", nameExists);
-            //if (nameExists) {
-            //    const el = html.find('input[name="name"]');
-            //    el.addClass('invalid');
-            //    ui.notifications.warn("A recipe with this name already exists. Please choose a unique name.");
-            //    // if
-            //    //return;  // Uncomment this line to prevent submission if name is not unique
-            //}
-            // --- End recipe name uniqueness check ---
-
-
             // --- Item UUID validity check ---
-            // console.log("CreateRecipeWindow - item UUID", this.recipe.item);
-            // console.log(fromUuidSync(this.recipe.item))
             //Add a warning if there is an existing recipe with the same item UUID (as it will overwrite it depending on priorities on module.json)
             if(fromUuidSync(this.recipe.item) === null) {
                 const el = html.find('input[name="item"]');
@@ -266,7 +220,6 @@ export default class CreateRecipeWindow extends Application {
             // --- Component UUID validity check ---
             const allComponents = game.modules.get('helianas-harvesting').api.componentDatabase.items;
             const isComponentValid = allComponents.some(item => item.id === this.recipe.component);
-            // console.log("CreateRecipeWindow - isComponentValid", isComponentValid);
 
             if (!isComponentValid) {
                 const el = html.find('input[name="component"]');
@@ -300,7 +253,6 @@ export default class CreateRecipeWindow extends Application {
                 // Highlight missing fields
                 missing.forEach(field => {
                     const el = html.find(field.selector);
-                    // console.log("Highlighting invalid field:", field.selector, el);
                     el.addClass('invalid');
                 });
                 ui.notifications.error("Please fill in all required fields.");
@@ -308,15 +260,6 @@ export default class CreateRecipeWindow extends Application {
                 return;
             }
             // -- end validate required fields ---
-
-            // console log the recipe object for debugging
-            console.log("CreateRecipeWindow - create-recipe-form submitted with recipe", this.recipe);
-
-            // Create the recipe object in a JSON format stored in a module setting or flag
-            // Add a button to export the JSON to clipboard and a downloaded file.
-            // Add the recipe to the recipe database
-            //let newRecipe = game.modules.get('helianas-harvesting').api.recipeDatabase.addRecipe(this.recipe);
-            //console.log("CreateRecipeWindow - newRecipe", newRecipe);
 
             let customRecipes = [];
             try {
@@ -326,14 +269,9 @@ export default class CreateRecipeWindow extends Application {
             }
             customRecipes.push(this.recipe);
             let response = await game.settings.set("helianas-harvesting-custom-recipes", "customRecipes", JSON.stringify(customRecipes));
-            // console.log("CreateRecipeWindow - customRecipes", customRecipes);
-            // console.log("CreateRecipeWindow - response from setting customRecipes", response);
 
-
-            //recipeDatabase.addRecipe(this.recipe);
-            //console.log("CreateRecipeWindow - Recipe added to database", this.recipe);
             ui.notifications.info(`Recipe "${this.recipe.name}" created successfully!  A restart of Foundry is required for the recipe to be available in the crafting window.`);
-
+            console.log("CreateRecipeWindow - Recipe created:", response);
             // Close the window
             this.close();
         });
@@ -347,13 +285,7 @@ export default class CreateRecipeWindow extends Application {
         data.itemName = this.itemName || "Enter a compendium item UUID";
         data.componentImage = this.componentImage || "icons/magic/symbols/question-stone-yellow.webp";
         data.componentName = this.componentName || "Select a component";
-        // console.log("CreateRecipeWindow getData - data", data);
         return data;
     }
 
 }
-
-
-//[{"name":"Acid","item":"Compendium.dnd5e.equipment24.Item.phbagAcid0000000","rarity":"common","price":25,"component":"","componentUUID":"ocvVlUOFfBxY4JB6","metatag":"","qty":1,"variants":"","componentName":"Aberration Flesh","componentImage":"icons/consumables/meat/ribs-glowing-purple.webp"},
-//    {"name":"Antitoxin","item":"Compendium.dnd5e.equipment24.Item.phbagAntitoxin00","rarity":"uncommon","price":50,"component":"","componentUUID":"6j0yj0EAdskYL9Xu","metatag":"","qty":1,"variants":"","componentName":"Volatile Mote of Elemental Air","componentImage":"icons/magic/air/air-burst-spiral-blue-gray.webp"},
-//    {"name":"Antitoxin","item":"Compendium.dnd5e.equipment24.Item.phbagAntitoxin00","rarity":"common","price":50,"component":"","componentUUID":"ocvVlUOFfBxY4JB6","metatag":"","qty":1,"variants":"","componentName":"Aberration Flesh","componentImage":"icons/consumables/meat/ribs-glowing-purple.webp"}]

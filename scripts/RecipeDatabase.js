@@ -82,7 +82,7 @@ export class RecipeDatabase {
             if (existingIndex !== -1) {
                 console.warn(`Heliana's Harvesting | Removing existing recipe for item: ${name}, to be ready for replacement.`, this.getRecipeFromName(name));
                 const replaced = this._recipes.splice(existingIndex, 1);
-                console.log(`Heliana's Harvesting | Removed recipe:`, replaced[0]);
+                console.warn(`Heliana's Harvesting | Removed recipe:`, replaced[0]);
             }
         }
 
@@ -146,21 +146,17 @@ export class RecipeDatabase {
             return uuid.replace(/\.Item\./, '.');
         }
         let recipeFromUUID = this._recipes.find((r => r.link === uuid));
-        //console.log("1getRecipeFromItemUuid", uuid, recipeFromUUID);
         // If the recipe is not found, try again after stripping .Item to normalize the UUID
         if (recipeFromUUID) {
             let matchType = "exact";
-            //console.log("2getRecipeFromItemUuid found exact match", uuid, recipeFromUUID);
-            //console.log("3getRecipeFromItemUuid matchType", matchType);
             return { recipeFromUUID, matchType };
         } else {
             recipeFromUUID = this._recipes.find((r => r.link === normalizeUuid(uuid)));
             if (recipeFromUUID) {
                 let matchType = "normalized";
-                //console.log("getRecipeFromItemUuid found normalized match", uuid, recipeFromUUID);
                 return { recipeFromUUID, matchType };
             } else {
-                //console.warn(`Heliana's Harvesting | Unable to find recipe for item UUID: ${uuid}`);
+                console.warn(`Heliana's Harvesting | Unable to find recipe for item UUID: ${uuid}`);
                 let matchType = "none";
                 return { recipeFromUUID: null, matchType };
             }
