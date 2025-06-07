@@ -114,8 +114,13 @@ export class RecipeDatabase {
      * @returns {any[]} results
      */
     searchItems(text, matchAll = false, delimiter = ",") {
+        function normalizeRarity(str) {
+            return (str ?? "").toLowerCase().replace(/\s+/g, "");
+        }
+
         let keywords = text.toLowerCase().split(delimiter)
-        keywords = keywords.map(word => word.trim()).filter(word => word.length > 0);
+            .map(word => word.trim())
+            .filter(word => word.length > 0);
         if (keywords.length === 0) return this._recipes;
         return this._recipes.filter(r => {
             const searchText = r.searchText ?? "";
@@ -130,7 +135,11 @@ export class RecipeDatabase {
             // For rarity: OR logic, exact match only
             // This assumes rarity is a single word, e.g. "veryrare"
             // "very rare" will not match "veryrare"
-            const rarityMatch = keywords.some(word => rarity === word);
+            //const rarityMatch = keywords.some(word => rarity === word);
+
+            // For rarity: OR logic, normalized match
+            const normalizedRarity = normalizeRarity(rarity);
+            const rarityMatch = keywords.some(word => normalizedRarity === normalizeRarity(word));
 
             // Return true if either text/metatag match, or rarity matches exactly
             //console.log(`Heliana's Harvesting | Searching for: ${text}, Match All: ${matchAll}, Delimiter: ${delimiter}`);
