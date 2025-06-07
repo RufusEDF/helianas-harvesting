@@ -261,6 +261,23 @@ export default class CreateRecipeWindow extends Application {
             }
             // -- end validate required fields ---
 
+            // --- Normalize rarity to config key ---
+            // Untested code to normalize rarity to match the veryRare in the JSON file.
+            // if (this.recipe?.rarity) {
+            //     // Build a map of normalized display values to keys
+            //     const rarityMap = {};
+            //     for (const [key, display] of Object.entries(game.system.config.itemRarity)) {
+            //         rarityMap[display.toLowerCase().replace(/\s+/g, "")] = key;
+            //         rarityMap[key.toLowerCase().replace(/\s+/g, "")] = key;
+            //     }
+            //     const userRarity = this.recipe.rarity.toLowerCase().replace(/\s+/g, "");
+            //     if (rarityMap[userRarity]) {
+            //         this.recipe.rarity = rarityMap[userRarity];
+            //     }
+            // }
+
+
+
             let customRecipes = [];
             try {
                 customRecipes = JSON.parse(game.settings.get("helianas-harvesting-custom-recipes", "customRecipes"));
