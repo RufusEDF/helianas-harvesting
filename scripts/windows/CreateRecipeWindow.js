@@ -39,7 +39,9 @@ export default class CreateRecipeWindow extends Application {
 
         Object.defineProperty(this, "isExistingRecipe", {
             get: function() {
-            return game.modules.get('helianas-harvesting').api.recipeDatabase.getRecipeFromItemUuid(this.recipe.item);
+                const result = game.modules.get('helianas-harvesting').api.recipeDatabase.getRecipeFromItemUuid(this.recipe.item);
+                return !!result.recipeFromUUID;
+                //return game.modules.get('helianas-harvesting').api.recipeDatabase.getRecipeFromItemUuid(this.recipe.item);
             },
             configurable: true,
             enumerable: true
@@ -113,28 +115,60 @@ export default class CreateRecipeWindow extends Application {
                 const itemData = await fromUuid(UUID);
                 // console.log("CreateRecipeWindow - 111 itemData = fromUuid(UUID)", itemData);
                 if (itemData) {
+                    console.log("CreateRecipeWindow - itemData", itemData);
+                    console.log("CreateRecipeWindow - thhis", this);
                     if (itemData.system?.rarity) {this.recipe.rarity = itemData.system.rarity; };
                     if (itemData.system?.price?.valueInGP) {this.recipe.price = itemData.system.price.valueInGP}
                     if (itemData.system?.quantity) {this.recipe.qty = itemData.system.quantity; }
 
-                    if(this.isExistingRecipe) {
+                    if (this.isExistingRecipe || game.modules.get('helianas-harvesting').api.recipeDatabase.getRecipeFromItemUuid(UUID) ) {
                         // If this is an existing recipe, we can set the component to the existing component
-                        const existingRecipe = game.modules.get('helianas-harvesting').api.recipeDatabase.getRecipeFromItemUuid(UUID);
-                        if (existingRecipe && existingRecipe.component && existingRecipe.component.length > 0) {
-                            this.recipe.component = existingRecipe.component[0].id; // Assuming component is an array, take the first one
-                            this.componentName = existingRecipe.component[0].name;
-                            this.componentImage = existingRecipe.component[0].img;
+                        const { recipeFromUUID } = game.modules.get('helianas-harvesting').api.recipeDatabase.getRecipeFromItemUuid(UUID);
+                        console.log(" recipeFromUUID", recipeFromUUID);
+                        const existingRecipe = recipeFromUUID || game.modules.get('helianas-harvesting').api.recipeDatabase.getRecipeFromName(item.name);
+
+                        const componentArr =
+                        Array.isArray(existingRecipe.component) ? existingRecipe.component
+                        : Array.isArray(existingRecipe.components) ? existingRecipe.components
+                        : existingRecipe.component ? [existingRecipe.component]
+                        : existingRecipe.components ? [existingRecipe.components]
+                        : [];
+
+                        console.log("CreateRecipeWindow - existingRecipe", existingRecipe);
+
+                        if (componentArr.length > 0 && componentArr[0]) {
+                            this.recipe.component = componentArr[0].id || componentArr[0];
+                            this.componentName = componentArr[0].name || "";
+                            this.componentImage = componentArr[0].img || "icons/magic/symbols/question-stone-yellow.webp";
                         } else {
+                            console.warn("CreateRecipeWindow - No existing component found for this recipe. Resetting component.");
                             this.recipe.component = "";
                             this.componentName = "";
-                            this.componentImage = "icons/magic/symbols/question-stone-yellow.webp"; // Fallback image
+                            this.componentImage = "icons/magic/symbols/question-stone-yellow.webp";
                         }
+
+
+                        // if (existingRecipe && existingRecipe.component && existingRecipe.component.length > 0) {
+                        //     this.recipe.component = existingRecipe.component[0].id; // Assuming component is an array, take the first one
+                        //     this.componentName = existingRecipe.component[0].name;
+                        //     this.componentImage = existingRecipe.component[0].img;
+                        //     console.log("CreateRecipeWindow - this.recipe.component", this.recipe.component);
+                        //     console.log("CreateRecipeWindow - this.componentName", this.componentName);
+                        //     console.log("CreateRecipeWindow - this.componentImage", this.componentImage);
+                        // } else {
+                        //     console.warn("CreateRecipeWindow - No existing component found for this recipe. Resetting component.");
+                        //     this.recipe.component = "";
+                        //     this.componentName = "";
+                        //     this.componentImage = "icons/magic/symbols/question-stone-yellow.webp"; // Fallback image
+                        // }
                         if (existingRecipe && existingRecipe.metatag) {
+                            console.log("CreateRecipeWindow - existingRecipe.metatag", existingRecipe.metatag);
                             this.recipe.metatag = existingRecipe.metatag;
                         } else {
+                            console.warn("CreateRecipeWindow - No existing metatag found for this recipe. Resetting metatag.");
                             this.recipe.metatag = "";
                         }
-                    // If this is not an existing recipe, reset the component and metatag
+                        // If this is not an existing recipe, reset the component and metatag
 
                         //warning if the item is already a recipe
                         ui.notifications.warn("This item is already a recipe.  If you create this recipe, it will overwrite the existing recipe");
