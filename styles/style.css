@@ -50,3 +50,13 @@
 .helianas-harvesting-module .player-list h3 {
     border-bottom: none;
 }
+
+.helianas-harvesting-module .invalid {
+  border: 2px solid red !important;
+  background: #ffeaea;
+}
+
+.helianas-harvesting-module .warn {
+  border: 2px solid yellow !important;
+  background: #ffeaea;
+}

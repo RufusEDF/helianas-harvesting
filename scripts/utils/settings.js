@@ -85,4 +85,52 @@ export function setupSettings() {
         },
         requiresReload: false
     });
+
+    game.settings.register("helianas-harvesting-custom-recipes", "createCustomRecipes", {
+        name: "HelianasHarvest.Settings.CreateCustomRecipes.Name",
+        hint: "HelianasHarvest.Settings.CreateCustomRecipes.Hint",
+        scope: "world",
+        config: true,
+        type: new foundry.data.fields.StringField({
+            choices: {
+                "off": "Disabled",
+                "gm": "GM Only",
+                "gmp": "GM + Players",
+            },
+        }),
+        default: "off",
+        requiresReload: true
+    });
+
+    game.settings.register("helianas-harvesting-custom-recipes", "customRecipes", {
+        name: "HelianasHarvest.Settings.CustomRecipes.Name",
+        hint: "HelianasHarvest.Settings.CustomRecipes.Hint",
+        scope: "world",
+        config: true,
+        type: new foundry.data.fields.StringField(),
+        default: "[]",
+        requiresReload: true
+    });
+
+    game.settings.register("helianas-harvesting-custom-recipes", "customRecipesPriority", {
+        name: "HelianasHarvest.Settings.CustomRecipesPriority.Name",
+        hint: "HelianasHarvest.Settings.CustomRecipesPriority.Hint",
+        scope: "world",
+        config: true,
+        type: new foundry.data.fields.NumberField(),
+        default: -5,
+        requiresReload: true
+    });
+
+    game.settings.register("helianas-harvesting-custom-recipes", "preventRecipeReplacement", {
+        name: "HelianasHarvest.Settings.PreventRecipeReplacement.Name",
+        hint: "HelianasHarvest.Settings.PreventRecipeReplacement.Hint",
+        scope: "world",
+        config: true,
+        type: new foundry.data.fields.BooleanField(),
+        default: false,
+        requiresReload: true
+    });
+
+
 }

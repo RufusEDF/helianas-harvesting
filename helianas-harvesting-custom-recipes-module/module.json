@@ -1,0 +1,13 @@
+{
+  "id": "helianas-harvesting-custom-recipes-module",
+  "title": "Heliana's Harvesting Custom Recipes",
+  "description": "<p>A way to store/transfer custom recipes without losing them when the main module updates.  Copy the helianas-harvesting-custom-recipes folder into your foundry module folder and activate the module in your world as normal.  Any custom recipes or components will then be loaded.  These recipes are handled completely of any recipes you add in the in game settings window.  </p>",
+  "version": "0.0.1",
+  "flags": {
+    "helianas-harvesting": {
+      "priority": 20,
+      "components": ["modules/helianas-harvesting-custom-recipes-module/harvesting-components-custom.json"],
+      "recipes": ["modules/helianas-harvesting-custom-recipes-module/crafting-recipes-custom.json"]
+    }
+  }
+}

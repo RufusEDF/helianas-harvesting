@@ -1,0 +1,172 @@
+<div>
+    <div>
+        <img
+            class="helianas-harvesting-module managed-input"
+            id="componentImage"
+            src="{{itemImage}}"
+            name="componentImage"
+            alt="Component Image"
+            style="max-height: 3rem; max-width: 3rem;"
+        />
+        {{itemName}}
+    </div>
+<form id="create-recipe-form" autocomplete="off">
+    <table style="width: 100%; table-layout: fixed; border-collapse: collapse;" class="helianas-harvesting-module">
+        <thead>
+            <tr>
+                <th scope="col" width="20%"></th>
+                <th scope="col" width="80%"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Item UUID</td>
+                <td>
+                    <div class="form-fields">
+                        <input
+                            type="text"
+                            class="helianas-harvesting-module managed-input form-control"
+                            id="item"
+                            value="{{recipe.item}}"
+                            name="item"
+                        />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Recipe Name</td>
+                <td>
+                    <div class="form-fields">
+                        <input
+                            type="text"
+                            class="helianas-harvesting-module managed-input form-control"
+                            id="recipe-name"
+                            name="name"
+                            value="{{recipe.name}}"
+                        />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Rarity</td>
+                <td>
+                    <div class="form-fields" style="width: 100%;">
+                        <select
+                            id="rarity"
+                            style="width: 100%;"
+                            class="helianas-harvesting-module managed-input form-control"
+                            name="rarity"
+                            value="{{recipe.rarity}}"
+                        >
+                            <option value={{this.recipe.rarity}}>{{this.recipe.rarity}}</option>
+                            {{#each rarityNames}}
+                                <option value="{{this}}">{{this}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Quantity</td>
+                <td>
+                    <div class="form-fields">
+                        <input
+                            type="number"
+                            class="helianas-harvesting-module managed-input form-control"
+                            id="qty"
+                            value="{{recipe.qty}}"
+                            name="qty"
+                        />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Price</td>
+                <td>
+                    <div class="form-fields">
+                        <input
+                            type="number"
+                            class="helianas-harvesting-module managed-input form-control"
+                            id="price"
+                            value="{{recipe.price}}"
+                            name="price"
+                        />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>Meta Tag</td>
+                <td>
+                    <div class="form-fields">
+                        <input
+                            type="text"
+                            class="helianas-harvesting-module managed-input form-control"
+                            id="metatag"
+                            value="{{recipe.metatag}}"
+                            name="metatag"
+                        />
+                    </div>
+                </td>
+            </tr>
+    {{!-- This is a placeholder for variants, currently not supported
+            <tr>
+                <td>Variants</td>
+                <td>
+                    <div class="form-fields">
+                        <input
+                            type="text"
+                            class="helianas-harvesting-module managed-input form-control"
+                            id="variants"
+                            value="Currently not supported"
+                            data-binding="variants"
+                            readonly
+                        />
+                    </div>
+                </td>
+            </tr>
+    --}}
+            <tr>
+                <td>Component UUID </td>
+                <td>
+                    <div class="form-fields" style="display: flex; align-items: center;">
+                        <i
+                            class="fa fa-search"
+                            aria-hidden="true"
+                            id="open-component-selector"
+                            title="Select Component"
+                            style="cursor: pointer; font-size: 1.2em;"
+                        ></i>
+                        <input
+                            type="text"
+                            class="helianas-harvesting-module managed-input form-control"
+                            id="component"
+                            name="component"
+                            value="{{recipe.component}}"
+                            style="flex: 1 1 auto; margin-left: 0.5em;"
+                        />
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div>
+                        <img
+                            class="helianas-harvesting-module managed-input"
+                            id="componentImage"
+                            src="{{componentImage}}"
+                            name="componentImage"
+                            alt="Component Image"
+                            style="max-height: 3rem; max-width: 3rem;"
+                        />
+                        {{componentName}}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div>
+        <button id="create-recipe-button">{{localize "HelianasHarvest.CreateRecipeTitle"}}</button>
+    </div>
+</form>
+</div>

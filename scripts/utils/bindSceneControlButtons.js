@@ -1,5 +1,6 @@
 import CraftingWindow from "../windows/CraftingWindow.js";
 import HarvestWindow from "../windows/HarvestWindow.js";
+import CreateRecipeWindow from "../windows/CreateRecipeWindow.js";
 
 export function bindSceneControlButtons(controls) {
     let actorControl = controls.find(c => c.name === "token");
@@ -34,6 +35,20 @@ export function bindSceneControlButtons(controls) {
 
             const cw = new CraftingWindow(recipeDatabase);
             cw.render(true);
+        }
+    });
+
+    let createRecipeSetting = game.settings.get("helianas-harvesting-custom-recipes", "createCustomRecipes");
+    actorControl.tools.push({
+        name: "create-recipe",
+        title: "HelianasHarvest.CreateRecipeControl",
+        icon: "fa-brands fa-hackerrank",
+        layer: "tokens",
+        visible: createRecipeSetting  == "gmp" || (game.user.isGM && createRecipeSetting == "gm"),
+        button: true,
+        onClick: () => {
+            const crw = new CreateRecipeWindow();
+            crw.render(true);
         }
     });
 }

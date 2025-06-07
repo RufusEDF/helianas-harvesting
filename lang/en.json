@@ -27,6 +27,22 @@
             "CraftingWindowWidth": {
                 "Name": "Crafting Window Width",
                 "Hint": "The width of the crafting window. Min 400.  Max 1600. \n Recommended - Client specific"
+            },
+            "CreateCustomRecipes": {
+                "Name": "Create Custom Recipes",
+                "Hint": "If enabled, a button will be added to compendium items to help create custom recipes for additional items.  This setting will not effect the loading of additional recipes. \n Recommended - Disabled"
+            },
+            "CustomRecipes": {
+                "Name": "Custom Recipes JSON",
+                "Hint": "Stores custom crafting recipes created in this world in JSON format.  Suggest regularly copying this to a safe location to avoid losing your custom recipes."
+            },
+            "CustomRecipesPriority": {
+                "Name": "Custom Recipes Priority",
+                "Hint": "The priority of these custom recipes.  If recipes are loaded with the same name, the one with the highest priority will be used (Inversed if Prevent Recipe Replacement is enabled). \n Recommended - 20"
+            },
+            "PreventRecipeReplacement": {
+                "Name": "Prevent Recipe Replacement",
+                "Hint": "If enabled, recipes loaded first will not be replaced by subsequent recipes with the same name. If using default priorities, you will not be able to replace existing recipes with custom recipes. \n Recommended - Disabled"
             }
         },
         "CreatureTypeLabel": "Creature Type",
@@ -68,6 +84,9 @@
         "CraftingCreatedItemNotice": "Sent {itemName} to {actorName}",
         "PlayerSelectWindowTitle": "Select a Player",
         "StatisticsLabel": "View Stats",
-        "StatisticsWindowTitle": "Heliana's Harvesting Statistics"
+        "StatisticsWindowTitle": "Heliana's Harvesting Statistics",
+        "CreateRecipeTitle": "Create Custom Recipe",
+        "CreateRecipeControl": "Create Custom Recipe",
+        "SelectComponentTitle": "Select Component"
     }
 }

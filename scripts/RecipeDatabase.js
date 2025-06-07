@@ -74,6 +74,18 @@ export class RecipeDatabase {
 
         const nameExtension = recipe.mod ? ` (${recipe.mod})` : ''
         const name = item.name + nameExtension;
+        const preventReplacement = game.settings.get("helianas-harvesting-custom-recipes", "preventRecipeReplacement");
+
+        if (!preventReplacement && this.getRecipeFromItemUuid(recipe.item)) {
+            console.warn(`Heliana's Harvesting | Recipe for item: ${name} already exists. Replacing.`);
+            const existingIndex = this._recipes.findIndex(r => r.name === name);
+            if (existingIndex !== -1) {
+                console.warn(`Heliana's Harvesting | Removing existing recipe for item: ${name}, to be ready for replacement.`, this.getRecipeFromName(name));
+                const replaced = this._recipes.splice(existingIndex, 1);
+                console.warn(`Heliana's Harvesting | Removed recipe:`, replaced[0]);
+            }
+        }
+
         if (this.getRecipeFromName(name)) {
             throw new Error(`Heliana's Harvesting | Duplicated name for item: ${name}`)
         }
@@ -120,5 +132,34 @@ export class RecipeDatabase {
      */
     getRecipeFromName(name) {
         return this._recipes.find((r => (r.name === name)));
+    }
+
+
+    /**
+     * Returns the recipe that matches the given item UUID.
+     * @param {string} uuid The UUID of the item
+     * @return {object|null} The recipe object if found, otherwise null
+     */
+    getRecipeFromItemUuid(uuid) {
+        function normalizeUuid(uuid) {
+        // Remove ".Item." if present
+            return uuid.replace(/\.Item\./, '.');
+        }
+        let recipeFromUUID = this._recipes.find((r => r.link === uuid));
+        // If the recipe is not found, try again after stripping .Item to normalize the UUID
+        if (recipeFromUUID) {
+            let matchType = "exact";
+            return { recipeFromUUID, matchType };
+        } else {
+            recipeFromUUID = this._recipes.find((r => r.link === normalizeUuid(uuid)));
+            if (recipeFromUUID) {
+                let matchType = "normalized";
+                return { recipeFromUUID, matchType };
+            } else {
+                console.warn(`Heliana's Harvesting | Unable to find recipe for item UUID: ${uuid}`);
+                let matchType = "none";
+                return { recipeFromUUID: null, matchType };
+            }
+        }
     }
 }
