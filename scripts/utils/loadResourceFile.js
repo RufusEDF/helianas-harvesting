@@ -40,7 +40,7 @@ export async function loadResourceFile(filenameOrElements, resourceMap, resource
     elements.forEach(element => {
         try {
             const key = element[resourceKeyName];
-            console.log(`Processing element with key: ${key}`);
+            // console.log(`Processing element with key: ${key}`);
             element.source = source;
             stats.loaded++;  //Should this go here or after the check for preventOverwrite?
 
@@ -48,7 +48,7 @@ export async function loadResourceFile(filenameOrElements, resourceMap, resource
             if (preventReplacement) {
                 if( resourceMap.has(key)) {
                     stats.errors++;
-                    console.warn(`Preventing overwrite of duplicate resource with key "${key}" from source "${source}".`);
+                    console.warn(`Preventing duplicate from ${source} from overwriting existing resource with key "${key}".`);
                     return; // Skip adding this duplicate
                 }
             }

@@ -131,13 +131,6 @@ export class RecipeDatabase {
      * @param {*} name The recipe's name
      */
     getRecipeFromName(name) {
-        console.log("getRecipeFromName", name);
-        name.trim().toLowerCase();
-        console.log("getRecipeFromName", name);
-        //console.log("this._recipes", {...this._recipes});
-        console.log("this._recipes.find", this._recipes.find((r => (r.name === name))));
-
-
         return this._recipes.find((r => (r.name === name)));
     }
 
