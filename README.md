@@ -49,7 +49,7 @@ If there is an existing recipe for that compendium item or one with the same nam
 
 ![Component Select Window](/images/customrecipes/selectcomponent.png)
 
-By default the priority for recipes will be This Module Recipes -> Other Module Recipes -> Settings Recipes.  This can be reversed by disabling "Prevent "
+By default the priority for recipes will be This Module Recipes -> Other Module Recipes -> Settings Recipes.  This can be reversed by disabling "Prevent Recipe Replacement"
 
 ## Options / Features
 
@@ -60,6 +60,7 @@ By default the priority for recipes will be This Module Recipes -> Other Module 
 
 * Add automation around crafting
 * Add cooking menu and automation
+* Create a recipe JSON file for 2024 SRD items.
 
 ## Licenses
 
