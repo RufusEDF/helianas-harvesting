@@ -1,6 +1,19 @@
 <form>
   <div class="form-group">
-    <div class="form-fields">
+    <div class="form-fields" style="display: flex; align-items: center; width: 100%;">
+        {{#if displaySearchBar}}
+          <button
+            type="button"
+            id="toggle-search-logic"
+            class="helianas-harvesting-module"
+            style="min-width: 5em; margin-right: 1em; flex-shrink: 0;">
+            {{#if matchAll}}
+              {{localize "HelianasHarvest.SearchLogicAND"}}
+            {{else}}
+              {{localize "HelianasHarvest.SearchLogicOR"}}
+            {{/if}}
+          </button>
+        {{/if}}
       <input
         type={{ifThen displaySearchBar "text" "hidden"}}
         class="managed-input debounce form-control"
@@ -8,6 +21,7 @@
         value="{{searchText}}"
         data-binding="searchText"
         placeholder="{{localize "HelianasHarvest.RecipeSearch"}}"
+        style="flex: 1 1 0; width: auto;"
       />
     </div>
   </div>

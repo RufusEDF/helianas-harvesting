@@ -81,6 +81,8 @@
         "InInventory": "Held in Inventory",
         "FilterComponents": "View Only Held Components",
         "RecipeSearch": "Search Recipes",
+        "SearchLogicAND": "AND",
+        "SearchLogicOR": "OR",
         "CraftingCreatedItemNotice": "Sent {itemName} to {actorName}",
         "PlayerSelectWindowTitle": "Select a Player",
         "StatisticsLabel": "View Stats",

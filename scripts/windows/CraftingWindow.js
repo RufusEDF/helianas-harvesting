@@ -10,11 +10,12 @@ export default class CraftingWindow extends Application {
      * @param {ActorToken} token
      * @param {string} searchText
      */
-    constructor(recipeDatabase, searchText = "") {
+    constructor(recipeDatabase, searchText = "", matchAll = false) {
         super();
 
         this.recipeDatabase = recipeDatabase;
         this.searchText = searchText
+        this.matchAll = matchAll; // Default to false
     }
 
     static get defaultOptions() {
@@ -33,7 +34,7 @@ export default class CraftingWindow extends Application {
             width: width,
             height: 600,
             resizable: true,
-            title: "HelianasHarvest.CraftWindowTitle"
+            title: "HelianasHarvest.CraftWindowTitle",
         });
     }
 
@@ -82,9 +83,14 @@ export default class CraftingWindow extends Application {
         let data = super.getData();
         data.rarityNames = game.system.config.itemRarity;
         data.displaySearchBar = game.user.isGM || game.settings.get("helianas-harvesting", "playerRecipes");
+        if (!data.displaySearchBar) {
+            data.matchAll = false; // If the search bar is not displayed, matchAll should be false
+        } else {
+            data.matchAll = this.matchAll;
+        }
 
         data.recipes = this.recipeDatabase
-            .searchItems(this.searchText)
+            .searchItems(this.searchText, this.matchAll)
             .sort((a, b) => a.name.localeCompare(b.name));
         data.searchText = this.searchText;
         data.characters = game.actors.filter(a => a.type === "character")
@@ -164,6 +170,13 @@ export default class CraftingWindow extends Application {
         const filterToggle = html.find('#filterComponentsHeld');
         filterToggle.on('click', event => {
             this.updateForm({ filterComponentsHeld: !this.filterComponentsHeld });
+        });
+
+        // Match all toggle
+        const matchAllToggle = html.find('#toggle-search-logic');
+        matchAllToggle.on('click', event => {
+            this.matchAll = !this.matchAll;
+            this.updateForm({ matchAll: this.matchAll });
         });
 
         // Numeric and text inputs

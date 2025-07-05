@@ -126,11 +126,12 @@ export class RecipeDatabase {
             const searchText = r.searchText ?? "";
             const metatag = r.metatag?.toLowerCase() ?? "";
             const rarity = r.rarity?.toLowerCase() ?? "";
+            const normalizedRarity = normalizeRarity(rarity);
 
             // For searchText and metatag: AND/OR logic
-            const textMatch = matchAll
-                ? keywords.every(word => searchText.includes(word) || metatag.includes(word))
-                : keywords.some(word => searchText.includes(word) || metatag.includes(word));
+            const match = matchAll
+                ? keywords.every(word => searchText.includes(word) || metatag.includes(word) || normalizedRarity === normalizeRarity(word))
+                : keywords.some(word => searchText.includes(word) || metatag.includes(word)|| normalizedRarity === normalizeRarity(word));
 
             // For rarity: OR logic, exact match only
             // This assumes rarity is a single word, e.g. "veryrare"
@@ -138,14 +139,14 @@ export class RecipeDatabase {
             //const rarityMatch = keywords.some(word => rarity === word);
 
             // For rarity: OR logic, normalized match
-            const normalizedRarity = normalizeRarity(rarity);
-            const rarityMatch = keywords.some(word => normalizedRarity === normalizeRarity(word));
+            //const normalizedRarity = normalizeRarity(rarity);
+            //const rarityMatch = keywords.some(word => normalizedRarity === normalizeRarity(word));
 
             // Return true if either text/metatag match, or rarity matches exactly
             //console.log(`Heliana's Harvesting | Searching for: ${text}, Match All: ${matchAll}, Delimiter: ${delimiter}`);
             //console.log(`Heliana's Harvesting | Recipe: ${r.name}, Text Match: ${textMatch}, Rarity Match: ${rarityMatch}`);
             //console.log(`Heliana's Harvesting | Search Text: ${searchText}, Metatag: ${metatag}, Rarity: ${rarity}`);
-            return textMatch || rarityMatch;
+            return match;
         });
     }
 
