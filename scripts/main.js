@@ -1,5 +1,5 @@
 import { bindStatisticsButton } from "./utils/bindStatisticsButton.js";
-import { bindSceneControlButtons } from "./utils/bindSceneControlButtons.js";
+import { bindSceneControlButtons } from "./utils/bindSceneControlButtons12.js";
 import { initializeDatabases } from "./utils/initializeDatabases.js";
 import { setupModuleAPI } from "./utils/setupModuleAPI.js";
 import { setupSettings } from "./utils/settings.js";
@@ -14,8 +14,10 @@ Hooks.on("ready", initializeDatabases);
 
 Hooks.on("getSceneControlButtons", bindSceneControlButtons);
 
-Hooks.on("getHarvestWindowHeaderButtons", bindStatisticsButton);
-Hooks.on("getCraftingWindowHeaderButtons", bindStatisticsButton);
+//Hooks.on("getHarvestWindowHeaderButtons", bindStatisticsButton);
+//Hooks.on("getCraftingWindowHeaderButtons", bindStatisticsButton);
+// Using this hook will only show the statistics button in ApplicationV1 windows (eg. HarvestWindow).
+Hooks.on("getApplicationHeaderButtons", bindStatisticsButton);
 
 Hooks.on("ready", () => {
     switch (game.settings.get("helianas-harvesting-custom-recipes", "createCustomRecipes")) {
@@ -36,6 +38,8 @@ Hooks.on("ready", () => {
 
 
 Hooks.on('renderChatMessage', relevantRecipes);
+
+console.log("Heliana's Harvesting | Hooks registered.");
 
 Handlebars.registerHelper('ifContains', (string1, string2, options) => {
     return (string1.toLowerCase().includes(string2.toLowerCase())) ? options.fn(this) : options.inverse(this);

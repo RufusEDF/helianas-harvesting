@@ -1,10 +1,11 @@
-<form>
+<form style="overflow-y: scroll; overflow-x: hidden;">
   <div class="form-group">
     <div class="form-fields" style="display: flex; align-items: center; width: 100%;">
         {{#if displaySearchBar}}
           <button
             type="button"
             id="toggle-search-logic"
+            data-action="toggleSearchLogic"
             class="helianas-harvesting-module"
             style="min-width: 5em; margin-right: 1em; flex-shrink: 0;">
             {{#if matchAll}}
@@ -35,7 +36,7 @@
         <th scope="col">{{localize "HelianasHarvest.RequiredComponents"}}</th>
         {{#if showHeldComponents}}
         <th scope="col">{{localize "HelianasHarvest.HeldComponents"}}
-          <input type="checkbox" class="helianas-harvesting-module" title="{{localize "HelianasHarvest.FilterComponents"}}" id="filterComponentsHeld" name="filterComponentsHeld" data-dtype="Boolean" {{checked filterComponentsHeld}}>
+          <input type="checkbox" class="helianas-harvesting-module" title="{{localize "HelianasHarvest.FilterComponents"}}" id="filterComponentsHeld" name="filterComponentsHeld" data-action="toggleFilterComponentsHeld" data-dtype="Boolean" {{checked filterComponentsHeld}}>
         </th>
         {{/if}}
       </tr>
@@ -48,6 +49,7 @@
               class="recipe-item-name display-image-name"
               data-item-name="{{ this.name }}"
               data-item-link="{{ this.link }}"
+              data-action="openRecipe"
             >
               <img
                 src="{{this.img}}"

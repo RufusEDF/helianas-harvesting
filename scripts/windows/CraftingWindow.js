@@ -3,41 +3,19 @@ import PlayerSelectWindow from "./PlayerSelectWindow.js";
 import { RecipeDatabase } from "../RecipeDatabase.js";
 import getPartyInventoryItems from "../utils/partyInventorySupport.js";
 
-export default class CraftingWindow extends Application {
-    /**
-     *
-     * @param {RecipeDatabase} recipeDatabase
-     * @param {ActorToken} token
-     * @param {string} searchText
-     */
-    constructor(recipeDatabase, searchText = "", matchAll = false) {
-        super();
 
-        this.recipeDatabase = recipeDatabase;
-        this.searchText = searchText
-        this.matchAll = matchAll; // Default to false
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+
+try {
+    let widthsetting = game.settings.get("helianas-harvesting", "craftingWindowWidth");
+    if (widthsetting > 0 && widthsetting < 10000) {
+        var width = widthsetting;
     }
+} catch (error) {
+    let width = 800;
+}
 
-    static get defaultOptions() {
-        try {
-            let widthsetting = game.settings.get("helianas-harvesting", "craftingWindowWidth");
-            if (widthsetting > 0 && widthsetting < 10000) {
-                var width = widthsetting;
-            }
-        } catch (error) {
-            let width = 800;
-        }
-
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            template: Config.CraftWindowTemplate,
-            classes: ['helianas-harvesting-module'],
-            width: width,
-            height: 600,
-            resizable: true,
-            title: "HelianasHarvest.CraftWindowTitle",
-        });
-    }
-
+export default class CraftingWindow extends HandlebarsApplicationMixin(ApplicationV2) {
     /**
      * Recipe Database
      *
@@ -68,6 +46,39 @@ export default class CraftingWindow extends Application {
     #activeElementId = false;
     #cursorPosition = { start: 0, end: 0 };
     #debounceSchedule = false;
+    #listenerAbort;
+
+    /**
+     *
+     * @param {RecipeDatabase} recipeDatabase
+     * @param {ActorToken} token
+     * @param {string} searchText
+     */
+    constructor(recipeDatabase, searchText = "", matchAll = false) {
+        super();
+
+        this.recipeDatabase = recipeDatabase;
+        this.searchText = searchText
+        this.matchAll = matchAll; // Default to false
+    }
+
+    static DEFAULT_OPTIONS = {
+        id: "crafting-window",
+        classes: ["helianas-harvesting-module", "themed", "theme-light"],
+        position: { width: width, height: 600 },
+        window: { title: "HelianasHarvest.CraftWindowTitle", resize: true },
+        tag: "div",
+        actions: {
+            openRecipe: CraftingWindow.prototype._onOpenRecipe,
+            toggleFilterComponentsHeld: CraftingWindow.prototype._onToggleFilterComponentsHeld,
+            toggleSearchLogic: CraftingWindow.prototype._onToggleSearchLogic,
+            sortBy: CraftingWindow.prototype._onSortBy
+        }
+    };
+
+    static PARTS = {
+        main: { template: Config.CraftWindowTemplate }
+    };
 
     updateForm(newValues) {
         if (typeof newValues.searchText === "string") {
@@ -76,39 +87,49 @@ export default class CraftingWindow extends Application {
         if (typeof newValues.filterComponentsHeld === "boolean") {
             this.filterComponentsHeld = newValues.filterComponentsHeld;
         }
+        if (typeof newValues.matchAll === "boolean") {
+            this.matchAll = newValues.matchAll;
+        }
         if (this.rendered) this.render();
     }
 
-    getData() {
-        let data = super.getData();
-        data.rarityNames = game.system.config.itemRarity;
-        data.displaySearchBar = game.user.isGM || game.settings.get("helianas-harvesting", "playerRecipes");
-        if (!data.displaySearchBar) {
-            data.matchAll = false; // If the search bar is not displayed, matchAll should be false
-        } else {
-            data.matchAll = this.matchAll;
+    async _prepareContext(options) {
+        //let data = await super._prepareContext(options);
+
+        let displaySearchBar = game.user.isGM || game.settings.get("helianas-harvesting", "playerRecipes");
+
+        if (!displaySearchBar) {
+            this.matchAll = false; // If the search bar is not displayed, matchAll should be false
         }
 
-        data.recipes = this.recipeDatabase
+        let recipes = this.recipeDatabase
             .searchItems(this.searchText, this.matchAll)
             .sort((a, b) => a.name.localeCompare(b.name));
-        data.searchText = this.searchText;
-        data.characters = game.actors.filter(a => a.type === "character")
-        if(game.settings.get("helianas-harvesting", "heldComponents")){data = this.mapHeldComponents(data);}
-        data.filterComponentsHeld = this.filterComponentsHeld;
-        data.showHeldComponents = this.showHeldComponents;
-        if(this.filterComponentsHeld){data.recipes = this.filterOutRecipes(data.recipes)};
-        return data;
+
+        if(game.settings.get("helianas-harvesting", "heldComponents")){recipes = this.mapHeldComponents(recipes);}
+
+        if(this.filterComponentsHeld){recipes = this.filterOutRecipes(recipes)};
+        return {
+            rarityNames: game.system.config.itemRarity,
+            recipes: recipes,
+            searchText: this.searchText,
+            filterComponentsHeld: this.filterComponentsHeld,
+            showHeldComponents: this.showHeldComponents,
+            displaySearchBar: displaySearchBar,
+            matchAll: this.matchAll
+        };
     }
 
-    mapHeldComponents(data){
+    mapHeldComponents(recipes){
+        let characters = game.actors.filter(a => a.type === "character");
+
         let partyInventory = {items: {}, order: []};
         if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
             partyInventory = getPartyInventoryItems();
         }
 
         //Is this logic best here or in ComponentDatabase.js?
-        data.recipes.forEach(recipe => {
+        recipes.forEach(recipe => {
             recipe.components.forEach(component => {
                 let componentLowerCase = component.name.toLowerCase()
                 component.held = {
@@ -119,7 +140,7 @@ export default class CraftingWindow extends Application {
                         return quantity;
                     }
                 };
-                data.characters.forEach(character => {
+                characters.forEach(character => {
                     component.held.items = component.held.items.concat(character.items.filter(item =>
                         item.name.toLowerCase().includes(componentLowerCase)));
                 });
@@ -143,7 +164,7 @@ export default class CraftingWindow extends Application {
 
             });
         });
-        return data;
+        return recipes;
     }
 
     filterOutRecipes(recipes) {
@@ -153,86 +174,96 @@ export default class CraftingWindow extends Application {
     }
 
     // Define the logic for activating listeners in the rendered HTML
-    activateListeners(html) {
-        super.activateListeners(html);
+    // Event Listeners
+    _onFocusManaged(event, target) {
+        this.#activeElementId = target.id;
+        this.#cursorPosition = {
+            start: target.selectionStart,
+            end: target.selectionEnd
+        };
+    }
+
+    _onBlurManaged(event, target) {
+        this.#activeElementId = null;
+        this.#cursorPosition = { start: 0, end: 0 };
+    }
+
+    _onInputManaged(event, target) {
+        this.#activeElementId = target.id;
+        this.#cursorPosition = {
+            start: target.selectionStart,
+            end: target.selectionEnd
+        };
+
+        if (this.#debounceSchedule) clearTimeout(this.#debounceSchedule);
+        this.#debounceSchedule = setTimeout(() => this.#updateForm(target), 500);
+    }
+
+    _onChangeManaged(event, target) {
+        this.#updateForm(target);
+    }
+
+    #updateForm(target) {
+        const input = {};
+        input[target.dataset.binding] = target.value;
+        this.updateForm(input);
+    }
+
+    async _onOpenRecipe(event, target) {
+        // Check if the user has permission to craft.
+        if (!game.user.isGM && !game.settings.get("helianas-harvesting", "playerCrafting")) {
+            ui.notifications.info(game.i18n.format("HelianasHarvest.Settings.PlayerCrafting.Denied"));
+            return;
+        }
+        else {
+            event.preventDefault();
+            const { itemName, itemLink } = target.dataset;
+            await this.send(itemName, itemLink);
+        }
+    }
+
+    _onToggleFilterComponentsHeld(event, target) {
+        this.updateForm({ filterComponentsHeld: !this.filterComponentsHeld });
+    }
+
+    _onToggleSearchLogic(event, target) {
+        this.updateForm({ matchAll: !this.matchAll });
+    }
+
+    _onRender(ctx, opts) {
+        // restore cursor
+
+        console.log(this.element);
+        console.log(ctx, opts);
+        console.log(this.#activeElementId);
+        console.log(this.#cursorPosition);
 
         if (this.#activeElementId) {
-            const element = html.find(`#${this.#activeElementId}`);
-            if (element) {
-                element.focus();
-                element.each((_, element) => {
-                    element.setSelectionRange(this.#cursorPosition.start, this.#cursorPosition.end);
-                });
+            const el = this.element.querySelector(`#${this.#activeElementId}`);
+            if (el) {
+                el.focus();
+                el.setSelectionRange?.(this.#cursorPosition.start, this.#cursorPosition.end);
             }
         }
 
-        // filter toggle
-        const filterToggle = html.find('#filterComponentsHeld');
-        filterToggle.on('click', event => {
-            this.updateForm({ filterComponentsHeld: !this.filterComponentsHeld });
-        });
+        // re-wire listeners safely each render
+        this.#listenerAbort?.abort();
+        this.#listenerAbort = new AbortController();
+        const { signal } = this.#listenerAbort;
 
-        // Match all toggle
-        const matchAllToggle = html.find('#toggle-search-logic');
-        matchAllToggle.on('click', event => {
-            this.matchAll = !this.matchAll;
-            this.updateForm({ matchAll: this.matchAll });
+        this.element.querySelectorAll('#recipe-search').forEach(el => {
+            el.addEventListener('focus', e => this._onFocusManaged(e, e.currentTarget), { signal });
+            //el.addEventListener('blur', e => this._onBlurManaged(e, e.currentTarget), { signal });
+            el.addEventListener('input', e => this._onInputManaged(e, e.currentTarget), { signal });
+            el.addEventListener('change', e => this._onChangeManaged(e, e.currentTarget), { signal });
         });
+    }
 
-        // Numeric and text inputs
-        const managedInputs = html.find('.managed-input');
-        managedInputs.on('focus blur', event => {
-            if (event.type === "blur") {
-                this.#activeElementId = null;
-                this.#cursorPosition = { start: 0, end: 0 }; // Reset cursor position when focus is lost
-            }
-            else if (event.type === "focus") {
-                this.#activeElementId = event.currentTarget.getAttribute('id');
-                // Save the current cursor position
-                this.#cursorPosition = {
-                    start: event.currentTarget.selectionStart,
-                    end: event.currentTarget.selectionEnd
-                };
-            }
-        });
-        managedInputs.on('input change', event => {
-            if (event.type === "input") {
-                this.#activeElementId = event.currentTarget.getAttribute('id');
-                // Save the current cursor position
-                this.#cursorPosition = {
-                    start: event.currentTarget.selectionStart,
-                    end: event.currentTarget.selectionEnd
-                };
-
-                if (this.#debounceSchedule) {
-                    clearTimeout(this.#debounceSchedule);
-                }
-                this.#debounceSchedule = setTimeout(updateForm.bind(this), 500);
-            }
-            else {
-                updateForm.bind(this)();
-            }
-
-            function updateForm() {
-                const input = {};
-                input[event.target.dataset.binding] = event.target.value;
-                this.updateForm(input);
-            }
-        });
-
-        const itemLinks = html.find(".recipe-item-name");
-        itemLinks.on("click", async (event) => {
-            // Check if the user has permission to craft.
-            if (!game.user.isGM && !game.settings.get("helianas-harvesting", "playerCrafting")) {
-                ui.notifications.info(game.i18n.format("HelianasHarvest.Settings.PlayerCrafting.Denied"));
-                return;
-            }
-            else {
-                event.preventDefault();
-                const { itemName, itemLink } = event.currentTarget.dataset;
-                await this.send(itemName, itemLink);
-            }
-        });
+    close(options) {
+        // ensure timers/listeners don’t leak
+        this.#listenerAbort?.abort();
+        if (this.#debounceSchedule) clearTimeout(this.#debounceSchedule);
+        return super.close(options);
     }
 
     async send(itemName, itemLink) {
