@@ -1,7 +1,7 @@
 {
   "id": "helianas-harvesting",
   "title": "Heliana's Harvesting",
-  "description": "<p>Harvesting Module to aid with Heliana's Harvesting Rules.</p><p>Fork of https://github.com/Loot-Foundry/helianas-harvesting</p><p> on line 2 of main.js, Replace bindSceneControlButtons12.js with bindSceneControlButtons13.js for FoundryVTT 13 compatibility.</p>",
+  "description": "<p>Harvesting Module to aid with Heliana's Harvesting Rules.</p><p>Fork of https://github.com/Loot-Foundry/helianas-harvesting</p>",
   "version": "0.2.2",
   "compatibility": {
     "minimum": "12",
