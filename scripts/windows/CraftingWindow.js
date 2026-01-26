@@ -146,10 +146,6 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
     }
 
     sortRecipes(recipes, sortBy) {
-        console.log("Sorting by:", sortBy);
-        console.log("Recipes before sort:", recipes);
-        console.log("Type of sortBy:", typeof sortBy);
-
         switch (sortBy) {
             case 0: // Name
                 recipes.sort((a, b) => a.name.localeCompare(b.name));
@@ -157,7 +153,6 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
             case 1: // Rarity
                 //lets ensure the rarity is in the correct order, from common to legendary.  all rarirties are in this.rarityNames
                 let rarityOrder = Object.keys(game.system.config.itemRarity);
-                console.warn("Rarity Order:", rarityOrder);
                 recipes.sort((a, b) => {
                     let aIndex = rarityOrder.indexOf(a.rarity) !== -1 ? rarityOrder.indexOf(a.rarity) : rarityOrder.length;
                     let bIndex = rarityOrder.indexOf(b.rarity) !== -1 ? rarityOrder.indexOf(b.rarity) : rarityOrder.length;
@@ -179,7 +174,7 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
                 });
                 break;
             default:
-                console.warn("Returning without sorting due to unknown sortBy value:", sortBy);
+                //console.warn("Returning without sorting due to unknown sortBy value:", sortBy);
                 return recipes;
         }
 
@@ -301,9 +296,6 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
     }
 
     _onSortBy(event, target) {
-        console.warn("Sort by clicked:", target);
-        console.warn(event);
-        console.warn("Data-sortby:", target.dataset.sortby);
         let clickedIndex = event.target.cellIndex;
         if(this.sortBy === clickedIndex){
             this.updateForm({ reverseSort: !this.reverseSort });
@@ -315,10 +307,10 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
     _onRender(ctx, opts) {
         // restore cursor
 
-        console.log(this.element);
-        console.log(ctx, opts);
-        console.log(this.#activeElementId);
-        console.log(this.#cursorPosition);
+        //console.log(this.element);
+        //console.log(ctx, opts);
+        //console.log(this.#activeElementId);
+        //console.log(this.#cursorPosition);
 
         if (this.#activeElementId) {
             const el = this.element.querySelector(`#${this.#activeElementId}`);

@@ -52,8 +52,6 @@ Hooks.on("ready", () => {
 
 Hooks.on('renderChatMessage', relevantRecipes);
 
-console.log("Heliana's Harvesting | Hooks registered.");
-
 Handlebars.registerHelper('ifContains', function(string1, string2, options) {
     return (string1.toLowerCase().includes(string2.toLowerCase())) ? options.fn(this) : options.inverse(this);
 });
