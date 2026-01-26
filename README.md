@@ -2,6 +2,8 @@
 
 This module helps you harvest, craft and cook following the rule set from Heliana's Guide to Monster Hunting.
 
+Works for Foundry versions 12 and 13.
+
 ## How to Harvest from a Creature
 
 ![The GM selects a creature you want to harvest then click the Harvest Creature button](/images/harvesting/step1.png)
@@ -27,6 +29,8 @@ This module helps you harvest, craft and cook following the rule set from Helian
 ## Crafting
 
 ![Click the Crafting Recipes button](/images/crafting/step1.png)
+
+![Sort by Name, Rarity, Value or Metatag by clicking the table headers.  Filter only recipes you have materials for by clicking the Held Components header.  You can also toggle between AND/OR search logic (comma delimited)](/images/crafting/craftingfilterandsort.PNG)
 
 ![Select the item you want to create](/images/crafting/step2.png)
 

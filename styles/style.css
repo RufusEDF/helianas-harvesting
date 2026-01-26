@@ -1,18 +1,36 @@
 .helianas-harvesting-module {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    width: 800px;
 }
 
 .helianas-harvesting-module .window-content {
     margin: 0 auto;
-    padding: 20px;
+    padding: 10px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     color: #333;
-    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.helianas-harvesting-module .crafting-window-content {
+    overflow-x: hidden;
+    height: 100%;
 }
 
 .helianas-harvesting-module sup {
     vertical-align: super;
+}
+
+.helianas-harvesting-module table {
+    width: 100%;
+    margin: 0;
+    table-layout: auto;
+}
+
+.helianas-harvesting-module table td,
+.helianas-harvesting-module table th {
+    padding: 8px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 
 .helianas-harvesting-module table tr:nth-child(even) {
@@ -21,46 +39,152 @@
 
 .helianas-harvesting-module .module-title {
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     border-bottom: none;
 }
 
 .helianas-harvesting-module .display-image-name {
     display: flex;
     align-items: center;
-    height: 100%;
 }
 
 .helianas-harvesting-module .display-image-name > img {
-    display: block;
+    width: 30px;
+    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
+    margin-right: 5px;
+    border: none;
+    flex-shrink: 0;
 }
 
 .helianas-harvesting-module .display-image-name :nth-child(2) {
-    padding-left: 5px;
-    display: flex;
-    align-items: center;
+    display: inline-block;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    flex: 1;
+    min-width: 0;
 }
 
 .helianas-harvesting-module .player-list li {
     list-style: none;
-    padding: 5px;
-    font-weight: bold;
 }
 
 .helianas-harvesting-module .player-list h3 {
-    border-bottom: none;
-}
-
-.helianas-harvesting-module thead {
     text-align: center;
 }
 
+.helianas-harvesting-module thead {
+    background-color: rgba(255, 255, 0, 0.2);
+}
+
 .helianas-harvesting-module .invalid {
-  border: 2px solid red !important;
-  background: #ffeaea;
+    border: 2px solid red !important;
+    background: #ffeaea;
 }
 
 .helianas-harvesting-module .warn {
-  border: 2px solid yellow !important;
-  background: #ffeaea;
+    border: 2px solid yellow !important;
+    background: #ffeaea;
+}
+
+.helianas-harvesting-module .sorted-column {
+    background-color: rgba(255, 255, 0, 0.1) !important;
+    position: relative;
+}
+
+.helianas-harvesting-module .sorted-column::after {
+    content: ' ▼';
+    font-size: 0.8em;
+    opacity: 0.6;
+}
+
+.helianas-harvesting-module .sorted-column.reverse::after {
+    content: ' ▲';
+}
+
+.helianas-harvesting-module thead[data-action="sortBy"] th {
+    cursor: pointer;
+    user-select: none;
+}
+
+.helianas-harvesting-module thead[data-action="sortBy"] th:hover {
+    background-color: rgba(255, 255, 0, 0.05);
+}
+
+.helianas-harvesting-module .filter-column {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+}
+
+.helianas-harvesting-module .filter-column:hover {
+    background-color: rgba(255, 255, 0, 0.05);
+}
+
+.helianas-harvesting-module .filter-column.active {
+    background-color: rgba(100, 200, 100, 0.15) !important;
+}
+
+.helianas-harvesting-module .filter-column .filter-checkbox {
+    display: none;
+}
+
+.helianas-harvesting-module .form-group {
+    margin-bottom: 10px;
+}
+
+.helianas-harvesting-module .form-fields {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.helianas-harvesting-module .search-logic-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.75em;
+    min-width: 4.5em;
+    height: 2.5em;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.05);
+    font-weight: 600;
+    font-size: 0.9em;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    box-sizing: border-box;
+}
+
+.helianas-harvesting-module .search-logic-toggle:hover {
+    background: rgba(0, 0, 0, 0.1);
+    border-color: rgba(0, 0, 0, 0.5);
+}
+
+.helianas-harvesting-module .search-logic-toggle:active {
+    transform: scale(0.95);
+}
+
+.helianas-harvesting-module .search-logic-toggle.match-all {
+    background: rgba(100, 150, 200, 0.15);
+    border-color: rgba(100, 150, 200, 0.5);
+    color: #4a5568;
+}
+
+.helianas-harvesting-module .search-logic-toggle.match-any {
+    background: rgba(150, 100, 200, 0.15);
+    border-color: rgba(150, 100, 200, 0.5);
+    color: #4a5568;
+}
+
+.helianas-harvesting-module #recipe-search {
+    flex: 1;
+    min-width: 0;
+    height: 2.5em;
+    box-sizing: border-box;
+    padding: 0 0.75em;
 }

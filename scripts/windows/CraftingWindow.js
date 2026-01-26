@@ -6,15 +6,6 @@ import getPartyInventoryItems from "../utils/partyInventorySupport.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
-try {
-    let widthsetting = game.settings.get("helianas-harvesting", "craftingWindowWidth");
-    if (widthsetting > 0 && widthsetting < 10000) {
-        var width = widthsetting;
-    }
-} catch (error) {
-    let width = 800;
-}
-
 export default class CraftingWindow extends HandlebarsApplicationMixin(ApplicationV2) {
     /**
      * Recipe Database
@@ -27,7 +18,20 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
      * Search Text Field
      * (This has been moved to the class constructor to allow the search text to be passed in from other functions)
      */
-    //searchText = "";
+    searchText = "";
+
+    /**
+     * The column to sort by
+     * @type {Number}
+     *
+     */
+    sortBy = 0;
+
+    /**
+     * Whether to sort ascending or descending. True is descending.
+     * @type {Boolean}
+     */
+    reverseSort = false;
 
     /**
      * Filter for components held by characters
@@ -65,7 +69,18 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
     static DEFAULT_OPTIONS = {
         id: "crafting-window",
         classes: ["helianas-harvesting-module", "themed", "theme-light"],
-        position: { width: width, height: 600 },
+        get position() {
+            let width = 800; // Default width
+            try {
+                const widthSetting = game.settings.get("helianas-harvesting", "craftingWindowWidth");
+                if (widthSetting > 0 && widthSetting < 10000) {
+                    width = widthSetting;
+                }
+            } catch (error) {
+                console.warn("Error retrieving crafting window width setting, using default:", error);
+            }
+            return { width: width, height: 600 };
+        },
         window: { title: "HelianasHarvest.CraftWindowTitle", resize: true },
         tag: "div",
         actions: {
@@ -90,6 +105,12 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
         if (typeof newValues.matchAll === "boolean") {
             this.matchAll = newValues.matchAll;
         }
+        if (typeof newValues.sortBy === "number") {
+            this.sortBy = newValues.sortBy;
+        }
+        if (typeof newValues.reverseSort === "boolean") {
+            this.reverseSort = newValues.reverseSort;
+        }
         if (this.rendered) this.render();
     }
 
@@ -109,6 +130,8 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
         if(game.settings.get("helianas-harvesting", "heldComponents")){recipes = this.mapHeldComponents(recipes);}
 
         if(this.filterComponentsHeld){recipes = this.filterOutRecipes(recipes)};
+        recipes = this.sortRecipes(recipes, this.sortBy);
+
         return {
             rarityNames: game.system.config.itemRarity,
             recipes: recipes,
@@ -116,8 +139,55 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
             filterComponentsHeld: this.filterComponentsHeld,
             showHeldComponents: this.showHeldComponents,
             displaySearchBar: displaySearchBar,
-            matchAll: this.matchAll
+            matchAll: this.matchAll,
+            reverseSort: this.reverseSort,
+            sortBy: this.sortBy
         };
+    }
+
+    sortRecipes(recipes, sortBy) {
+        console.log("Sorting by:", sortBy);
+        console.log("Recipes before sort:", recipes);
+        console.log("Type of sortBy:", typeof sortBy);
+
+        switch (sortBy) {
+            case 0: // Name
+                recipes.sort((a, b) => a.name.localeCompare(b.name));
+                break;
+            case 1: // Rarity
+                //lets ensure the rarity is in the correct order, from common to legendary.  all rarirties are in this.rarityNames
+                let rarityOrder = Object.keys(game.system.config.itemRarity);
+                console.warn("Rarity Order:", rarityOrder);
+                recipes.sort((a, b) => {
+                    let aIndex = rarityOrder.indexOf(a.rarity) !== -1 ? rarityOrder.indexOf(a.rarity) : rarityOrder.length;
+                    let bIndex = rarityOrder.indexOf(b.rarity) !== -1 ? rarityOrder.indexOf(b.rarity) : rarityOrder.length;
+                    return aIndex - bIndex;
+                });
+                //recipes.sort((a, b) => (a.rarity || "").localeCompare(b.rarity || ""));
+                break;
+            case 2: // Price
+                recipes.sort((a, b) => (a.price || 0) - (b.price || 0));
+                break;
+            case 3: // Metatag
+                recipes.sort((a, b) => (a.metatag || "").localeCompare(b.metatag || ""));
+                break;
+            case 4: // First Component Name
+                recipes.sort((a, b) => {
+                    const aComp = a.components[0]?.name || "";
+                    const bComp = b.components[0]?.name || "";
+                    return aComp.localeCompare(bComp);
+                });
+                break;
+            default:
+                console.warn("Returning without sorting due to unknown sortBy value:", sortBy);
+                return recipes;
+        }
+
+        if (this.reverseSort) {
+            recipes.reverse();
+        }
+
+        return recipes;
     }
 
     mapHeldComponents(recipes){
@@ -228,6 +298,18 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
 
     _onToggleSearchLogic(event, target) {
         this.updateForm({ matchAll: !this.matchAll });
+    }
+
+    _onSortBy(event, target) {
+        console.warn("Sort by clicked:", target);
+        console.warn(event);
+        console.warn("Data-sortby:", target.dataset.sortby);
+        let clickedIndex = event.target.cellIndex;
+        if(this.sortBy === clickedIndex){
+            this.updateForm({ reverseSort: !this.reverseSort });
+        }
+        this.updateForm({ sortBy: clickedIndex });
+        //this.updateForm({ sortBy: event.target.cellIndex });
     }
 
     _onRender(ctx, opts) {

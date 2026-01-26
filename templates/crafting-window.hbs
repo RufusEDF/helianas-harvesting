@@ -1,19 +1,18 @@
-<form style="overflow-y: scroll; overflow-x: hidden;">
+<div class="crafting-window-content">
   <div class="form-group">
-    <div class="form-fields" style="display: flex; align-items: center; width: 100%;">
+    <div class="form-fields">
         {{#if displaySearchBar}}
-          <button
-            type="button"
+          <span
             id="toggle-search-logic"
             data-action="toggleSearchLogic"
-            class="helianas-harvesting-module"
-            style="min-width: 5em; margin-right: 1em; flex-shrink: 0;">
+            class="search-logic-toggle {{#if matchAll}}match-all{{else}}match-any{{/if}}"
+            title="{{#if matchAll}}{{localize "HelianasHarvest.SearchLogicAND"}}{{else}}{{localize "HelianasHarvest.SearchLogicOR"}}{{/if}}">
             {{#if matchAll}}
               {{localize "HelianasHarvest.SearchLogicAND"}}
             {{else}}
               {{localize "HelianasHarvest.SearchLogicOR"}}
             {{/if}}
-          </button>
+          </span>
         {{/if}}
       <input
         type={{ifThen displaySearchBar "text" "hidden"}}
@@ -22,21 +21,21 @@
         value="{{searchText}}"
         data-binding="searchText"
         placeholder="{{localize "HelianasHarvest.RecipeSearch"}}"
-        style="flex: 1 1 0; width: auto;"
       />
     </div>
   </div>
   <table>
-    <thead>
+    <thead data-action="sortBy">
       <tr>
-        <th scope="col">{{localize "HelianasHarvest.ItemNameHeader"}}</th>
-        <th scope="col">{{localize "HelianasHarvest.ItemRarity"}}</th>
-        <th scope="col">{{localize "HelianasHarvest.ItemPriceHeader"}}</th>
-        <th scope="col">{{localize "HelianasHarvest.RecipeMetatag"}}</th>
-        <th scope="col">{{localize "HelianasHarvest.RequiredComponents"}}</th>
+        <th scope="col" class="{{#if (eq sortBy 0)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">{{localize "HelianasHarvest.ItemNameHeader"}}</th>
+        <th scope="col" class="{{#if (eq sortBy 1)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">{{localize "HelianasHarvest.ItemRarity"}}</th>
+        <th scope="col" class="{{#if (eq sortBy 2)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">{{localize "HelianasHarvest.ItemPriceHeader"}}</th>
+        <th scope="col" class="{{#if (eq sortBy 3)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">{{localize "HelianasHarvest.RecipeMetatag"}}</th>
+        <th scope="col" class="{{#if (eq sortBy 4)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">{{localize "HelianasHarvest.RequiredComponents"}}</th>
         {{#if showHeldComponents}}
-        <th scope="col">{{localize "HelianasHarvest.HeldComponents"}}
-          <input type="checkbox" class="helianas-harvesting-module" title="{{localize "HelianasHarvest.FilterComponents"}}" id="filterComponentsHeld" name="filterComponentsHeld" data-action="toggleFilterComponentsHeld" data-dtype="Boolean" {{checked filterComponentsHeld}}>
+        <th scope="col" class="filter-column{{#if filterComponentsHeld}} active{{/if}}" data-action="toggleFilterComponentsHeld" title="{{localize "HelianasHarvest.FilterComponents"}}">
+          {{localize "HelianasHarvest.HeldComponents"}}
+          <input type="checkbox" class="helianas-harvesting-module filter-checkbox" id="filterComponentsHeld" name="filterComponentsHeld" data-dtype="Boolean" {{checked filterComponentsHeld}}>
         </th>
         {{/if}}
       </tr>
@@ -97,4 +96,4 @@
       {{/each}}
     </tbody>
   </table>
-</form>
+</div>

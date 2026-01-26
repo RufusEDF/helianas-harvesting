@@ -1,5 +1,4 @@
 import { bindStatisticsButton } from "./utils/bindStatisticsButton.js";
-import { bindSceneControlButtons } from "./utils/bindSceneControlButtons12.js";
 import { initializeDatabases } from "./utils/initializeDatabases.js";
 import { setupModuleAPI } from "./utils/setupModuleAPI.js";
 import { setupSettings } from "./utils/settings.js";
@@ -12,7 +11,22 @@ Hooks.on("setup", setupModuleAPI);
 
 Hooks.on("ready", initializeDatabases);
 
-Hooks.on("getSceneControlButtons", bindSceneControlButtons);
+// Conditionally import the correct scene control buttons based on Foundry version
+Hooks.once("init", async () => {
+    const gameVersion = parseFloat(game.version);
+    console.log(`Heliana's Harvesting | Detected Foundry VTT version: ${gameVersion}`);
+
+    let bindSceneControlButtons;
+    if (gameVersion >= 13) {
+        console.log("Heliana's Harvesting | Loading scene controls for v13+");
+        bindSceneControlButtons = (await import("./utils/bindSceneControlButtons13.js")).bindSceneControlButtons;
+    } else {
+        console.log("Heliana's Harvesting | Loading scene controls for v12");
+        bindSceneControlButtons = (await import("./utils/bindSceneControlButtons12.js")).bindSceneControlButtons;
+    }
+
+    Hooks.on("getSceneControlButtons", bindSceneControlButtons);
+});
 
 //Hooks.on("getHarvestWindowHeaderButtons", bindStatisticsButton);
 //Hooks.on("getCraftingWindowHeaderButtons", bindStatisticsButton);
@@ -36,7 +50,6 @@ Hooks.on("ready", () => {
     }
 });
 
-
 Hooks.on('renderChatMessage', relevantRecipes);
 
 console.log("Heliana's Harvesting | Hooks registered.");
@@ -47,4 +60,20 @@ Handlebars.registerHelper('ifContains', (string1, string2, options) => {
 
 Handlebars.registerHelper('ifEquals', (string1, string2, options) => {
     return (string1 === string2) ? options.fn(this) : options.inverse(this);
+});
+
+Handlebars.registerHelper('ifThen', (condition, ...args) => {
+    // Get the hash from the last argument (options object)
+    const options = args[args.length - 1];
+
+    if (condition && options.hash) {
+        // Convert hash to attribute string: {class: "highlighted"} → 'class="highlighted"'
+        return new Handlebars.SafeString(
+            Object.entries(options.hash)
+                .map(([key, value]) => `${key}="${value}"`)
+                .join(' ')
+        );
+    }
+
+    return '';
 });
