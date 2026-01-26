@@ -45,6 +45,7 @@ gulp.task('compileJS', async () => {
       file: outputFilePath,
       format: 'esm',
       sourcemap: true,
+      inlineDynamicImports: true,
     });
   }
 });

@@ -54,11 +54,11 @@ Hooks.on('renderChatMessage', relevantRecipes);
 
 console.log("Heliana's Harvesting | Hooks registered.");
 
-Handlebars.registerHelper('ifContains', (string1, string2, options) => {
+Handlebars.registerHelper('ifContains', function(string1, string2, options) {
     return (string1.toLowerCase().includes(string2.toLowerCase())) ? options.fn(this) : options.inverse(this);
 });
 
-Handlebars.registerHelper('ifEquals', (string1, string2, options) => {
+Handlebars.registerHelper('ifEquals', function(string1, string2, options) {
     return (string1 === string2) ? options.fn(this) : options.inverse(this);
 });
 
