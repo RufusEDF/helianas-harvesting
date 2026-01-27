@@ -80,6 +80,10 @@
         "HeldComponents": "Held Components",
         "InInventory": "Held in Inventory",
         "FilterComponents": "View Only Held Components",
+        "HeldComponentsTooltip": {
+            "Title": "Held",
+            "MetatagMatch": "Matches recipe variant"
+        },
         "RecipeSearch": "Search Recipes",
         "SearchLogicAND": ",AND",
         "SearchLogicOR": ",OR ",

@@ -195,37 +195,60 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
 
         //Is this logic best here or in ComponentDatabase.js?
         recipes.forEach(recipe => {
-            recipe.components.forEach(component => {
-                let componentLowerCase = component.name.toLowerCase()
-                component.held = {
-                    items : [],
-                    get count() {
-                        let quantity = 0;
-                        this.items.forEach(item => {quantity += item.system.quantity});
-                        return quantity;
-                    }
-                };
-                characters.forEach(character => {
-                    component.held.items = component.held.items.concat(character.items.filter(item =>
-                        item.name.toLowerCase().includes(componentLowerCase)));
-                });
-                if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
-                    // create a for loop to iterate through the properties of the partyInventory.items object
-                    // if the name includes the component name then add it to the component.held.items array
+            let metatagLowerCase = recipe.metatag ? recipe.metatag.toLowerCase() : null;
 
-                    for (let order of partyInventory.order) {
-                        let item = partyInventory.items[order];
-                        try {
-                            if (item.name.toLowerCase().includes(componentLowerCase)){
-                                component.held.items.push(item);
+            // Initialize array to track metatag matches per component on THIS recipe
+            recipe.componentMetatagMatches = [];
+
+            recipe.components.forEach((component, index) => {
+                let componentLowerCase = component.name.toLowerCase()
+
+                // Only initialize component.held if it doesn't already exist (shared across recipes)
+                if (!component.held) {
+                    component.held = {
+                        items : [],
+                        get count() {
+                            let quantity = 0;
+                            this.items.forEach(item => {quantity += item.system.quantity});
+                            return quantity;
+                        }
+                    };
+
+                    // Collect items from all characters
+                    characters.forEach(character => {
+                        component.held.items = component.held.items.concat(character.items.filter(item =>
+                            item.name.toLowerCase().includes(componentLowerCase)));
+                    });
+
+                    // Collect items from party inventory
+                    if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
+                        for (let order of partyInventory.order) {
+                            let item = partyInventory.items[order];
+                            try {
+                                if (item.name.toLowerCase().includes(componentLowerCase)){
+                                    component.held.items.push(item);
+                                }
+                            } catch (error) {
+                                console.error("Issue checking item error", error);
+                                console.warn("Issue checking item", item);
                             }
-                        } catch (error) {
-                            console.error("Issue checking item error", error);
-                            console.warn("Issue checking item", item);
                         }
                     }
                 }
 
+                // Check if any held item matches THIS RECIPE's metatag
+                let matchesMetatag = false;
+                if (metatagLowerCase) {
+                    for (let item of component.held.items) {
+                        if (item.name.toLowerCase().includes(metatagLowerCase)) {
+                            matchesMetatag = true;
+                            break;
+                        }
+                    }
+                }
+
+                // Store the result in the recipe's array
+                recipe.componentMetatagMatches[index] = matchesMetatag;
 
             });
         });

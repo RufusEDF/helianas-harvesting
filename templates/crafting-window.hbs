@@ -82,12 +82,26 @@
             {{#if ../showHeldComponents}}
               {{#each this.components}}
                 {{#if this.held.items}}
-                  <p><strong>{{this.held.count}} {{localize "HelianasHarvest.InInventory"}}</p></strong>
-                  {{#each this.held.items}}
-                    {{#if this.parent}}
-                      <p>{{this.parent.name}} : {{this.name}} : {{this.system.quantity}}</p>
-                    {{/if}}
-                  {{/each}}
+                  <div class="held-component-badge{{#if (lookup ../componentMetatagMatches @index)}} metatag-match{{/if}}">
+                    <span class="component-count">{{this.held.count}}</span>
+                    <div class="held-component-tooltip">
+                      <div class="tooltip-header">{{this.held.count}} {{localize "HelianasHarvest.HeldComponentsTooltip.Title"}}</div>
+                      {{#each this.held.items}}
+                        {{#if this.parent}}
+                          <div class="tooltip-item">
+                            <span class="holder-name">{{this.parent.name}}</span>
+                            <span class="item-name">{{this.name}}</span>
+                            <span class="item-quantity">×{{this.system.quantity}}</span>
+                          </div>
+                        {{/if}}
+                      {{/each}}
+                      {{#if (lookup ../../componentMetatagMatches @../index)}}
+                        <div class="tooltip-metatag-note">{{localize "HelianasHarvest.HeldComponentsTooltip.MetatagMatch"}}</div>
+                      {{/if}}
+                    </div>
+                  </div>
+                {{else}}
+                  <span class="component-count-empty">0</span>
                 {{/if}}
               {{/each}}
             {{/if}}

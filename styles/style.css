@@ -188,3 +188,135 @@
     box-sizing: border-box;
     padding: 0 0.75em;
 }
+
+/* Held Components Badge and Tooltip Styles */
+.helianas-harvesting-module .held-component-badge {
+    display: inline-block;
+    position: relative;
+    cursor: help;
+}
+
+.helianas-harvesting-module .component-count {
+    display: inline-block;
+    min-width: 2em;
+    padding: 2px 8px;
+    background: rgba(100, 150, 200, 0.2);
+    border: 1px solid rgba(100, 150, 200, 0.4);
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.9em;
+    text-align: center;
+    color: #2d3748;
+}
+
+.helianas-harvesting-module .component-count-empty {
+    display: inline-block;
+    min-width: 2em;
+    padding: 2px 8px;
+    color: #a0aec0;
+    font-size: 0.9em;
+    text-align: center;
+}
+
+.helianas-harvesting-module .held-component-badge.metatag-match .component-count {
+    background: rgba(250, 200, 100, 0.25);
+    border-color: rgba(220, 150, 50, 0.5);
+    color: #744210;
+    box-shadow: 0 0 4px rgba(250, 200, 100, 0.4);
+}
+
+.helianas-harvesting-module .held-component-badge.metatag-match .component-count::before {
+    content: '★ ';
+    color: #d69e2e;
+    font-size: 0.85em;
+}
+
+.helianas-harvesting-module .held-component-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 8px;
+    min-width: 220px;
+    max-width: 320px;
+    padding: 8px 10px;
+    background: rgba(30, 30, 30, 0.95);
+    border: 1px solid rgba(100, 100, 100, 0.5);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    color: #e2e8f0;
+    font-size: 0.85em;
+    z-index: 1000;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.helianas-harvesting-module .held-component-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: rgba(30, 30, 30, 0.95);
+}
+
+.helianas-harvesting-module .held-component-badge:hover .held-component-tooltip {
+    display: block;
+}
+
+.helianas-harvesting-module .tooltip-header {
+    font-weight: 700;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    color: #f7fafc;
+}
+
+.helianas-harvesting-module .tooltip-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 0;
+    font-size: 0.95em;
+}
+
+.helianas-harvesting-module .tooltip-item .holder-name {
+    color: #90cdf4;
+    font-weight: 600;
+    min-width: 80px;
+    flex-shrink: 0;
+}
+
+.helianas-harvesting-module .tooltip-item .item-name {
+    color: #cbd5e0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.helianas-harvesting-module .tooltip-item .item-quantity {
+    color: #a0aec0;
+    font-weight: 600;
+    min-width: 30px;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.helianas-harvesting-module .tooltip-metatag-note {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid rgba(250, 200, 100, 0.3);
+    color: #fbd38d;
+    font-style: italic;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+}
+
+.helianas-harvesting-module .tooltip-metatag-note::before {
+    content: '★';
+    margin-right: 4px;
+    color: #d69e2e;
+}
