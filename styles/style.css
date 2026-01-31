@@ -1,36 +1,22 @@
+/* ==========================================
+   BASE STYLES - All Windows
+   ========================================== */
+
 .helianas-harvesting-module {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 800px;
 }
 
 .helianas-harvesting-module .window-content {
     margin: 0 auto;
-    padding: 10px;
+    padding: 20px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     color: #333;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-.helianas-harvesting-module .crafting-window-content {
-    overflow-x: hidden;
-    height: 100%;
+    width: 100%;
 }
 
 .helianas-harvesting-module sup {
     vertical-align: super;
-}
-
-.helianas-harvesting-module table {
-    width: 100%;
-    margin: 0;
-    table-layout: auto;
-}
-
-.helianas-harvesting-module table td,
-.helianas-harvesting-module table th {
-    padding: 8px;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
 }
 
 .helianas-harvesting-module table tr:nth-child(even) {
@@ -39,16 +25,63 @@
 
 .helianas-harvesting-module .module-title {
     text-align: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     border-bottom: none;
 }
 
 .helianas-harvesting-module .display-image-name {
     display: flex;
     align-items: center;
+    height: 100%;
 }
 
 .helianas-harvesting-module .display-image-name > img {
+    display: block;
+}
+
+.helianas-harvesting-module .display-image-name :nth-child(2) {
+    padding-left: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.helianas-harvesting-module .player-list li {
+    list-style: none;
+    padding: 5px;
+    font-weight: bold;
+}
+
+.helianas-harvesting-module .player-list h3 {
+    border-bottom: none;
+}
+
+.helianas-harvesting-module thead {
+    text-align: center;
+}
+
+/* ==========================================
+   CRAFTING WINDOW SPECIFIC STYLES
+   ========================================== */
+
+.helianas-harvesting-module .crafting-window-content {
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.helianas-harvesting-module .crafting-window-content table {
+    width: 100%;
+    margin: 0;
+    table-layout: auto;
+}
+
+.helianas-harvesting-module .crafting-window-content table td,
+.helianas-harvesting-module .crafting-window-content table th {
+    padding: 8px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.helianas-harvesting-module .crafting-window-content .display-image-name > img {
     width: 30px;
     height: 30px;
     min-width: 30px;
@@ -58,7 +91,8 @@
     flex-shrink: 0;
 }
 
-.helianas-harvesting-module .display-image-name :nth-child(2) {
+.helianas-harvesting-module .crafting-window-content .display-image-name :nth-child(2) {
+    padding-left: 0;
     display: inline-block;
     word-wrap: break-word;
     overflow-wrap: break-word;
@@ -66,18 +100,7 @@
     min-width: 0;
 }
 
-.helianas-harvesting-module .player-list li {
-    list-style: none;
-}
-
-.helianas-harvesting-module .player-list h3 {
-    text-align: center;
-}
-
-.helianas-harvesting-module thead {
-    background-color: rgba(255, 255, 0, 0.2);
-}
-
+/* Validation styles - shared */
 .helianas-harvesting-module .invalid {
     border: 2px solid red !important;
     background: #ffeaea;
@@ -88,48 +111,50 @@
     background: #ffeaea;
 }
 
-.helianas-harvesting-module .sorted-column {
+/* Sorting - Crafting Window Only */
+.helianas-harvesting-module .crafting-window-content .sorted-column {
     background-color: rgba(255, 255, 0, 0.1) !important;
     position: relative;
 }
 
-.helianas-harvesting-module .sorted-column::after {
+.helianas-harvesting-module .crafting-window-content .sorted-column::after {
     content: ' ▼';
     font-size: 0.8em;
     opacity: 0.6;
 }
 
-.helianas-harvesting-module .sorted-column.reverse::after {
+.helianas-harvesting-module .crafting-window-content .sorted-column.reverse::after {
     content: ' ▲';
 }
 
-.helianas-harvesting-module thead[data-action="sortBy"] th {
+.helianas-harvesting-module .crafting-window-content thead[data-action="sortBy"] th {
     cursor: pointer;
     user-select: none;
 }
 
-.helianas-harvesting-module thead[data-action="sortBy"] th:hover {
+.helianas-harvesting-module .crafting-window-content thead[data-action="sortBy"] th:hover {
     background-color: rgba(255, 255, 0, 0.05);
 }
 
-.helianas-harvesting-module .filter-column {
+.helianas-harvesting-module .crafting-window-content .filter-column {
     cursor: pointer;
     user-select: none;
     position: relative;
 }
 
-.helianas-harvesting-module .filter-column:hover {
+.helianas-harvesting-module .crafting-window-content .filter-column:hover {
     background-color: rgba(255, 255, 0, 0.05);
 }
 
-.helianas-harvesting-module .filter-column.active {
+.helianas-harvesting-module .crafting-window-content .filter-column.active {
     background-color: rgba(100, 200, 100, 0.15) !important;
 }
 
-.helianas-harvesting-module .filter-column .filter-checkbox {
+.helianas-harvesting-module .crafting-window-content .filter-column .filter-checkbox {
     display: none;
 }
 
+/* Form styles - shared */
 .helianas-harvesting-module .form-group {
     margin-bottom: 10px;
 }
@@ -140,7 +165,8 @@
     gap: 0.5em;
 }
 
-.helianas-harvesting-module .search-logic-toggle {
+/* Search Controls - Crafting Window Only */
+.helianas-harvesting-module .crafting-window-content .search-logic-toggle {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -160,28 +186,28 @@
     box-sizing: border-box;
 }
 
-.helianas-harvesting-module .search-logic-toggle:hover {
+.helianas-harvesting-module .crafting-window-content .search-logic-toggle:hover {
     background: rgba(0, 0, 0, 0.1);
     border-color: rgba(0, 0, 0, 0.5);
 }
 
-.helianas-harvesting-module .search-logic-toggle:active {
+.helianas-harvesting-module .crafting-window-content .search-logic-toggle:active {
     transform: scale(0.95);
 }
 
-.helianas-harvesting-module .search-logic-toggle.match-all {
+.helianas-harvesting-module .crafting-window-content .search-logic-toggle.match-all {
     background: rgba(100, 150, 200, 0.15);
     border-color: rgba(100, 150, 200, 0.5);
     color: #4a5568;
 }
 
-.helianas-harvesting-module .search-logic-toggle.match-any {
+.helianas-harvesting-module .crafting-window-content .search-logic-toggle.match-any {
     background: rgba(150, 100, 200, 0.15);
     border-color: rgba(150, 100, 200, 0.5);
     color: #4a5568;
 }
 
-.helianas-harvesting-module #recipe-search {
+.helianas-harvesting-module .crafting-window-content #recipe-search {
     flex: 1;
     min-width: 0;
     height: 2.5em;
@@ -190,13 +216,13 @@
 }
 
 /* Held Components Badge and Tooltip Styles */
-.helianas-harvesting-module .held-component-badge {
+.helianas-harvesting-module .crafting-window-content .held-component-badge {
     display: inline-block;
     position: relative;
     cursor: help;
 }
 
-.helianas-harvesting-module .component-count {
+.helianas-harvesting-module .crafting-window-content .component-count {
     display: inline-block;
     min-width: 2em;
     padding: 2px 8px;
@@ -209,7 +235,7 @@
     color: #2d3748;
 }
 
-.helianas-harvesting-module .component-count-empty {
+.helianas-harvesting-module .crafting-window-content .component-count-empty {
     display: inline-block;
     min-width: 2em;
     padding: 2px 8px;
@@ -218,20 +244,20 @@
     text-align: center;
 }
 
-.helianas-harvesting-module .held-component-badge.metatag-match .component-count {
+.helianas-harvesting-module .crafting-window-content .held-component-badge.metatag-match .component-count {
     background: rgba(250, 200, 100, 0.25);
     border-color: rgba(220, 150, 50, 0.5);
     color: #744210;
     box-shadow: 0 0 4px rgba(250, 200, 100, 0.4);
 }
 
-.helianas-harvesting-module .held-component-badge.metatag-match .component-count::before {
+.helianas-harvesting-module .crafting-window-content .held-component-badge.metatag-match .component-count::before {
     content: '★ ';
     color: #d69e2e;
     font-size: 0.85em;
 }
 
-.helianas-harvesting-module .held-component-tooltip {
+.helianas-harvesting-module .crafting-window-content .held-component-tooltip {
     display: none;
     position: absolute;
     bottom: 100%;
@@ -252,7 +278,7 @@
     white-space: nowrap;
 }
 
-.helianas-harvesting-module .held-component-tooltip::after {
+.helianas-harvesting-module .crafting-window-content .held-component-tooltip::after {
     content: '';
     position: absolute;
     top: 100%;
@@ -262,11 +288,11 @@
     border-top-color: rgba(30, 30, 30, 0.95);
 }
 
-.helianas-harvesting-module .held-component-badge:hover .held-component-tooltip {
+.helianas-harvesting-module .crafting-window-content .held-component-badge:hover .held-component-tooltip {
     display: block;
 }
 
-.helianas-harvesting-module .tooltip-header {
+.helianas-harvesting-module .crafting-window-content .tooltip-header {
     font-weight: 700;
     margin-bottom: 6px;
     padding-bottom: 4px;
@@ -274,7 +300,7 @@
     color: #f7fafc;
 }
 
-.helianas-harvesting-module .tooltip-item {
+.helianas-harvesting-module .crafting-window-content .tooltip-item {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -282,21 +308,21 @@
     font-size: 0.95em;
 }
 
-.helianas-harvesting-module .tooltip-item .holder-name {
+.helianas-harvesting-module .crafting-window-content .tooltip-item .holder-name {
     color: #90cdf4;
     font-weight: 600;
     min-width: 80px;
     flex-shrink: 0;
 }
 
-.helianas-harvesting-module .tooltip-item .item-name {
+.helianas-harvesting-module .crafting-window-content .tooltip-item .item-name {
     color: #cbd5e0;
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.helianas-harvesting-module .tooltip-item .item-quantity {
+.helianas-harvesting-module .crafting-window-content .tooltip-item .item-quantity {
     color: #a0aec0;
     font-weight: 600;
     min-width: 30px;
@@ -304,7 +330,7 @@
     flex-shrink: 0;
 }
 
-.helianas-harvesting-module .tooltip-metatag-note {
+.helianas-harvesting-module .crafting-window-content .tooltip-metatag-note {
     margin-top: 6px;
     padding-top: 6px;
     border-top: 1px solid rgba(250, 200, 100, 0.3);
@@ -315,7 +341,7 @@
     align-items: center;
 }
 
-.helianas-harvesting-module .tooltip-metatag-note::before {
+.helianas-harvesting-module .crafting-window-content .tooltip-metatag-note::before {
     content: '★';
     margin-right: 4px;
     color: #d69e2e;
