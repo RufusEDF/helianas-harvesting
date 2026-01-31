@@ -81,13 +81,30 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
             }
             return { width: width, height: 600 };
         },
-        window: { title: "HelianasHarvest.CraftWindowTitle", resize: true },
+        window: {
+            title: "HelianasHarvest.CraftWindowTitle",
+            resize: true,
+            minimizable: true,
+            maximizable: true,
+            controls: [{
+                icon: "fas fa-sync",
+                label: "Refresh Held Components",
+                action: "resetHeldComponents"
+            },
+            {
+                icon: "fas fa-suitcase",
+                label: "View Held Components",
+                action: "viewHeldComponents"
+            }]
+        },
         tag: "div",
         actions: {
             openRecipe: CraftingWindow.prototype._onOpenRecipe,
             toggleFilterComponentsHeld: CraftingWindow.prototype._onToggleFilterComponentsHeld,
             toggleSearchLogic: CraftingWindow.prototype._onToggleSearchLogic,
-            sortBy: CraftingWindow.prototype._onSortBy
+            sortBy: CraftingWindow.prototype._onSortBy,
+            resetHeldComponents: CraftingWindow.prototype._onResetHeldComponents,
+            viewHeldComponents: CraftingWindow.prototype._onToggleFilterComponentsHeld
         }
     };
 
@@ -185,6 +202,8 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
         return recipes;
     }
 
+    #heldComponentsCache = new Map();
+
     mapHeldComponents(recipes){
         let characters = game.actors.filter(a => a.type === "character");
 
@@ -201,9 +220,9 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
             recipe.componentMetatagMatches = [];
 
             recipe.components.forEach((component, index) => {
-                let componentLowerCase = component.name.toLowerCase()
 
-                // Only initialize component.held if it doesn't already exist (shared across recipes)
+                // Idea was to Only initialize component.held if it doesn't already exist (shared across recipes)
+                //However, seems to not be the case making the new reset button redundant.
                 if (!component.held) {
                     component.held = {
                         items : [],
@@ -213,6 +232,8 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
                             return quantity;
                         }
                     };
+
+                    let componentLowerCase = component.name.toLowerCase()
 
                     // Collect items from all characters
                     characters.forEach(character => {
@@ -325,6 +346,20 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
         }
         this.updateForm({ sortBy: clickedIndex });
         //this.updateForm({ sortBy: event.target.cellIndex });
+    }
+
+    _onResetHeldComponents(){
+        console.log("Resetting held components in crafting window");
+        let recipes = this.recipeDatabase.searchItems('');
+        recipes.forEach(recipe => {
+            recipe.componentMetatagMatches = [];
+            recipe.components.forEach(component => {
+                console.log(`Resetting held components for component: ${component}`);
+                component.held = null;
+                console.log(`Component after reset:`, component);
+            });
+        });
+        this.render();
     }
 
     _onRender(ctx, opts) {
