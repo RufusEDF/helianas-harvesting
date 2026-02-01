@@ -87,16 +87,21 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
             resize: true,
             minimizable: true,
             maximizable: true,
-            controls: [{
-                icon: "fas fa-sync",
-                label: "HelianasHarvest.ResetHeldComponentsButton",
-                action: "resetHeldComponents"
-            },
-            {
-                icon: "fas fa-suitcase",
-                label: "HelianasHarvest.ViewHeldComponentsButton",
-                action: "viewHeldComponents"
-            }]
+            get controls(){
+                if (game.settings.get("helianas-harvesting", "heldComponents")){
+                    return [{
+                        icon: "fas fa-sync",
+                        label: "HelianasHarvest.ResetHeldComponentsButton",
+                        action: "resetHeldComponents"
+                    },
+                    {
+                        icon: "fas fa-suitcase",
+                        label: "HelianasHarvest.ViewHeldComponentsButton",
+                        action: "viewHeldComponents"
+                    }];
+                }
+                return [];
+            }
         },
         tag: "div",
         actions: {
