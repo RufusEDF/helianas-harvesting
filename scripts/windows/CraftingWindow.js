@@ -2,6 +2,7 @@ import { Config } from "../config.js";
 import PlayerSelectWindow from "./PlayerSelectWindow.js";
 import { RecipeDatabase } from "../RecipeDatabase.js";
 import getPartyInventoryItems from "../utils/partyInventorySupport.js";
+import HeldComponentsWindow from "./HeldComponentsWindow.js";
 
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
@@ -88,12 +89,12 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
             maximizable: true,
             controls: [{
                 icon: "fas fa-sync",
-                label: "Refresh Held Components",
+                label: "HelianasHarvest.ResetHeldComponentsButton",
                 action: "resetHeldComponents"
             },
             {
                 icon: "fas fa-suitcase",
-                label: "View Held Components",
+                label: "HelianasHarvest.ViewHeldComponentsButton",
                 action: "viewHeldComponents"
             }]
         },
@@ -104,7 +105,7 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
             toggleSearchLogic: CraftingWindow.prototype._onToggleSearchLogic,
             sortBy: CraftingWindow.prototype._onSortBy,
             resetHeldComponents: CraftingWindow.prototype._onResetHeldComponents,
-            viewHeldComponents: CraftingWindow.prototype._onToggleFilterComponentsHeld
+            viewHeldComponents: CraftingWindow.prototype._onOpenHeldComponentsWindow
         }
     };
 
@@ -360,6 +361,11 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
             });
         });
         this.render();
+    }
+
+    _onOpenHeldComponentsWindow(){
+        const hcw = new HeldComponentsWindow();
+        hcw.render(true);
     }
 
     _onRender(ctx, opts) {

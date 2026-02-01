@@ -93,6 +93,9 @@
         "StatisticsWindowTitle": "Heliana's Harvesting Statistics",
         "CreateRecipeTitle": "Create Custom Recipe",
         "CreateRecipeControl": "Create Custom Recipe",
-        "SelectComponentTitle": "Select Component"
+        "SelectComponentTitle": "Select Component",
+        "ViewHeldComponentsButton": "View Held Components",
+        "ResetHeldComponentsButton": "Recount Held Components",
+        "HeldComponentsWindowTitle": "Held Components"
     }
 }
