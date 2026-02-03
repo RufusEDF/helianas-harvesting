@@ -208,8 +208,6 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
         return recipes;
     }
 
-    #heldComponentsCache = new Map();
-
     mapHeldComponents(recipes){
         let characters = game.actors.filter(a => a.type === "character");
 
@@ -230,37 +228,38 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
                 // Idea was to Only initialize component.held if it doesn't already exist (shared across recipes)
                 //However, seems to not be the case making the new reset button redundant.
                 if (!component.held) {
-                    component.held = {
-                        items : [],
-                        get count() {
-                            let quantity = 0;
-                            this.items.forEach(item => {quantity += item.system.quantity});
-                            return quantity;
-                        }
-                    };
+                    console.warn(`!component.held for component: ${component.name}`);
+                    // component.held = {
+                    //     items : [],
+                    //     get count() {
+                    //         let quantity = 0;
+                    //         this.items.forEach(item => {quantity += item.system.quantity});
+                    //         return quantity;
+                    //     }
+                    // };
 
-                    let componentLowerCase = component.name.toLowerCase()
+                    // let componentLowerCase = component.name.toLowerCase()
 
                     // Collect items from all characters
-                    characters.forEach(character => {
-                        component.held.items = component.held.items.concat(character.items.filter(item =>
-                            item.name.toLowerCase().includes(componentLowerCase)));
-                    });
+                    // characters.forEach(character => {
+                    //     component.held.items = component.held.items.concat(character.items.filter(item =>
+                    //         item.name.toLowerCase().includes(componentLowerCase)));
+                    // });
 
                     // Collect items from party inventory
-                    if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
-                        for (let order of partyInventory.order) {
-                            let item = partyInventory.items[order];
-                            try {
-                                if (item.name.toLowerCase().includes(componentLowerCase)){
-                                    component.held.items.push(item);
-                                }
-                            } catch (error) {
-                                console.error("Issue checking item error", error);
-                                console.warn("Issue checking item", item);
-                            }
-                        }
-                    }
+                    // if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
+                    //     for (let order of partyInventory.order) {
+                    //         let item = partyInventory.items[order];
+                    //         try {
+                    //             if (item.name.toLowerCase().includes(componentLowerCase)){
+                    //                 component.held.items.push(item);
+                    //             }
+                    //         } catch (error) {
+                    //             console.error("Issue checking item error", error);
+                    //             console.warn("Issue checking item", item);
+                    //         }
+                    //     }
+                    // }
                 }
 
                 // Check if any held item matches THIS RECIPE's metatag
@@ -359,12 +358,13 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
         let recipes = this.recipeDatabase.searchItems('');
         recipes.forEach(recipe => {
             recipe.componentMetatagMatches = [];
-            recipe.components.forEach(component => {
-                console.log(`Resetting held components for component: ${component}`);
-                component.held = null;
-                console.log(`Component after reset:`, component);
-            });
+            //recipe.components.forEach(component => {
+            //    console.log(`Resetting held components for component: ${component}`);
+            //    component.held = null;
+            //    console.log(`Component after reset:`, component);
+            //});
         });
+        game.modules.get("helianas-harvesting").api.componentDatabase.resetMappedHeldComponents();
         this.render();
     }
 

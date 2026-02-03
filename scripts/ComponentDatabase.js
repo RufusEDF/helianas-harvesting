@@ -69,6 +69,73 @@ export class ComponentDatabase {
         item.value = typeof input.value === "number" ? input.value : item.dc * 4;
         item.rarity = typeof input.rarity === "string" ? input.rarity : "common";
 
+        if (game.settings.get("helianas-harvesting", "heldComponents")){
+            item.held = {
+                _itemsCache: null,
+                get items() {
+                    if (this._itemsCache) return this._itemsCache;
+                    let _items = [];
+
+                    let partyInventory = {items: {}, order: []};
+                    if(game.settings.get("helianas-harvesting", "partyInventorySupport")){
+                        partyInventory = getPartyInventoryItems();
+                    }
+
+                    let componentLowerCase = item.name.toLowerCase()
+
+                    // Collect items from all characters
+                    let characters = game.actors.filter(a => a.type === "character");
+
+                    characters.forEach(character => {
+                        _items = _items.concat(character.items.filter(item =>
+                            item.name.toLowerCase().includes(componentLowerCase)));
+                    });
+
+                    // Collect items from party inventory
+                    if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
+                        for (let order of partyInventory.order) {
+                            let item = partyInventory.items[order];
+                            try {
+                                if (item.name.toLowerCase().includes(componentLowerCase)){
+                                    _items.push(item);
+                                }
+                            } catch (error) {
+                                console.error("Issue checking item error", error);
+                                console.warn("Issue checking item", item);
+                            }
+                        }
+                    }
+                    this._itemsCache = _items;
+                    return _items;
+                },
+
+
+
+
+
+
+
+                //     console.log("Calculating held items for component:", item.name);
+                //     let characterItems = game.actors.filter(a => a.type === "character").map(a => a.items).flat();
+                //     console.log("Character items:", characterItems);
+                //     let allItems = characterItems.concat(
+                //         game.settings.get("helianas-harvesting", "partyInventorySupport") ?
+                //         getPartyInventoryItems().items : []
+                //     );
+                //     console.log("All relevant items:", allItems);
+                //     this._itemsCache = allItems.filter(i => i.name.toLowerCase().includes(item.name.toLowerCase()));
+                //     console.log("Filtered held items for component:", this._itemsCache);
+                //     return this._itemsCache;
+                // },
+                get count() {
+                    let quantity = 0;
+                    this.items.forEach(item => {quantity += item.system.quantity});
+                    console.log(`Total held count for component "${item.name}":`, quantity);
+                    return quantity;
+                }
+            };
+        };
+
         return item;
     }
 
@@ -164,4 +231,17 @@ export class ComponentDatabase {
             }
         };
     }
+
+    //resetMappedHeldComponents
+    //for each component in the database, reset the held components cache
+    //doesn't do anything to the actual items, just resets the cache so it will be recalculated next time
+    resetMappedHeldComponents(){
+        this._items.forEach((component) => {
+            // Reset held components for all components
+            component.held._itemsCache = null;
+        });
+    }
+
+
+
 }
