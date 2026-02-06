@@ -368,3 +368,289 @@
     margin-right: 4px;
     color: #d69e2e;
 }
+
+/* ==========================================
+   HELD COMPONENTS WINDOW STYLES
+   ========================================== */
+
+.helianas-harvesting-module .held-components-window-content {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 100%;
+    padding: 4px 8px;
+}
+
+/* Section layout */
+.helianas-harvesting-module .held-components-window-content .held-section {
+    margin-bottom: 20px;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-section:last-child {
+    margin-bottom: 0;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-section-header {
+    font-size: 1.1em;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    padding-bottom: 4px;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+    color: #2d3748;
+}
+
+/* Tables */
+.helianas-harvesting-module .held-components-window-content .held-table {
+    width: 100%;
+    margin: 0;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-table td,
+.helianas-harvesting-module .held-components-window-content .held-table th {
+    padding: 6px 8px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    vertical-align: top;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-table th {
+    font-weight: 600;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #4a5568;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Sortable column headers (regular components table only) */
+.helianas-harvesting-module .held-components-window-content .sorted-column {
+    background-color: rgba(255, 255, 0, 0.1) !important;
+    position: relative;
+}
+
+.helianas-harvesting-module .held-components-window-content .sorted-column::after {
+    content: ' ▼';
+    font-size: 0.8em;
+    opacity: 0.6;
+}
+
+.helianas-harvesting-module .held-components-window-content .sorted-column.reverse::after {
+    content: ' ▲';
+}
+
+.helianas-harvesting-module .held-components-window-content thead[data-action="sortBy"] th {
+    cursor: pointer;
+    user-select: none;
+}
+
+.helianas-harvesting-module .held-components-window-content thead[data-action="sortBy"] th:hover {
+    background-color: rgba(255, 255, 0, 0.05);
+}
+
+/* Alignment helpers */
+.helianas-harvesting-module .held-components-window-content .center-text {
+    text-align: center;
+}
+
+.helianas-harvesting-module .held-components-window-content .right-text {
+    text-align: right;
+}
+
+/* Component name cell with image */
+.helianas-harvesting-module .held-components-window-content .held-component-name-cell {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-component-name-cell.clickable {
+    cursor: pointer;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-component-name-cell.clickable:hover .held-component-name {
+    text-decoration: underline;
+    color: #2b6cb0;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-component-img {
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    min-height: 26px;
+    border: none;
+    border-radius: 3px;
+    flex-shrink: 0;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-component-name {
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+/* Recipe tooltip on component name hover */
+.helianas-harvesting-module .held-components-window-content .held-recipe-tooltip {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    margin-bottom: 8px;
+    min-width: 200px;
+    max-width: 400px;
+    width: max-content;
+    padding: 8px 10px;
+    background: rgba(30, 30, 30, 0.96);
+    border: 1px solid rgba(100, 100, 100, 0.5);
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    color: #e2e8f0;
+    font-size: 0.85em;
+    z-index: 1000;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-recipe-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 20px;
+    border: 6px solid transparent;
+    border-top-color: rgba(30, 30, 30, 0.96);
+}
+
+.helianas-harvesting-module .held-components-window-content .held-component-name-cell:hover .held-recipe-tooltip {
+    display: block;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-recipe-tooltip-header {
+    font-weight: 700;
+    color: #f7fafc;
+    margin-bottom: 6px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.helianas-harvesting-module .held-components-window-content .held-recipe-tooltip-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 0;
+    font-size: 0.95em;
+    color: #cbd5e0;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-recipe-tooltip-img {
+    width: 18px;
+    height: 18px;
+    border: none;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-recipe-tooltip-footer {
+    margin-top: 6px;
+    padding-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-style: italic;
+    font-size: 0.85em;
+    color: #a0aec0;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-recipe-tooltip-overflow {
+    text-align: center;
+    color: #a0aec0;
+    font-size: 0.9em;
+    padding: 2px 0;
+    letter-spacing: 2px;
+}
+
+/* Property icons */
+.helianas-harvesting-module .held-components-window-content .properties-cell {
+    white-space: nowrap;
+}
+
+.helianas-harvesting-module .held-components-window-content .property-icon {
+    display: inline-block;
+    width: 18px;
+    text-align: center;
+    font-size: 0.9em;
+    color: #4a5568;
+    cursor: help;
+    margin: 0 1px;
+}
+
+.helianas-harvesting-module .held-components-window-content .property-icon.fa-hammer {
+    color: #805ad5;
+}
+
+.helianas-harvesting-module .held-components-window-content .property-icon.fa-drumstick-bite {
+    color: #d69e2e;
+}
+
+.helianas-harvesting-module .held-components-window-content .property-icon.fa-fire {
+    color: #e53e3e;
+}
+
+.helianas-harvesting-module .held-components-window-content .property-none {
+    color: #a0aec0;
+    font-size: 0.9em;
+}
+
+/* Held-by cell: inline breakdown */
+.helianas-harvesting-module .held-components-window-content .held-by-cell {
+    min-width: 160px;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-total-count {
+    display: inline-block;
+    min-width: 1.8em;
+    padding: 1px 6px;
+    background: rgba(100, 150, 200, 0.2);
+    border: 1px solid rgba(100, 150, 200, 0.35);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85em;
+    text-align: center;
+    color: #2d3748;
+    margin-bottom: 3px;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-by-entry {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 1px 0;
+    font-size: 0.82em;
+    line-height: 1.3;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-by-holder {
+    color: #2b6cb0;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-by-item-name {
+    color: #4a5568;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-by-quantity {
+    color: #718096;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+/* Empty state */
+.helianas-harvesting-module .held-components-window-content .held-empty-message {
+    color: #a0aec0;
+    font-style: italic;
+    text-align: center;
+    padding: 12px 0;
+    font-size: 0.9em;
+}

@@ -96,6 +96,25 @@
         "SelectComponentTitle": "Select Component",
         "ViewHeldComponentsButton": "View Held Components",
         "ResetHeldComponentsButton": "Recount Held Components",
-        "HeldComponentsWindowTitle": "Held Components"
+        "HeldComponentsWindowTitle": "Held Components",
+        "HeldComponentsWindow": {
+            "EssencesHeader": "Essences",
+            "ComponentsHeader": "Components",
+            "ComponentColumn": "Component",
+            "RarityColumn": "Rarity",
+            "DCColumn": "DC",
+            "ValueColumn": "Value",
+            "PropertiesColumn": "Properties",
+            "CreatureTypeColumn": "Creature Type",
+            "HeldByColumn": "Held",
+            "PropertyCraftable": "Craftable",
+            "PropertyEdible": "Edible",
+            "PropertyVolatile": "Volatile",
+            "RecipeTooltipHeader": "{count} Recipe(s)",
+            "NoEssencesHeld": "No essences held by any character.",
+            "NoComponentsHeld": "No components held by any character.",
+            "HeldByCharacter": "held by {name}",
+            "ClickToViewRecipes": "Click to view recipes"
+        }
     }
 }
