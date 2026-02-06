@@ -355,15 +355,6 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
 
     _onResetHeldComponents(){
         console.log("Resetting held components in crafting window");
-        let recipes = this.recipeDatabase.searchItems('');
-        recipes.forEach(recipe => {
-            recipe.componentMetatagMatches = [];
-            //recipe.components.forEach(component => {
-            //    console.log(`Resetting held components for component: ${component}`);
-            //    component.held = null;
-            //    console.log(`Component after reset:`, component);
-            //});
-        });
         game.modules.get("helianas-harvesting").api.componentDatabase.resetMappedHeldComponents();
         this.render();
     }
@@ -406,6 +397,8 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
         // ensure timers/listeners don’t leak
         this.#listenerAbort?.abort();
         if (this.#debounceSchedule) clearTimeout(this.#debounceSchedule);
+        // clear any cached held component data to ensure it’s fresh next time
+        game.modules.get("helianas-harvesting").api.componentDatabase.resetMappedHeldComponents();
         return super.close(options);
     }
 

@@ -72,6 +72,7 @@ export class ComponentDatabase {
         if (game.settings.get("helianas-harvesting", "heldComponents")){
             item.held = {
                 _itemsCache: null,
+                _countCache: null,
                 get items() {
                     if (this._itemsCache) return this._itemsCache;
                     let _items = [];
@@ -128,9 +129,11 @@ export class ComponentDatabase {
                 //     return this._itemsCache;
                 // },
                 get count() {
+                    if (this._countCache !== null) return this._countCache;
                     let quantity = 0;
                     this.items.forEach(item => {quantity += item.system.quantity});
                     console.log(`Total held count for component "${item.name}":`, quantity);
+                    this._countCache = quantity;
                     return quantity;
                 }
             };
@@ -237,8 +240,10 @@ export class ComponentDatabase {
     //doesn't do anything to the actual items, just resets the cache so it will be recalculated next time
     resetMappedHeldComponents(){
         this._items.forEach((component) => {
+            console.log(`Resetting held components cache for component: ${component.name}`);
             // Reset held components for all components
             component.held._itemsCache = null;
+            component.held._countCache = null;
         });
     }
 
