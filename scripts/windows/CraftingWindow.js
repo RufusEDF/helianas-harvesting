@@ -150,7 +150,7 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
             .searchItems(this.searchText, this.matchAll)
             .sort((a, b) => a.name.localeCompare(b.name));
 
-        if(game.settings.get("helianas-harvesting", "heldComponents")){recipes = this.mapHeldComponents(recipes);}
+        //if(game.settings.get("helianas-harvesting", "heldComponents")){recipes = this.mapHeldComponents(recipes);}
 
         if(this.filterComponentsHeld){recipes = this.filterOutRecipes(recipes)};
         recipes = this.sortRecipes(recipes, this.sortBy);
@@ -208,78 +208,78 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
         return recipes;
     }
 
-    mapHeldComponents(recipes){
-        let characters = game.actors.filter(a => a.type === "character");
+    // mapHeldComponents(recipes){
+    //     let characters = game.actors.filter(a => a.type === "character");
 
-        let partyInventory = {items: {}, order: []};
-        if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
-            partyInventory = getPartyInventoryItems();
-        }
+    //     let partyInventory = {items: {}, order: []};
+    //     if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
+    //         partyInventory = getPartyInventoryItems();
+    //     }
 
-        //Is this logic best here or in ComponentDatabase.js?
-        recipes.forEach(recipe => {
-            let metatagLowerCase = recipe.metatag ? recipe.metatag.toLowerCase() : null;
+    //     //Is this logic best here or in ComponentDatabase.js?
+    //     recipes.forEach(recipe => {
+    //         let metatagLowerCase = recipe.metatag ? recipe.metatag.toLowerCase() : null;
 
-            // Initialize array to track metatag matches per component on THIS recipe
-            recipe.componentMetatagMatches = [];
+    //         // Initialize array to track metatag matches per component on THIS recipe
+    //         recipe.componentMetatagMatches = [];
 
-            recipe.components.forEach((component, index) => {
+    //         recipe.components.forEach((component, index) => {
 
-                // Idea was to Only initialize component.held if it doesn't already exist (shared across recipes)
-                //However, seems to not be the case making the new reset button redundant.
-                if (!component.held) {
-                    console.warn(`!component.held for component: ${component.name}`);
-                    // component.held = {
-                    //     items : [],
-                    //     get count() {
-                    //         let quantity = 0;
-                    //         this.items.forEach(item => {quantity += item.system.quantity});
-                    //         return quantity;
-                    //     }
-                    // };
+    //             // Idea was to Only initialize component.held if it doesn't already exist (shared across recipes)
+    //             //However, seems to not be the case making the new reset button redundant.
+    //             if (!component.held) {
+    //                 console.warn(`!component.held for component: ${component.name}`);
+    //                 // component.held = {
+    //                 //     items : [],
+    //                 //     get count() {
+    //                 //         let quantity = 0;
+    //                 //         this.items.forEach(item => {quantity += item.system.quantity});
+    //                 //         return quantity;
+    //                 //     }
+    //                 // };
 
-                    // let componentLowerCase = component.name.toLowerCase()
+    //                 // let componentLowerCase = component.name.toLowerCase()
 
-                    // Collect items from all characters
-                    // characters.forEach(character => {
-                    //     component.held.items = component.held.items.concat(character.items.filter(item =>
-                    //         item.name.toLowerCase().includes(componentLowerCase)));
-                    // });
+    //                 // Collect items from all characters
+    //                 // characters.forEach(character => {
+    //                 //     component.held.items = component.held.items.concat(character.items.filter(item =>
+    //                 //         item.name.toLowerCase().includes(componentLowerCase)));
+    //                 // });
 
-                    // Collect items from party inventory
-                    // if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
-                    //     for (let order of partyInventory.order) {
-                    //         let item = partyInventory.items[order];
-                    //         try {
-                    //             if (item.name.toLowerCase().includes(componentLowerCase)){
-                    //                 component.held.items.push(item);
-                    //             }
-                    //         } catch (error) {
-                    //             console.error("Issue checking item error", error);
-                    //             console.warn("Issue checking item", item);
-                    //         }
-                    //     }
-                    // }
-                }
+    //                 // Collect items from party inventory
+    //                 // if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
+    //                 //     for (let order of partyInventory.order) {
+    //                 //         let item = partyInventory.items[order];
+    //                 //         try {
+    //                 //             if (item.name.toLowerCase().includes(componentLowerCase)){
+    //                 //                 component.held.items.push(item);
+    //                 //             }
+    //                 //         } catch (error) {
+    //                 //             console.error("Issue checking item error", error);
+    //                 //             console.warn("Issue checking item", item);
+    //                 //         }
+    //                 //     }
+    //                 // }
+    //             }
 
-                // Check if any held item matches THIS RECIPE's metatag
-                let matchesMetatag = false;
-                if (metatagLowerCase) {
-                    for (let item of component.held.items) {
-                        if (item.name.toLowerCase().includes(metatagLowerCase)) {
-                            matchesMetatag = true;
-                            break;
-                        }
-                    }
-                }
+    //             // Check if any held item matches THIS RECIPE's metatag
+    //             let matchesMetatag = false;
+    //             if (metatagLowerCase) {
+    //                 for (let item of component.held.items) {
+    //                     if (item.name.toLowerCase().includes(metatagLowerCase)) {
+    //                         matchesMetatag = true;
+    //                         break;
+    //                     }
+    //                 }
+    //             }
 
-                // Store the result in the recipe's array
-                recipe.componentMetatagMatches[index] = matchesMetatag;
+    //             // Store the result in the recipe's array
+    //             recipe.componentMetatagMatches[index] = matchesMetatag;
 
-            });
-        });
-        return recipes;
-    }
+    //         });
+    //     });
+    //     return recipes;
+    // }
 
     filterOutRecipes(recipes) {
         return recipes.filter(recipe => {

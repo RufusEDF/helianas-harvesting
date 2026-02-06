@@ -100,7 +100,36 @@ export class RecipeDatabase {
             link: recipe.item,
             qty: recipe.qty ?? 1,
             includeBasePrice: recipe.includeBasePrice === true,
-            components
+            components,
+            get componentMetatagMatches() {
+                if (!game.settings.get("helianas-harvesting", "heldComponents")) {
+                    return []; // or return a default value
+                }
+
+                let metatagLowerCase = recipe.metatag ? recipe.metatag.toLowerCase() : null;
+                let _componentMetatagMatches = [];
+
+                // for each component:
+                components.forEach((component, index) => {
+                     // Check if any held item matches THIS RECIPE's metatag
+                    let matchesMetatag = false;
+                    if (metatagLowerCase) {
+                        for (let item of component.held.items) {
+                            if (item.name.toLowerCase().includes(metatagLowerCase)) {
+                                matchesMetatag = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    // Store the result in the recipe's array
+                    _componentMetatagMatches[index] = matchesMetatag;
+
+                });
+
+                // Your computation logic here
+                return _componentMetatagMatches;
+            }
         });
     }
 
