@@ -307,12 +307,20 @@
     transform: none;
 }
 
-.helianas-harvesting-module .crafting-window-content .tooltip-header {
-    font-weight: 700;
+.helianas-harvesting-module .crafting-window-content .tooltip-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 6px;
     padding-bottom: 4px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    gap: 12px;
+}
+
+.helianas-harvesting-module .crafting-window-content .tooltip-header {
+    font-weight: 700;
     color: #f7fafc;
+    white-space: nowrap;
 }
 
 .helianas-harvesting-module .crafting-window-content .tooltip-item {
@@ -346,14 +354,13 @@
 }
 
 .helianas-harvesting-module .crafting-window-content .tooltip-metatag-note {
-    margin-top: 6px;
-    padding-top: 6px;
-    border-top: 1px solid rgba(250, 200, 100, 0.3);
     color: #fbd38d;
     font-style: italic;
     font-size: 0.9em;
     display: flex;
     align-items: center;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .helianas-harvesting-module .crafting-window-content .tooltip-metatag-note::before {

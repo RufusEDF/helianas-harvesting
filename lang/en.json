@@ -82,7 +82,7 @@
         "FilterComponents": "View Only Held Components",
         "HeldComponentsTooltip": {
             "Title": "Held",
-            "MetatagMatch": "Matches recipe variant"
+            "MetatagMatch": "Recipe Metatag Match"
         },
         "RecipeSearch": "Search Recipes",
         "SearchLogicAND": ",AND",

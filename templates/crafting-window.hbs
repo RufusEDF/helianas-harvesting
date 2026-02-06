@@ -85,7 +85,12 @@
                   <div class="held-component-badge{{#if (lookup ../componentMetatagMatches @index)}} metatag-match{{/if}}">
                     <span class="component-count">{{this.held.count}}</span>
                     <div class="held-component-tooltip">
-                      <div class="tooltip-header">{{this.held.count}} {{localize "HelianasHarvest.HeldComponentsTooltip.Title"}}</div>
+                      <div class="tooltip-header-row">
+                        <div class="tooltip-header">{{this.held.count}} {{localize "HelianasHarvest.HeldComponentsTooltip.Title"}}</div>
+                        {{#if (lookup ../componentMetatagMatches @index)}}
+                          <div class="tooltip-metatag-note">{{localize "HelianasHarvest.HeldComponentsTooltip.MetatagMatch"}}</div>
+                        {{/if}}
+                      </div>
                       {{#each this.held.items}}
                         {{#if this.parent}}
                           <div class="tooltip-item">
@@ -95,9 +100,6 @@
                           </div>
                         {{/if}}
                       {{/each}}
-                      {{#if (lookup ../../componentMetatagMatches @../index)}}
-                        <div class="tooltip-metatag-note">{{localize "HelianasHarvest.HeldComponentsTooltip.MetatagMatch"}}</div>
-                      {{/if}}
                     </div>
                   </div>
                 {{else}}
