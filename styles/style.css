@@ -216,11 +216,6 @@
 }
 
 /* Held Components Badge and Tooltip Styles */
-.helianas-harvesting-module .crafting-window-content .held-component-badge {
-    display: inline-block;
-    position: relative;
-    cursor: help;
-}
 
 .helianas-harvesting-module .crafting-window-content .component-count {
     display: inline-block;
@@ -265,7 +260,8 @@
     transform: translateX(-50%);
     margin-bottom: 8px;
     min-width: 220px;
-    max-width: 320px;
+    max-width: 600px;
+    width: max-content;
     padding: 8px 10px;
     background: rgba(30, 30, 30, 0.95);
     border: 1px solid rgba(100, 100, 100, 0.5);
@@ -288,8 +284,27 @@
     border-top-color: rgba(30, 30, 30, 0.95);
 }
 
+.helianas-harvesting-module .crafting-window-content .held-component-badge {
+    display: inline-block;
+    position: relative;
+    cursor: help;
+}
+
 .helianas-harvesting-module .crafting-window-content .held-component-badge:hover .held-component-tooltip {
     display: block;
+}
+
+/* Adjust tooltip when it would overflow right edge */
+.helianas-harvesting-module .crafting-window-content td:last-child .held-component-badge:hover .held-component-tooltip {
+    left: auto;
+    right: 0;
+    transform: none;
+}
+
+.helianas-harvesting-module .crafting-window-content td:last-child .held-component-badge:hover .held-component-tooltip::after {
+    left: auto;
+    right: 20px;
+    transform: none;
 }
 
 .helianas-harvesting-module .crafting-window-content .tooltip-header {
@@ -326,7 +341,7 @@
     color: #a0aec0;
     font-weight: 600;
     min-width: 30px;
-    text-align: right;
+    text-align: left;
     flex-shrink: 0;
 }
 
