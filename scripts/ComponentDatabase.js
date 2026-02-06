@@ -129,7 +129,8 @@ export class ComponentDatabase {
                 //     return this._itemsCache;
                 // },
                 get count() {
-                    if (this._countCache !== null) return this._countCache;
+                    if (this.countCache) return this._countCache;
+                    //if (this._countCache !== null) return this._countCache;
                     let quantity = 0;
                     this.items.forEach(item => {quantity += item.system.quantity});
                     console.log(`Total held count for component "${item.name}":`, quantity);
