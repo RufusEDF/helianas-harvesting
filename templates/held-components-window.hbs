@@ -21,19 +21,19 @@
       </thead>
       <tbody>
         {{#each essences}}
-          <tr>
+          <tr {{#if this.isFading}}class="held-essence-fading"{{/if}}>
             <td>
               <div class="held-component-name-cell">
                 <img src="{{this.component.img}}" alt="{{this.component.name}}" class="held-component-img"/>
-                <span class="held-component-name">{{this.component.name}}</span>
+                <span class="held-component-name">{{#if this.isFading}}Fading {{/if}}{{this.component.name}}</span>
               </div>
             </td>
             <td>{{getProperty ../rarityNames this.component.rarity}}</td>
             <td>{{this.component.dc}}</td>
             <td>{{this.component.value}} gp</td>
             <td class="held-by-cell">
-              <span class="held-total-count">{{this.component.held.count}}</span>
-              {{#each this.component.held.items}}
+              <span class="held-total-count">{{this.heldCount}}</span>
+              {{#each this.heldItems}}
                 {{#if this.parent}}
                   <div class="held-by-entry" title="{{this.parent.name}} — {{this.name}} ×{{this.system.quantity}}">
                     <span class="held-by-holder">{{this.parent.name}}</span>

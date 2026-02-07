@@ -119,6 +119,7 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
         componentDatabase.resetCachedHeldComponents();
 
         const playerRecipes = game.user.isGM || game.settings.get("helianas-harvesting", "playerRecipes");
+        const fadingEnabled = game.settings.get("helianas-harvesting", "fadingEssenceHomebrew");
 
         // Get all components that are held by at least one character or party inventory
         const heldComponents = componentDatabase.items.filter(c => c.held && c.held.count > 0);
@@ -130,6 +131,29 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
         // Essences: sorted by DC descending (highest rarity first)
         const essences = [...essencesRaw].sort((a, b) => b.dc - a.dc);
 
+        // Build essence display entries.
+        // When the fading essence homebrew is enabled, split each essence's held items
+        // into regular and fading groups and display them as separate rows.
+        // When disabled, display all held items together as a single row per essence.
+        const essenceData = [];
+        for (const c of essences) {
+            if (fadingEnabled) {
+                const regularItems = c.held.items.filter(i => !i.name.toLowerCase().startsWith("fading "));
+                const fadingItems = c.held.items.filter(i => i.name.toLowerCase().startsWith("fading "));
+                const regularCount = regularItems.reduce((sum, i) => sum + i.system.quantity, 0);
+                const fadingCount = fadingItems.reduce((sum, i) => sum + i.system.quantity, 0);
+
+                if (regularCount > 0) {
+                    essenceData.push({ component: c, isFading: false, heldItems: regularItems, heldCount: regularCount });
+                }
+                if (fadingCount > 0) {
+                    essenceData.push({ component: c, isFading: true, heldItems: fadingItems, heldCount: fadingCount });
+                }
+            } else {
+                essenceData.push({ component: c, isFading: false, heldItems: c.held.items, heldCount: c.held.count });
+            }
+        }
+
         // Regular components: sorted by current user selection, default alphabetical
         const regularComponents = HeldComponentsWindow.sortComponents(regularRaw, this.sortBy, this.reverseSort);
 
@@ -137,10 +161,6 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
         // We create lightweight wrapper objects so we don't pollute shared component objects.
         // Cap displayed recipes at 15 to prevent enormous tooltips.
         const MAX_TOOLTIP_RECIPES = 15;
-
-        // Essences don't need recipe lookups — they match hundreds of recipes
-        // and the tooltip/click-through was removed from the essences table.
-        const essenceData = essences.map(c => ({ component: c }));
 
         const componentData = regularComponents.map(c => {
             const allMatching = HeldComponentsWindow.findRecipesForComponent(c, allRecipes);

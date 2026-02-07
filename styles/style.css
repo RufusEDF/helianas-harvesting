@@ -481,6 +481,16 @@
     flex-shrink: 0;
 }
 
+/* Fading essence rows — subtly distinguished from regular essences */
+.helianas-harvesting-module .held-components-window-content .held-essence-fading .held-component-img {
+    opacity: 0.45;
+}
+
+.helianas-harvesting-module .held-components-window-content .held-essence-fading .held-component-name {
+    font-style: italic;
+    opacity: 0.75;
+}
+
 .helianas-harvesting-module .held-components-window-content .held-component-name {
     font-weight: 500;
     white-space: nowrap;
