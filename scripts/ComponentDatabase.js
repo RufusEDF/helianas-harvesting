@@ -117,7 +117,7 @@ export class ComponentDatabase {
                     return quantity;
                 }
             };
-        };
+        }
 
         return item;
     }
@@ -221,6 +221,8 @@ export class ComponentDatabase {
     //doesn't do anything to the actual items, just resets the cache so it will be recalculated next time
     resetCachedHeldComponents(){
         this._items.forEach((component) => {
+            // Some components may not have a `held` object if the heldComponents setting is disabled.
+            if (!component.held) return;
             component.held._itemsCache = null;
             component.held._countCache = null;
         });
