@@ -28,9 +28,9 @@
                 <span class="held-component-name">{{this.component.name}}</span>
               </div>
             </td>
-            <td class="center-text">{{getProperty ../rarityNames this.component.rarity}}</td>
-            <td class="center-text">{{this.component.dc}}</td>
-            <td class="right-text">{{this.component.value}} gp</td>
+            <td>{{getProperty ../rarityNames this.component.rarity}}</td>
+            <td>{{this.component.dc}}</td>
+            <td>{{this.component.value}} gp</td>
             <td class="held-by-cell">
               <span class="held-total-count">{{this.component.held.count}}</span>
               {{#each this.component.held.items}}
@@ -111,7 +111,7 @@
                 {{/if}}
               </div>
             </td>
-            <td class="center-text properties-cell">
+            <td class="properties-cell">
               {{#if this.component.crafting}}
                 <i class="fas fa-hammer property-icon" title="{{localize "HelianasHarvest.HeldComponentsWindow.PropertyCraftable"}}"></i>
               {{/if}}
@@ -125,8 +125,8 @@
                 <span class="property-none">&mdash;</span>
               {{/unless}}{{/unless}}{{/unless}}
             </td>
-            <td class="center-text">{{this.component.dc}}</td>
-            <td class="center-text">{{this.component.creatureType}}</td>
+            <td>{{this.component.dc}}</td>
+            <td>{{this.component.creatureType}}</td>
             <td class="held-by-cell">
               <span class="held-total-count">{{this.component.held.count}}</span>
               {{#each this.component.held.items}}

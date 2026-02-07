@@ -74,6 +74,10 @@
     table-layout: auto;
 }
 
+.helianas-harvesting-module .crafting-window-content thead th {
+    text-align: left;
+}
+
 .helianas-harvesting-module .crafting-window-content table td,
 .helianas-harvesting-module .crafting-window-content table th {
     padding: 8px;
@@ -447,13 +451,8 @@
     background-color: rgba(255, 255, 0, 0.05);
 }
 
-/* Alignment helpers */
-.helianas-harvesting-module .held-components-window-content .center-text {
-    text-align: center;
-}
-
-.helianas-harvesting-module .held-components-window-content .right-text {
-    text-align: right;
+.helianas-harvesting-module .held-components-window-content thead th {
+    text-align: left;
 }
 
 /* Component name cell with image */
