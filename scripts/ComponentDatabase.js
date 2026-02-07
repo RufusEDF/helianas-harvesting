@@ -35,7 +35,7 @@ export class ComponentDatabase {
 
     #sanitizeItem(input) {
         if (!(/^[a-zA-Z0-9]{16}$/.test(input.id))) {
-            console.error("Heliana's Harvesting | Invalid Item ID for ", item);
+            console.error("Heliana's Harvesting | Invalid Item ID for ", input);
             throw new Error("Heliana's Harvesting | Invalid Item ID");
         }
 
@@ -90,21 +90,21 @@ export class ComponentDatabase {
                     let characters = game.actors.filter(a => a.type === "character");
 
                     characters.forEach(character => {
-                        _items = _items.concat(character.items.filter(item =>
-                            item.name.toLowerCase().includes(componentLowerCase)));
+                        _items = _items.concat(character.items.filter(actorItem =>
+                            actorItem.name.toLowerCase().includes(componentLowerCase)));
                     });
 
                     // Collect items from party inventory
                     if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
                         for (let order of partyInventory.order) {
-                            let item = partyInventory.items[order];
+                            let partyItem = partyInventory.items[order];
                             try {
-                                if (item.name.toLowerCase().includes(componentLowerCase)){
-                                    _items.push(item);
+                                if (partyItem.name.toLowerCase().includes(componentLowerCase)){
+                                    _items.push(partyItem);
                                 }
                             } catch (error) {
                                 console.error("Issue checking item error", error);
-                                console.warn("Issue checking item", item);
+                                console.warn("Issue checking item", partyItem);
                             }
                         }
                     }
@@ -114,7 +114,7 @@ export class ComponentDatabase {
                 get count() {
                     if (this._countCache !== null){return this._countCache;};
                     let quantity = 0;
-                    this.items.forEach(item => {quantity += item.system.quantity});
+                    this.items.forEach(heldItem => {quantity += heldItem.system.quantity});
                     this._countCache = quantity;
                     return quantity;
                 }
