@@ -1,3 +1,5 @@
+import getPartyInventoryItems from "../utils/partyInventorySupport.js";
+
 export class ComponentDatabase {
     _items = new Map();
     bosses = new Map();

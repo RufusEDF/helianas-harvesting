@@ -1,7 +1,6 @@
 import { Config } from "../config.js";
 import PlayerSelectWindow from "./PlayerSelectWindow.js";
 import { RecipeDatabase } from "../RecipeDatabase.js";
-import getPartyInventoryItems from "../utils/partyInventorySupport.js";
 import HeldComponentsWindow from "./HeldComponentsWindow.js";
 
 
