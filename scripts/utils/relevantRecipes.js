@@ -13,7 +13,7 @@ export function relevantRecipes(message, html, messageData) {
     RelevantRecipesButton.on("click", event => {
         event.preventDefault();
         const { recipeDatabase } = game.modules.get("helianas-harvesting").api;
-        const cw = new CraftingWindow(recipeDatabase, searchText=searchText);
+        const cw = new CraftingWindow(recipeDatabase, searchText);
         cw.render(true);
     });
 };
