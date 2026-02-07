@@ -13,6 +13,13 @@ export async function addFadingEssence(items) {
         if (!dropRate || dropRate === "0") continue;
 
         const roll = await new Roll(dropRate).evaluate();
+
+        await roll.toMessage({
+        speaker: { alias: "Heliana's Harvesting" },
+        flavor: `Fading ${item.name} Drop Rate (${rarity})`,
+        rollMode: CONST.DICE_ROLL_MODES.PUBLIC
+        });
+
         if (roll.total > 0){
             const fadingItem = {
                 ...item,
