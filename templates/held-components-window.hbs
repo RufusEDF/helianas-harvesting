@@ -35,7 +35,7 @@
               <span class="held-total-count">{{this.component.held.count}}</span>
               {{#each this.component.held.items}}
                 {{#if this.parent}}
-                  <div class="held-by-entry">
+                  <div class="held-by-entry" title="{{this.parent.name}} — {{this.name}} ×{{this.system.quantity}}">
                     <span class="held-by-holder">{{this.parent.name}}</span>
                     <span class="held-by-item-name">{{this.name}}</span>
                     <span class="held-by-quantity">&times;{{this.system.quantity}}</span>
@@ -131,7 +131,7 @@
               <span class="held-total-count">{{this.component.held.count}}</span>
               {{#each this.component.held.items}}
                 {{#if this.parent}}
-                  <div class="held-by-entry">
+                  <div class="held-by-entry" title="{{this.parent.name}} — {{this.name}} ×{{this.system.quantity}}">
                     <span class="held-by-holder">{{this.parent.name}}</span>
                     <span class="held-by-item-name">{{this.name}}</span>
                     <span class="held-by-quantity">&times;{{this.system.quantity}}</span>

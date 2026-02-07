@@ -419,7 +419,6 @@
 .helianas-harvesting-module .held-components-window-content .held-table th {
     font-weight: 600;
     font-size: 0.9em;
-    color: #4a5568;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
@@ -471,7 +470,6 @@
 
 .helianas-harvesting-module .held-components-window-content .held-component-name-cell.clickable:hover .held-component-name {
     text-decoration: underline;
-    color: #2b6cb0;
 }
 
 .helianas-harvesting-module .held-components-window-content .held-component-img {
@@ -626,7 +624,7 @@
 }
 
 .helianas-harvesting-module .held-components-window-content .property-none {
-    color: #a0aec0;
+    opacity: 0.4;
     font-size: 0.9em;
 }
 
@@ -645,7 +643,6 @@
     font-weight: 600;
     font-size: 0.85em;
     text-align: center;
-    color: #2d3748;
     margin-bottom: 3px;
 }
 
@@ -659,13 +656,12 @@
 }
 
 .helianas-harvesting-module .held-components-window-content .held-by-holder {
-    color: #4a5568;
     font-weight: 600;
     flex-shrink: 0;
 }
 
 .helianas-harvesting-module .held-components-window-content .held-by-item-name {
-    color: #718096;
+    opacity: 0.7;
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -673,14 +669,14 @@
 }
 
 .helianas-harvesting-module .held-components-window-content .held-by-quantity {
-    color: #a0aec0;
+    opacity: 0.5;
     font-weight: 600;
     flex-shrink: 0;
 }
 
 /* Empty state */
 .helianas-harvesting-module .held-components-window-content .held-empty-message {
-    color: #a0aec0;
+    opacity: 0.5;
     font-style: italic;
     text-align: center;
     padding: 12px 0;
