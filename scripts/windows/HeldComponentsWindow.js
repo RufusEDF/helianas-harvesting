@@ -61,6 +61,45 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
     }
 
     /**
+     * Fading essence value lookup keyed by parent essence value.
+     * Fading essences are worth roughly a third of the original, with rounding.
+     * @type {Map<number, number>}
+     */
+    static FADING_ESSENCE_VALUES = new Map([
+        [100,    35],     // Frail Essence
+        [500,    150],    // Robust Essence
+        [3000,   1000],   // Potent Essence
+        [16000,  5300],   // Mythic Essence
+        [160000, 53000],  // Deific Essence
+    ]);
+
+    /**
+     * Splits each essence's held items into regular and fading groups,
+     * producing separate display rows for each. Rows with zero held count are omitted.
+     * The fading row immediately follows its parent regular row.
+     * @param {object[]} essences - Essence components sorted by DC descending.
+     * @returns {object[]} Array of display entries with { component, isFading, heldItems, heldCount, displayValue }.
+     */
+    static buildFadingEssenceData(essences) {
+        const data = [];
+        for (const c of essences) {
+            const regularItems = c.held.items.filter(i => !i.name.toLowerCase().startsWith("fading "));
+            const fadingItems = c.held.items.filter(i => i.name.toLowerCase().startsWith("fading "));
+            const regularCount = regularItems.reduce((sum, i) => sum + i.system.quantity, 0);
+            const fadingCount = fadingItems.reduce((sum, i) => sum + i.system.quantity, 0);
+
+            if (regularCount > 0) {
+                data.push({ component: c, isFading: false, heldItems: regularItems, heldCount: regularCount, displayValue: c.value });
+            }
+            if (fadingCount > 0) {
+                const fadingValue = this.FADING_ESSENCE_VALUES.get(c.value) ?? Math.round(c.value / 3);
+                data.push({ component: c, isFading: true, heldItems: fadingItems, heldCount: fadingCount, displayValue: fadingValue });
+            }
+        }
+        return data;
+    }
+
+    /**
      * Finds all recipes that use a given component.
      * @param {object} component - The component to search for.
      * @param {object[]} allRecipes - All recipes from the RecipeDatabase.
@@ -125,8 +164,8 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
         const heldComponents = componentDatabase.items.filter(c => c.held && c.held.count > 0);
 
         // Split into essences and regular components
-        const essencesRaw = heldComponents.filter(c => HeldComponentsWindow.isEssence(c));
-        const regularRaw = heldComponents.filter(c => !HeldComponentsWindow.isEssence(c));
+        const essencesRaw = heldComponents.filter(c => this.constructor.isEssence(c));
+        const regularRaw = heldComponents.filter(c => !this.constructor.isEssence(c));
 
         // Essences: sorted by DC descending (highest rarity first)
         const essences = [...essencesRaw].sort((a, b) => b.dc - a.dc);
@@ -135,27 +174,12 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
         // When the fading essence homebrew is enabled, split each essence's held items
         // into regular and fading groups and display them as separate rows.
         // When disabled, display all held items together as a single row per essence.
-        const essenceData = [];
-        for (const c of essences) {
-            if (fadingEnabled) {
-                const regularItems = c.held.items.filter(i => !i.name.toLowerCase().startsWith("fading "));
-                const fadingItems = c.held.items.filter(i => i.name.toLowerCase().startsWith("fading "));
-                const regularCount = regularItems.reduce((sum, i) => sum + i.system.quantity, 0);
-                const fadingCount = fadingItems.reduce((sum, i) => sum + i.system.quantity, 0);
-
-                if (regularCount > 0) {
-                    essenceData.push({ component: c, isFading: false, heldItems: regularItems, heldCount: regularCount });
-                }
-                if (fadingCount > 0) {
-                    essenceData.push({ component: c, isFading: true, heldItems: fadingItems, heldCount: fadingCount });
-                }
-            } else {
-                essenceData.push({ component: c, isFading: false, heldItems: c.held.items, heldCount: c.held.count });
-            }
-        }
+        const essenceData = fadingEnabled
+            ? this.constructor.buildFadingEssenceData(essences)
+            : essences.map(c => ({ component: c, isFading: false, heldItems: c.held.items, heldCount: c.held.count, displayValue: c.value }));
 
         // Regular components: sorted by current user selection, default alphabetical
-        const regularComponents = HeldComponentsWindow.sortComponents(regularRaw, this.sortBy, this.reverseSort);
+        const regularComponents = this.constructor.sortComponents(regularRaw, this.sortBy, this.reverseSort);
 
         // Attach recipe info to each component for tooltip display.
         // We create lightweight wrapper objects so we don't pollute shared component objects.
@@ -163,7 +187,7 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
         const MAX_TOOLTIP_RECIPES = 15;
 
         const componentData = regularComponents.map(c => {
-            const allMatching = HeldComponentsWindow.findRecipesForComponent(c, allRecipes);
+            const allMatching = this.constructor.findRecipesForComponent(c, allRecipes);
             return {
                 component: c,
                 recipes: allMatching.slice(0, MAX_TOOLTIP_RECIPES),

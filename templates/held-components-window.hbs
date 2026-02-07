@@ -29,8 +29,8 @@
               </div>
             </td>
             <td>{{getProperty ../rarityNames this.component.rarity}}</td>
-            <td>{{this.component.dc}}</td>
-            <td>{{this.component.value}} gp</td>
+            <td>{{#unless this.isFading}}{{this.component.dc}}{{/unless}}</td>
+            <td>{{this.displayValue}} gp</td>
             <td class="held-by-cell">
               <span class="held-total-count">{{this.heldCount}}</span>
               {{#each this.heldItems}}
