@@ -115,6 +115,9 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
         const { componentDatabase, recipeDatabase } = api;
         const allRecipes = recipeDatabase._recipes;
 
+        // clear any cached held component data to ensure we load the latest data
+        componentDatabase.resetCachedHeldComponents();
+
         const playerRecipes = game.user.isGM || game.settings.get("helianas-harvesting", "playerRecipes");
 
         // Get all components that are held by at least one character or party inventory
