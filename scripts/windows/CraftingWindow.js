@@ -91,8 +91,8 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
                 if (game.settings.get("helianas-harvesting", "heldComponents")){
                     return [{
                         icon: "fas fa-sync",
-                        label: "HelianasHarvest.ResetHeldComponentsButton",
-                        action: "resetHeldComponents"
+                        label: "HelianasHarvest.RecalculateHeldComponentsButton",
+                        action: "resetCachedHeldComponents"
                     },
                     {
                         icon: "fas fa-suitcase",
@@ -109,7 +109,7 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
             toggleFilterComponentsHeld: CraftingWindow.prototype._onToggleFilterComponentsHeld,
             toggleSearchLogic: CraftingWindow.prototype._onToggleSearchLogic,
             sortBy: CraftingWindow.prototype._onSortBy,
-            resetHeldComponents: CraftingWindow.prototype._onResetHeldComponents,
+            resetCachedHeldComponents: CraftingWindow.prototype._onResetCachedHeldComponents,
             viewHeldComponents: CraftingWindow.prototype._onOpenHeldComponentsWindow
         }
     };
@@ -280,8 +280,8 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
         //this.updateForm({ sortBy: event.target.cellIndex });
     }
 
-    _onResetHeldComponents(){
-        game.modules.get("helianas-harvesting").api.componentDatabase.resetMappedHeldComponents();
+    _onResetCachedHeldComponents(){
+        game.modules.get("helianas-harvesting").api.componentDatabase.resetCachedHeldComponents();
         this.render();
     }
 
@@ -324,7 +324,7 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
         this.#listenerAbort?.abort();
         if (this.#debounceSchedule) clearTimeout(this.#debounceSchedule);
         // clear any cached held component data to ensure it’s fresh next time
-        game.modules.get("helianas-harvesting").api.componentDatabase.resetMappedHeldComponents();
+        game.modules.get("helianas-harvesting").api.componentDatabase.resetCachedHeldComponents();
         return super.close(options);
     }
 

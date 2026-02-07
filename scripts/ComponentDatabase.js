@@ -215,10 +215,11 @@ export class ComponentDatabase {
         };
     }
 
-    //resetMappedHeldComponents
+    //was previously resetMappedHeldComponents(),
+    // but that name was confusing since it doesn't actually change the mapping, just resets the cached held components for each item
     //for each component in the database, reset the held components cache
     //doesn't do anything to the actual items, just resets the cache so it will be recalculated next time
-    resetMappedHeldComponents(){
+    resetCachedHeldComponents(){
         this._items.forEach((component) => {
             component.held._itemsCache = null;
             component.held._countCache = null;

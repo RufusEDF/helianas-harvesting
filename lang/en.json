@@ -95,7 +95,7 @@
         "CreateRecipeControl": "Create Custom Recipe",
         "SelectComponentTitle": "Select Component",
         "ViewHeldComponentsButton": "View Held Components",
-        "ResetHeldComponentsButton": "Recount Held Components",
+        "RecalculateHeldComponentsButton": "Recalculate Held Components",
         "HeldComponentsWindowTitle": "Held Components",
         "HeldComponentsWindow": {
             "EssencesHeader": "Essences",
