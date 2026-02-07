@@ -1,146 +1,150 @@
 <div class="held-components-window-content">
 
   {{!-- ==================== ESSENCES TABLE ==================== --}}
-  <div class="held-section">
-    <h3 class="held-section-header">{{localize "HelianasHarvest.HeldComponentsWindow.EssencesHeader"}}</h3>
-    {{#if essences.length}}
-      <table class="held-table essences-table">
-        <thead>
+  {{#if essences.length}}
+    <table class="held-table">
+      <colgroup>
+        <col class="col-component">
+        <col class="col-secondary">
+        <col class="col-dc">
+        <col class="col-tertiary">
+        <col class="col-held">
+      </colgroup>
+      <thead>
+        <tr>
+          <th scope="col">{{localize "HelianasHarvest.HeldComponentsWindow.ComponentColumn"}}</th>
+          <th scope="col">{{localize "HelianasHarvest.HeldComponentsWindow.RarityColumn"}}</th>
+          <th scope="col">{{localize "HelianasHarvest.HeldComponentsWindow.DCColumn"}}</th>
+          <th scope="col">{{localize "HelianasHarvest.HeldComponentsWindow.ValueColumn"}}</th>
+          <th scope="col">{{localize "HelianasHarvest.HeldComponentsWindow.HeldByColumn"}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each essences}}
           <tr>
-            <th scope="col">{{localize "HelianasHarvest.HeldComponentsWindow.ComponentColumn"}}</th>
-            <th scope="col">{{localize "HelianasHarvest.HeldComponentsWindow.RarityColumn"}}</th>
-            <th scope="col">{{localize "HelianasHarvest.HeldComponentsWindow.DCColumn"}}</th>
-            <th scope="col">{{localize "HelianasHarvest.HeldComponentsWindow.ValueColumn"}}</th>
-            <th scope="col">{{localize "HelianasHarvest.HeldComponentsWindow.HeldByColumn"}}</th>
+            <td>
+              <div class="held-component-name-cell">
+                <img src="{{this.component.img}}" alt="{{this.component.name}}" class="held-component-img"/>
+                <span class="held-component-name">{{this.component.name}}</span>
+              </div>
+            </td>
+            <td class="center-text">{{getProperty ../rarityNames this.component.rarity}}</td>
+            <td class="center-text">{{this.component.dc}}</td>
+            <td class="right-text">{{this.component.value}} gp</td>
+            <td class="held-by-cell">
+              <span class="held-total-count">{{this.component.held.count}}</span>
+              {{#each this.component.held.items}}
+                {{#if this.parent}}
+                  <div class="held-by-entry">
+                    <span class="held-by-holder">{{this.parent.name}}</span>
+                    <span class="held-by-item-name">{{this.name}}</span>
+                    <span class="held-by-quantity">&times;{{this.system.quantity}}</span>
+                  </div>
+                {{/if}}
+              {{/each}}
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {{#each essences}}
-            <tr>
-              <td>
-                <div class="held-component-name-cell{{#if ../playerRecipes}} clickable{{/if}}"
-                  {{#if ../playerRecipes}}data-action="openFilteredCrafting" data-component-name="{{this.component.name}}"{{/if}}>
-                  <img src="{{this.component.img}}" alt="{{this.component.name}}" class="held-component-img"/>
-                  <span class="held-component-name">{{this.component.name}}</span>
-                  {{#if this.recipeCount}}
-                    <div class="held-recipe-tooltip">
-                      <div class="held-recipe-tooltip-header">{{this.recipeCount}} Recipe(s)</div>
-                      {{#each this.recipes}}
-                        <div class="held-recipe-tooltip-item">
-                          <img src="{{this.img}}" alt="{{this.name}}" class="held-recipe-tooltip-img"/>
-                          <span>{{this.name}}</span>
-                        </div>
-                      {{/each}}
-                      {{#if this.hasMoreRecipes}}
-                        <div class="held-recipe-tooltip-overflow">...</div>
-                      {{/if}}
-                      {{#if ../../playerRecipes}}
-                        <div class="held-recipe-tooltip-footer">{{localize "HelianasHarvest.HeldComponentsWindow.ClickToViewRecipes"}}</div>
-                      {{/if}}
-                    </div>
-                  {{/if}}
-                </div>
-              </td>
-              <td class="center-text">{{getProperty ../rarityNames this.component.rarity}}</td>
-              <td class="center-text">{{this.component.dc}}</td>
-              <td class="right-text">{{this.component.value}} gp</td>
-              <td class="held-by-cell">
-                <span class="held-total-count">{{this.component.held.count}}</span>
-                {{#each this.component.held.items}}
-                  {{#if this.parent}}
-                    <div class="held-by-entry">
-                      <span class="held-by-holder">{{this.parent.name}}</span>
-                      <span class="held-by-item-name">{{this.name}}</span>
-                      <span class="held-by-quantity">&times;{{this.system.quantity}}</span>
-                    </div>
-                  {{/if}}
-                {{/each}}
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    {{else}}
-      <p class="held-empty-message">{{localize "HelianasHarvest.HeldComponentsWindow.NoEssencesHeld"}}</p>
-    {{/if}}
-  </div>
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    <p class="held-empty-message">{{localize "HelianasHarvest.HeldComponentsWindow.NoEssencesHeld"}}</p>
+  {{/if}}
+
+  <hr class="held-section-divider">
 
   {{!-- ==================== REGULAR COMPONENTS TABLE ==================== --}}
-  <div class="held-section">
-    <h3 class="held-section-header">{{localize "HelianasHarvest.HeldComponentsWindow.ComponentsHeader"}}</h3>
-    {{#if components.length}}
-      <table class="held-table components-table">
-        <thead data-action="sortBy">
+  {{#if components.length}}
+    <table class="held-table">
+      <colgroup>
+        <col class="col-component">
+        <col class="col-secondary">
+        <col class="col-dc">
+        <col class="col-tertiary">
+        <col class="col-held">
+      </colgroup>
+      <thead data-action="sortBy">
+        <tr>
+          <th scope="col" class="{{#if (eq sortBy 0)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">
+            {{localize "HelianasHarvest.HeldComponentsWindow.ComponentColumn"}}
+          </th>
+          <th scope="col" class="properties-header{{#if (eq sortBy 1)}} sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">
+            <i class="fas fa-hammer property-icon-header" title="{{localize "HelianasHarvest.HeldComponentsWindow.PropertyCraftable"}}"></i>
+            <i class="fas fa-drumstick-bite property-icon-header" title="{{localize "HelianasHarvest.HeldComponentsWindow.PropertyEdible"}}"></i>
+            <i class="fas fa-fire property-icon-header" title="{{localize "HelianasHarvest.HeldComponentsWindow.PropertyVolatile"}}"></i>
+          </th>
+          <th scope="col" class="{{#if (eq sortBy 2)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">
+            {{localize "HelianasHarvest.HeldComponentsWindow.DCColumn"}}
+          </th>
+          <th scope="col" class="{{#if (eq sortBy 3)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">
+            {{localize "HelianasHarvest.HeldComponentsWindow.CreatureTypeColumn"}}
+          </th>
+          <th scope="col" class="{{#if (eq sortBy 4)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">
+            {{localize "HelianasHarvest.HeldComponentsWindow.HeldByColumn"}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each components}}
           <tr>
-            <th scope="col" class="{{#if (eq sortBy 0)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">{{localize "HelianasHarvest.HeldComponentsWindow.ComponentColumn"}}</th>
-            <th scope="col" class="{{#if (eq sortBy 1)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">{{localize "HelianasHarvest.HeldComponentsWindow.PropertiesColumn"}}</th>
-            <th scope="col" class="{{#if (eq sortBy 2)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">{{localize "HelianasHarvest.HeldComponentsWindow.DCColumn"}}</th>
-            <th scope="col" class="{{#if (eq sortBy 3)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">{{localize "HelianasHarvest.HeldComponentsWindow.CreatureTypeColumn"}}</th>
-            <th scope="col" class="{{#if (eq sortBy 4)}}sorted-column{{#if reverseSort}} reverse{{/if}}{{/if}}">{{localize "HelianasHarvest.HeldComponentsWindow.HeldByColumn"}}</th>
+            <td>
+              <div class="held-component-name-cell{{#if ../playerRecipes}} clickable{{/if}}"
+                {{#if ../playerRecipes}}data-action="openFilteredCrafting" data-component-name="{{this.component.name}}"{{/if}}>
+                <img src="{{this.component.img}}" alt="{{this.component.name}}" class="held-component-img"/>
+                <span class="held-component-name">{{this.component.name}}</span>
+                {{#if this.recipeCount}}
+                  <div class="held-recipe-tooltip">
+                    <div class="held-recipe-tooltip-header">{{this.recipeCount}} Recipe(s)</div>
+                    {{#each this.recipes}}
+                      <div class="held-recipe-tooltip-item">
+                        <img src="{{this.img}}" alt="{{this.name}}" class="held-recipe-tooltip-img"/>
+                        <span>{{this.name}}</span>
+                      </div>
+                    {{/each}}
+                    {{#if this.hasMoreRecipes}}
+                      <div class="held-recipe-tooltip-overflow">...</div>
+                    {{/if}}
+                    {{#if ../../playerRecipes}}
+                      <div class="held-recipe-tooltip-footer">{{localize "HelianasHarvest.HeldComponentsWindow.ClickToViewRecipes"}}</div>
+                    {{/if}}
+                  </div>
+                {{/if}}
+              </div>
+            </td>
+            <td class="center-text properties-cell">
+              {{#if this.component.crafting}}
+                <i class="fas fa-hammer property-icon" title="{{localize "HelianasHarvest.HeldComponentsWindow.PropertyCraftable"}}"></i>
+              {{/if}}
+              {{#if this.component.edible}}
+                <i class="fas fa-drumstick-bite property-icon" title="{{localize "HelianasHarvest.HeldComponentsWindow.PropertyEdible"}}"></i>
+              {{/if}}
+              {{#if this.component.volatile}}
+                <i class="fas fa-fire property-icon" title="{{localize "HelianasHarvest.HeldComponentsWindow.PropertyVolatile"}}"></i>
+              {{/if}}
+              {{#unless this.component.crafting}}{{#unless this.component.edible}}{{#unless this.component.volatile}}
+                <span class="property-none">&mdash;</span>
+              {{/unless}}{{/unless}}{{/unless}}
+            </td>
+            <td class="center-text">{{this.component.dc}}</td>
+            <td class="center-text">{{this.component.creatureType}}</td>
+            <td class="held-by-cell">
+              <span class="held-total-count">{{this.component.held.count}}</span>
+              {{#each this.component.held.items}}
+                {{#if this.parent}}
+                  <div class="held-by-entry">
+                    <span class="held-by-holder">{{this.parent.name}}</span>
+                    <span class="held-by-item-name">{{this.name}}</span>
+                    <span class="held-by-quantity">&times;{{this.system.quantity}}</span>
+                  </div>
+                {{/if}}
+              {{/each}}
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          {{#each components}}
-            <tr>
-              <td>
-                <div class="held-component-name-cell{{#if ../playerRecipes}} clickable{{/if}}"
-                  {{#if ../playerRecipes}}data-action="openFilteredCrafting" data-component-name="{{this.component.name}}"{{/if}}>
-                  <img src="{{this.component.img}}" alt="{{this.component.name}}" class="held-component-img"/>
-                  <span class="held-component-name">{{this.component.name}}</span>
-                  {{#if this.recipeCount}}
-                    <div class="held-recipe-tooltip">
-                      <div class="held-recipe-tooltip-header">{{this.recipeCount}} Recipe(s)</div>
-                      {{#each this.recipes}}
-                        <div class="held-recipe-tooltip-item">
-                          <img src="{{this.img}}" alt="{{this.name}}" class="held-recipe-tooltip-img"/>
-                          <span>{{this.name}}</span>
-                        </div>
-                      {{/each}}
-                      {{#if this.hasMoreRecipes}}
-                        <div class="held-recipe-tooltip-overflow">...</div>
-                      {{/if}}
-                      {{#if ../../playerRecipes}}
-                        <div class="held-recipe-tooltip-footer">{{localize "HelianasHarvest.HeldComponentsWindow.ClickToViewRecipes"}}</div>
-                      {{/if}}
-                    </div>
-                  {{/if}}
-                </div>
-              </td>
-              <td class="center-text properties-cell">
-                {{#if this.component.crafting}}
-                  <i class="fas fa-hammer property-icon" title="{{localize "HelianasHarvest.HeldComponentsWindow.PropertyCraftable"}}"></i>
-                {{/if}}
-                {{#if this.component.edible}}
-                  <i class="fas fa-drumstick-bite property-icon" title="{{localize "HelianasHarvest.HeldComponentsWindow.PropertyEdible"}}"></i>
-                {{/if}}
-                {{#if this.component.volatile}}
-                  <i class="fas fa-fire property-icon" title="{{localize "HelianasHarvest.HeldComponentsWindow.PropertyVolatile"}}"></i>
-                {{/if}}
-                {{#unless this.component.crafting}}{{#unless this.component.edible}}{{#unless this.component.volatile}}
-                  <span class="property-none">&mdash;</span>
-                {{/unless}}{{/unless}}{{/unless}}
-              </td>
-              <td class="center-text">{{this.component.dc}}</td>
-              <td class="center-text">{{this.component.creatureType}}</td>
-              <td class="held-by-cell">
-                <span class="held-total-count">{{this.component.held.count}}</span>
-                {{#each this.component.held.items}}
-                  {{#if this.parent}}
-                    <div class="held-by-entry">
-                      <span class="held-by-holder">{{this.parent.name}}</span>
-                      <span class="held-by-item-name">{{this.name}}</span>
-                      <span class="held-by-quantity">&times;{{this.system.quantity}}</span>
-                    </div>
-                  {{/if}}
-                {{/each}}
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    {{else}}
-      <p class="held-empty-message">{{localize "HelianasHarvest.HeldComponentsWindow.NoComponentsHeld"}}</p>
-    {{/if}}
-  </div>
+        {{/each}}
+      </tbody>
+    </table>
+  {{else}}
+    <p class="held-empty-message">{{localize "HelianasHarvest.HeldComponentsWindow.NoComponentsHeld"}}</p>
+  {{/if}}
 
 </div>

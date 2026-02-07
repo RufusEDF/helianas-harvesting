@@ -380,31 +380,27 @@
     padding: 4px 8px;
 }
 
-/* Section layout */
-.helianas-harvesting-module .held-components-window-content .held-section {
-    margin-bottom: 20px;
+/* Section divider between essences and components tables */
+.helianas-harvesting-module .held-components-window-content .held-section-divider {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    margin: 12px 0;
 }
 
-.helianas-harvesting-module .held-components-window-content .held-section:last-child {
-    margin-bottom: 0;
-}
-
-.helianas-harvesting-module .held-components-window-content .held-section-header {
-    font-size: 1.1em;
-    font-weight: 700;
-    margin: 0 0 6px 0;
-    padding-bottom: 4px;
-    border-bottom: 2px solid rgba(0, 0, 0, 0.15);
-    color: #2d3748;
-}
-
-/* Tables */
+/* Tables - fixed layout for column alignment between both tables */
 .helianas-harvesting-module .held-components-window-content .held-table {
     width: 100%;
     margin: 0;
-    table-layout: auto;
+    table-layout: fixed;
     border-collapse: collapse;
 }
+
+/* Column widths - shared between both tables for alignment */
+.helianas-harvesting-module .held-components-window-content .col-component { width: 28%; }
+.helianas-harvesting-module .held-components-window-content .col-secondary { width: 10%; }
+.helianas-harvesting-module .held-components-window-content .col-dc { width: 7%; }
+.helianas-harvesting-module .held-components-window-content .col-tertiary { width: 15%; }
+.helianas-harvesting-module .held-components-window-content .col-held { width: 40%; }
 
 .helianas-harvesting-module .held-components-window-content .held-table td,
 .helianas-harvesting-module .held-components-window-content .held-table th {
@@ -414,29 +410,33 @@
     vertical-align: top;
 }
 
+/* Allow first column to overflow for tooltip */
+.helianas-harvesting-module .held-components-window-content .held-table td:first-child {
+    overflow: visible;
+    position: relative;
+}
+
 .helianas-harvesting-module .held-components-window-content .held-table th {
     font-weight: 600;
     font-size: 0.9em;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
     color: #4a5568;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-/* Sortable column headers (regular components table only) */
+/* Sortable column headers */
 .helianas-harvesting-module .held-components-window-content .sorted-column {
     background-color: rgba(255, 255, 0, 0.1) !important;
     position: relative;
 }
 
 .helianas-harvesting-module .held-components-window-content .sorted-column::after {
-    content: ' ▼';
+    content: ' \25BC';
     font-size: 0.8em;
     opacity: 0.6;
 }
 
 .helianas-harvesting-module .held-components-window-content .sorted-column.reverse::after {
-    content: ' ▲';
+    content: ' \25B2';
 }
 
 .helianas-harvesting-module .held-components-window-content thead[data-action="sortBy"] th {
@@ -487,17 +487,20 @@
 .helianas-harvesting-module .held-components-window-content .held-component-name {
     font-weight: 500;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-/* Recipe tooltip on component name hover */
+/* Recipe tooltip - appears to the RIGHT of the name cell to avoid scroll clipping */
 .helianas-harvesting-module .held-components-window-content .held-recipe-tooltip {
     display: none;
     position: absolute;
-    bottom: 100%;
-    left: 0;
-    margin-bottom: 8px;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    margin-left: 10px;
     min-width: 200px;
-    max-width: 400px;
+    max-width: 350px;
     width: max-content;
     padding: 8px 10px;
     background: rgba(30, 30, 30, 0.96);
@@ -511,13 +514,20 @@
     white-space: nowrap;
 }
 
+/* Arrow pointing LEFT toward the name cell */
 .helianas-harvesting-module .held-components-window-content .held-recipe-tooltip::after {
     content: '';
     position: absolute;
-    top: 100%;
-    left: 20px;
+    top: 50%;
+    right: 100%;
+    transform: translateY(-50%);
     border: 6px solid transparent;
-    border-top-color: rgba(30, 30, 30, 0.96);
+    border-right-color: rgba(30, 30, 30, 0.96);
+}
+
+/* Ensure hovered row rises above others for tooltip visibility */
+.helianas-harvesting-module .held-components-window-content .held-table tr:hover td:first-child {
+    z-index: 10;
 }
 
 .helianas-harvesting-module .held-components-window-content .held-component-name-cell:hover .held-recipe-tooltip {
@@ -566,7 +576,30 @@
     letter-spacing: 2px;
 }
 
-/* Property icons */
+/* Property icons in header */
+.helianas-harvesting-module .held-components-window-content .properties-header {
+    white-space: nowrap;
+}
+
+.helianas-harvesting-module .held-components-window-content .property-icon-header {
+    font-size: 0.85em;
+    margin: 0 2px;
+    cursor: help;
+}
+
+.helianas-harvesting-module .held-components-window-content .property-icon-header.fa-hammer {
+    color: #805ad5;
+}
+
+.helianas-harvesting-module .held-components-window-content .property-icon-header.fa-drumstick-bite {
+    color: #d69e2e;
+}
+
+.helianas-harvesting-module .held-components-window-content .property-icon-header.fa-fire {
+    color: #e53e3e;
+}
+
+/* Property icons in body cells */
 .helianas-harvesting-module .held-components-window-content .properties-cell {
     white-space: nowrap;
 }
@@ -576,7 +609,6 @@
     width: 18px;
     text-align: center;
     font-size: 0.9em;
-    color: #4a5568;
     cursor: help;
     margin: 0 1px;
 }
@@ -600,7 +632,7 @@
 
 /* Held-by cell: inline breakdown */
 .helianas-harvesting-module .held-components-window-content .held-by-cell {
-    min-width: 160px;
+    min-width: 120px;
 }
 
 .helianas-harvesting-module .held-components-window-content .held-total-count {
@@ -627,13 +659,13 @@
 }
 
 .helianas-harvesting-module .held-components-window-content .held-by-holder {
-    color: #2b6cb0;
+    color: #4a5568;
     font-weight: 600;
     flex-shrink: 0;
 }
 
 .helianas-harvesting-module .held-components-window-content .held-by-item-name {
-    color: #4a5568;
+    color: #718096;
     flex: 1;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -641,7 +673,7 @@
 }
 
 .helianas-harvesting-module .held-components-window-content .held-by-quantity {
-    color: #718096;
+    color: #a0aec0;
     font-weight: 600;
     flex-shrink: 0;
 }

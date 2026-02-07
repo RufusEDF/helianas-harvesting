@@ -121,18 +121,12 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
 
         // Attach recipe info to each component for tooltip display.
         // We create lightweight wrapper objects so we don't pollute shared component objects.
-        // Cap displayed recipes at 15 to prevent enormous tooltips (especially for Essences).
+        // Cap displayed recipes at 15 to prevent enormous tooltips.
         const MAX_TOOLTIP_RECIPES = 15;
 
-        const essenceData = essences.map(c => {
-            const allMatching = HeldComponentsWindow.findRecipesForComponent(c, allRecipes);
-            return {
-                component: c,
-                recipes: allMatching.slice(0, MAX_TOOLTIP_RECIPES),
-                recipeCount: allMatching.length,
-                hasMoreRecipes: allMatching.length > MAX_TOOLTIP_RECIPES
-            };
-        });
+        // Essences don't need recipe lookups — they match hundreds of recipes
+        // and the tooltip/click-through was removed from the essences table.
+        const essenceData = essences.map(c => ({ component: c }));
 
         const componentData = regularComponents.map(c => {
             const allMatching = HeldComponentsWindow.findRecipesForComponent(c, allRecipes);
