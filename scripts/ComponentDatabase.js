@@ -109,30 +109,10 @@ export class ComponentDatabase {
                     this._itemsCache = _items;
                     return _items;
                 },
-
-
-
-
-
-
-
-                //     console.log("Calculating held items for component:", item.name);
-                //     let characterItems = game.actors.filter(a => a.type === "character").map(a => a.items).flat();
-                //     console.log("Character items:", characterItems);
-                //     let allItems = characterItems.concat(
-                //         game.settings.get("helianas-harvesting", "partyInventorySupport") ?
-                //         getPartyInventoryItems().items : []
-                //     );
-                //     console.log("All relevant items:", allItems);
-                //     this._itemsCache = allItems.filter(i => i.name.toLowerCase().includes(item.name.toLowerCase()));
-                //     console.log("Filtered held items for component:", this._itemsCache);
-                //     return this._itemsCache;
-                // },
                 get count() {
-                    if (this._countCache){console.log("Using cached count for component:", item.name, "Count:", this._countCache); return this._countCache;};
+                    if (this._countCache){return this._countCache;};
                     let quantity = 0;
                     this.items.forEach(item => {quantity += item.system.quantity});
-                    console.log(`Total held count for component "${item.name}":`, quantity);
                     this._countCache = quantity;
                     return quantity;
                 }
@@ -240,8 +220,6 @@ export class ComponentDatabase {
     //doesn't do anything to the actual items, just resets the cache so it will be recalculated next time
     resetMappedHeldComponents(){
         this._items.forEach((component) => {
-            console.log(`Resetting held components cache for component: ${component.name}`);
-            // Reset held components for all components
             component.held._itemsCache = null;
             component.held._countCache = null;
         });
