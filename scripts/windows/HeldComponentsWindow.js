@@ -22,7 +22,18 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
     static DEFAULT_OPTIONS = {
         id: "held-components-window",
         classes: ["helianas-harvesting-module", "themed", "theme-light"],
-        position: { width: 800, height: 600 },
+        get position() {
+            let width = 800; // Default width
+            try {
+                const widthSetting = game.settings.get("helianas-harvesting", "craftingWindowWidth");
+                if (widthSetting > 0 && widthSetting < 10000) {
+                    width = widthSetting;
+                }
+            } catch (error) {
+                console.warn("Error retrieving crafting window width setting for Held Components Window, using default:", error);
+            }
+            return { width: width, height: 600 };
+        },
         window: {
             title: "HelianasHarvest.HeldComponentsWindowTitle",
             minimizable: true,
