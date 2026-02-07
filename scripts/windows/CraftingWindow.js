@@ -272,11 +272,11 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
 
     _onSortBy(event, target) {
         let clickedIndex = event.target.cellIndex;
-        if(this.sortBy === clickedIndex){
-            this.updateForm({ reverseSort: !this.reverseSort });
+        if (this.sortBy === clickedIndex) {
+            this.updateForm({ sortBy: clickedIndex, reverseSort: !this.reverseSort });
+        } else {
+            this.updateForm({ sortBy: clickedIndex });
         }
-        this.updateForm({ sortBy: clickedIndex });
-        //this.updateForm({ sortBy: event.target.cellIndex });
     }
 
     _onResetCachedHeldComponents(){
