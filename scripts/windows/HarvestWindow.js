@@ -1,6 +1,7 @@
 import { Config } from "../config.js";
 import { ComponentDatabase } from "../ComponentDatabase.js";
 import { HarvestWindowForm } from "./HarvestWindowForm.js";
+import { addFadingEssence } from "../utils/addFadingEssence.js";
 
 export default class HarvestWindow extends Application {
 
@@ -259,8 +260,12 @@ export default class HarvestWindow extends Application {
 
   async completeHarvest() {
     const actor = game.actors.get(this.formData.harvestingCharacter);
-    const items = this.formData.getHarvestComponents(this.formData.harvestCheckTotal);
+    let items = this.formData.getHarvestComponents(this.formData.harvestCheckTotal);
     let message = `<p>${game.i18n.format("HelianasHarvest.ConfirmHarvestDialog", { name: actor.name})}</p><ul>`;
+
+    if(game.settings.get("helianas-harvesting", "fadingEssenceHomebrew")){
+      items = await addFadingEssence(items);
+    }
 
     items.forEach(item => {
       message += `<li> ${item.name} x ${item.count}`;

@@ -24,6 +24,12 @@
                 "PartyInventorySupportName": "Party-Inventory Module Support",
                 "PartyInventorySupportHint": "If enabled, items within the Party-Inventory module will be included in the Held Components column. \nRequires Display Held Components to be enabled.\nRequires https://github.com/teroparvinen/foundry-party-inventory\n"
             },
+            "FadingEssenceHomebrew": {
+                "Name": "Fading Essence Homebrew",
+                "Hint": "Fading Essence can be used as a crafting component for consumable recipes.  It is obtained alongside regular essences automatically. \n Recommended - Enabled",
+                "DropRateName": "Fading Essence Drop Rate",
+                "DropRateHint": "The drop rate of fading essence relative to regular essence. \n recommended - 1d4-1"
+            },
             "CraftingWindowWidth": {
                 "Name": "Crafting Window Width",
                 "Hint": "The width of the crafting window. Min 400.  Max 1600. \n Recommended - Client specific"

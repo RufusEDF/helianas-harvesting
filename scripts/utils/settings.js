@@ -86,6 +86,26 @@ export function setupSettings() {
         requiresReload: false
     });
 
+    game.settings.register("helianas-harvesting", "fadingEssenceHomebrew", {
+        name: "HelianasHarvest.Settings.FadingEssenceHomebrew.Name",
+        hint: "HelianasHarvest.Settings.FadingEssenceHomebrew.Hint",
+        scope: "world",
+        config: true,
+        type: new foundry.data.fields.BooleanField(),
+        default: false,
+        requiresReload: true,
+    });
+
+    game.settings.register("helianas-harvesting", "fadingEssenceHomebrewDropRate", {
+        name: "HelianasHarvest.Settings.FadingEssenceHomebrew.DropRateName",
+        hint: "HelianasHarvest.Settings.FadingEssenceHomebrew.DropRateHint",
+        scope: "world",
+        config: true,
+        type: new foundry.data.fields.StringField(),
+        default: "1d4-1",
+        requiresReload: true,
+    });
+
     game.settings.register("helianas-harvesting-custom-recipes", "createCustomRecipes", {
         name: "HelianasHarvest.Settings.CreateCustomRecipes.Name",
         hint: "HelianasHarvest.Settings.CreateCustomRecipes.Hint",
