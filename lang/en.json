@@ -27,8 +27,18 @@
             "FadingEssenceHomebrew": {
                 "Name": "Fading Essence Homebrew",
                 "Hint": "Fading Essence can be used as a crafting component for consumable recipes.  It is obtained alongside regular essences automatically. \n Recommended - Enabled",
-                "DropRateName": "Fading Essence Drop Rate",
-                "DropRateHint": "The drop rate of fading essence relative to regular essence. \n recommended - 1d4-1"
+                "DropRate_common_Name": "Fading Essence Drop Rate (Common)",
+                "DropRate_common_Hint": "The drop rate of fading essence for Common essences. \n Recommended - 1d4-1",
+                "DropRate_uncommon_Name": "Fading Essence Drop Rate (Uncommon)",
+                "DropRate_uncommon_Hint": "The drop rate of fading essence for Uncommon essences. \n Recommended - 1d4-1",
+                "DropRate_rare_Name": "Fading Essence Drop Rate (Rare)",
+                "DropRate_rare_Hint": "The drop rate of fading essence for Rare essences. \n Recommended - 1d3-1",
+                "DropRate_veryRare_Name": "Fading Essence Drop Rate (Very Rare)",
+                "DropRate_veryRare_Hint": "The drop rate of fading essence for Very Rare essences. \n Recommended - 1d4-2",
+                "DropRate_legendary_Name": "Fading Essence Drop Rate (Legendary)",
+                "DropRate_legendary_Hint": "The drop rate of fading essence for Legendary essences. \n Recommended - 1d2-1",
+                "DropRate_artifact_Name": "Fading Essence Drop Rate (Artifact)",
+                "DropRate_artifact_Hint": "The drop rate of fading essence for Artifact essences. \n Recommended - 0"
             },
             "CraftingWindowWidth": {
                 "Name": "Crafting Window Width",
