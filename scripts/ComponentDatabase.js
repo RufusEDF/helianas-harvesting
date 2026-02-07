@@ -74,7 +74,7 @@ export class ComponentDatabase {
                 _itemsCache: null,
                 _countCache: null,
                 get items() {
-                    if (this._itemsCache) return this._itemsCache;
+                    if (this._itemsCache !== null){return this._itemsCache};
                     let _items = [];
 
                     let partyInventory = {items: {}, order: []};
@@ -110,7 +110,7 @@ export class ComponentDatabase {
                     return _items;
                 },
                 get count() {
-                    if (this._countCache){return this._countCache;};
+                    if (this._countCache !== null){return this._countCache;};
                     let quantity = 0;
                     this.items.forEach(item => {quantity += item.system.quantity});
                     this._countCache = quantity;
