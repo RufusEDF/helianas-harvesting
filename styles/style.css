@@ -375,7 +375,6 @@
 
 .helianas-harvesting-module .held-components-window-content {
     overflow-y: auto;
-    overflow-x: hidden;
     height: 100%;
     padding: 4px 8px;
 }
@@ -393,6 +392,7 @@
     margin: 0;
     table-layout: fixed;
     border-collapse: collapse;
+    overflow: visible;
 }
 
 /* Column widths - shared between both tables for alignment */
