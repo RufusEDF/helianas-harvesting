@@ -51,27 +51,3 @@ Hooks.on("ready", () => {
 });
 
 Hooks.on('renderChatMessage', relevantRecipes);
-
-Handlebars.registerHelper('ifContains', function(string1, string2, options) {
-    return (string1.toLowerCase().includes(string2.toLowerCase())) ? options.fn(this) : options.inverse(this);
-});
-
-Handlebars.registerHelper('ifEquals', function(string1, string2, options) {
-    return (string1 === string2) ? options.fn(this) : options.inverse(this);
-});
-
-Handlebars.registerHelper('ifThen', (condition, ...args) => {
-    // Get the hash from the last argument (options object)
-    const options = args[args.length - 1];
-
-    if (condition && options.hash) {
-        // Convert hash to attribute string: {class: "highlighted"} → 'class="highlighted"'
-        return new Handlebars.SafeString(
-            Object.entries(options.hash)
-                .map(([key, value]) => `${key}="${value}"`)
-                .join(' ')
-        );
-    }
-
-    return '';
-});
