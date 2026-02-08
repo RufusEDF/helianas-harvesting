@@ -68,7 +68,7 @@ export default class CraftingWindow extends HandlebarsApplicationMixin(Applicati
 
     static DEFAULT_OPTIONS = {
         id: "crafting-window",
-        classes: ["helianas-harvesting-module", "themed", "theme-light"],
+        classes: ["helianas-harvesting-module"],
         get position() {
             let width = 800; // Default width
             try {

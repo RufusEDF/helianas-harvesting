@@ -21,7 +21,7 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
 
     static DEFAULT_OPTIONS = {
         id: "held-components-window",
-        classes: ["helianas-harvesting-module", "themed", "theme-light"],
+        classes: ["helianas-harvesting-module"],
         get position() {
             let width = 800; // Default width
             try {

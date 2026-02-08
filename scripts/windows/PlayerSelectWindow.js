@@ -15,7 +15,7 @@ export default class PlayerSelectWindow extends HandlebarsApplicationMixin(Appli
 
   static DEFAULT_OPTIONS = {
     id: "player-select-window",
-    classes: ["helianas-harvesting-module", "themed", "theme-light"],
+    classes: ["helianas-harvesting-module"],
     position: { width: 350, height: 400 },
     window: { title: "HelianasHarvest.PlayerSelectWindowTitle", resize: false },
     tag: "div",
