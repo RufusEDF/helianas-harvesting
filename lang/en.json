@@ -41,8 +41,8 @@
                 "DropRate_artifact_Hint": "The drop rate of fading essence for Artifact essences. \n Recommended - 0"
             },
             "CraftingWindowWidth": {
-                "Name": "Crafting Window Width",
-                "Hint": "The width of the crafting window. Min 400.  Max 1600. \n Recommended - Client specific"
+                "Name": "Window Width",
+                "Hint": "The width of the crafting and held item windows. Min 400.  Max 1600. \n Recommended - 800"
             },
             "CreateCustomRecipes": {
                 "Name": "Create Custom Recipes",
