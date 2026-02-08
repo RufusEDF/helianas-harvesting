@@ -11,7 +11,6 @@
     margin: 0 auto;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    color: #333;
     width: 100%;
 }
 
@@ -20,7 +19,7 @@
 }
 
 .helianas-harvesting-module table tr:nth-child(even) {
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(128, 128, 128, 0.08);
 }
 
 .helianas-harvesting-module .module-title {
@@ -107,12 +106,12 @@
 /* Validation styles - shared */
 .helianas-harvesting-module .invalid {
     border: 2px solid red !important;
-    background: #ffeaea;
+    background: rgba(255, 80, 80, 0.1);
 }
 
 .helianas-harvesting-module .warn {
     border: 2px solid yellow !important;
-    background: #ffeaea;
+    background: rgba(255, 200, 0, 0.1);
 }
 
 /* Sorting - Crafting Window Only */
@@ -177,9 +176,9 @@
     padding: 0 0.75em;
     min-width: 4.5em;
     height: 2.5em;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(128, 128, 128, 0.4);
     border-radius: 4px;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(128, 128, 128, 0.1);
     font-weight: 600;
     font-size: 0.9em;
     cursor: pointer;
@@ -191,8 +190,8 @@
 }
 
 .helianas-harvesting-module .crafting-window-content .search-logic-toggle:hover {
-    background: rgba(0, 0, 0, 0.1);
-    border-color: rgba(0, 0, 0, 0.5);
+    background: rgba(128, 128, 128, 0.15);
+    border-color: rgba(128, 128, 128, 0.6);
 }
 
 .helianas-harvesting-module .crafting-window-content .search-logic-toggle:active {
@@ -202,13 +201,11 @@
 .helianas-harvesting-module .crafting-window-content .search-logic-toggle.match-all {
     background: rgba(100, 150, 200, 0.15);
     border-color: rgba(100, 150, 200, 0.5);
-    color: #4a5568;
 }
 
 .helianas-harvesting-module .crafting-window-content .search-logic-toggle.match-any {
     background: rgba(150, 100, 200, 0.15);
     border-color: rgba(150, 100, 200, 0.5);
-    color: #4a5568;
 }
 
 .helianas-harvesting-module .crafting-window-content #recipe-search {
@@ -217,6 +214,8 @@
     height: 2.5em;
     box-sizing: border-box;
     padding: 0 0.75em;
+    color: inherit;
+    /*background-color: rgba(128, 128, 128, 0.1);*/
 }
 
 /* Held Components Badge and Tooltip Styles */
@@ -231,14 +230,13 @@
     font-weight: 600;
     font-size: 0.9em;
     text-align: center;
-    color: #2d3748;
 }
 
 .helianas-harvesting-module .crafting-window-content .component-count-empty {
     display: inline-block;
     min-width: 2em;
     padding: 2px 8px;
-    color: #a0aec0;
+    opacity: 0.4;
     font-size: 0.9em;
     text-align: center;
 }
@@ -246,7 +244,6 @@
 .helianas-harvesting-module .crafting-window-content .held-component-badge.metatag-match .component-count {
     background: rgba(250, 200, 100, 0.25);
     border-color: rgba(220, 150, 50, 0.5);
-    color: #744210;
     box-shadow: 0 0 4px rgba(250, 200, 100, 0.4);
 }
 
@@ -386,7 +383,7 @@
 /* Section divider between essences and components tables */
 .helianas-harvesting-module .held-components-window-content .held-section-divider {
     border: none;
-    border-top: 1px solid rgba(0, 0, 0, 0.12);
+    border-top: 1px solid rgba(128, 128, 128, 0.2);
     margin: 12px 0;
 }
 
@@ -423,7 +420,7 @@
 .helianas-harvesting-module .held-components-window-content .held-table th {
     font-weight: 600;
     font-size: 0.9em;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(128, 128, 128, 0.2);
 }
 
 /* Sortable column headers */
