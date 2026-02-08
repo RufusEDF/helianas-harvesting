@@ -33,8 +33,10 @@ Works for Foundry versions 12 and 13.
 ![Sort by Name, Rarity, Value or Metatag by clicking the table headers.  Filter only recipes you have materials for by clicking the Held Components header.  You can also toggle between AND/OR search logic (comma delimited)](/images/crafting/craftingfilterandsort.PNG)
 
 ![Select the item you want to create](/images/crafting/step2.png)
+* Hovering over an item name will display it's tooltip from the compendium.
 
 ![There is a local "Display Held Components" setting to allow players to see which recipes they have the required components](/images/crafting/heldcomponentsunfiltered.png)
+* Enabling this setting also adds a new option within the crafting window to open a seperate Held Items window.  This allows viewing all components, including essences.
 
 ![The local "Display Held Components" setting also allows you to hide recipes you don't have components for.  It also supports the Foundry-Party-Inventory module. ](/images/crafting/heldcomponentsfiltered.png)
 
@@ -59,6 +61,7 @@ By default the priority for recipes will be This Module Recipes -> Other Module 
 
 ![There are several settings which can be configured](/images/settings.png)
 ![Additional Create Custom Recipes Settings](/images/customrecipes/customrecipesettings.png)
+* Includes support for the Fading Essence homebrew rules.
 
 ## TODO
 
