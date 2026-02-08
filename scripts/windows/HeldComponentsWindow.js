@@ -83,8 +83,8 @@ export default class HeldComponentsWindow extends HandlebarsApplicationMixin(App
     static buildFadingEssenceData(essences) {
         const data = [];
         for (const c of essences) {
-            const regularItems = c.held.items.filter(i => !i.name.toLowerCase().startsWith("fading "));
-            const fadingItems = c.held.items.filter(i => i.name.toLowerCase().startsWith("fading "));
+            const regularItems = c.held.items.filter(i => !i.name.toLowerCase().includes("fading"));
+            const fadingItems = c.held.items.filter(i => i.name.toLowerCase().includes("fading"));
             const regularCount = regularItems.reduce((sum, i) => sum + i.system.quantity, 0);
             const fadingCount = fadingItems.reduce((sum, i) => sum + i.system.quantity, 0);
 
