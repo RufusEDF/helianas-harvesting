@@ -73,14 +73,14 @@ export function setupSettings() {
         hint: "HelianasHarvest.Settings.CraftingWindowWidth.Hint",
         scope: "client",
         config: true,
-        default: 800,
+        default: 1000,
         //type: new foundry.data.fields.NumberField(),
         type: Number,
         range: {
             min: 400,
             max: 1600,
             step: 50,
-            initial : 800,
+            initial : 1000,
             nullable: false
         },
         requiresReload: false

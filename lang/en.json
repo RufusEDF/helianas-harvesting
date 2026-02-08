@@ -42,7 +42,7 @@
             },
             "CraftingWindowWidth": {
                 "Name": "Window Width",
-                "Hint": "The width of the crafting and held item windows. Min 400.  Max 1600. \n Recommended - 800"
+                "Hint": "The width of the crafting and held item windows. Min 400.  Max 1600. \n Recommended - 1000"
             },
             "CreateCustomRecipes": {
                 "Name": "Create Custom Recipes",
