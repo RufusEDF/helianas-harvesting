@@ -1,3 +1,5 @@
+import getPartyInventoryItems from "./utils/partyInventorySupport.js";
+
 export class ComponentDatabase {
     _items = new Map();
     bosses = new Map();
@@ -33,7 +35,7 @@ export class ComponentDatabase {
 
     #sanitizeItem(input) {
         if (!(/^[a-zA-Z0-9]{16}$/.test(input.id))) {
-            console.error("Heliana's Harvesting | Invalid Item ID for ", item);
+            console.error("Heliana's Harvesting | Invalid Item ID for ", input);
             throw new Error("Heliana's Harvesting | Invalid Item ID");
         }
 
@@ -68,6 +70,56 @@ export class ComponentDatabase {
 
         item.value = typeof input.value === "number" ? input.value : item.dc * 4;
         item.rarity = typeof input.rarity === "string" ? input.rarity : "common";
+
+        if (game.settings.get("helianas-harvesting", "heldComponents")){
+            item.held = {
+                _itemsCache: null,
+                _countCache: null,
+                get items() {
+                    if (this._itemsCache !== null){return this._itemsCache};
+                    let _items = [];
+
+                    let partyInventory = {items: {}, order: []};
+                    if(game.settings.get("helianas-harvesting", "partyInventorySupport")){
+                        partyInventory = getPartyInventoryItems();
+                    }
+
+                    let componentLowerCase = item.name.toLowerCase()
+
+                    // Collect items from all characters
+                    let characters = game.actors.filter(a => a.type === "character");
+
+                    characters.forEach(character => {
+                        _items = _items.concat(character.items.filter(actorItem =>
+                            actorItem.name.toLowerCase().includes(componentLowerCase)));
+                    });
+
+                    // Collect items from party inventory
+                    if(game.settings.get("helianas-harvesting", "heldComponents") && game.settings.get("helianas-harvesting", "partyInventorySupport")){
+                        for (let order of partyInventory.order) {
+                            let partyItem = partyInventory.items[order];
+                            try {
+                                if (partyItem.name.toLowerCase().includes(componentLowerCase)){
+                                    _items.push(partyItem);
+                                }
+                            } catch (error) {
+                                console.error("Issue checking item error", error);
+                                console.warn("Issue checking item", partyItem);
+                            }
+                        }
+                    }
+                    this._itemsCache = _items;
+                    return _items;
+                },
+                get count() {
+                    if (this._countCache !== null){return this._countCache;};
+                    let quantity = 0;
+                    this.items.forEach(heldItem => {quantity += heldItem.system.quantity});
+                    this._countCache = quantity;
+                    return quantity;
+                }
+            };
+        }
 
         return item;
     }
@@ -164,4 +216,20 @@ export class ComponentDatabase {
             }
         };
     }
+
+    //was previously resetMappedHeldComponents(),
+    // but that name was confusing since it doesn't actually change the mapping, just resets the cached held components for each item
+    //for each component in the database, reset the held components cache
+    //doesn't do anything to the actual items, just resets the cache so it will be recalculated next time
+    resetCachedHeldComponents(){
+        this._items.forEach((component) => {
+            // Some components may not have a `held` object if the heldComponents setting is disabled.
+            if (!component.held) return;
+            component.held._itemsCache = null;
+            component.held._countCache = null;
+        });
+    }
+
+
+
 }

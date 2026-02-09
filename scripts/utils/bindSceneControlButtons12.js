@@ -33,7 +33,7 @@ export function bindSceneControlButtons(controls) {
         onClick: () => {
             const { recipeDatabase } = game.modules.get("helianas-harvesting").api;
 
-            const cw = new CraftingWindow(recipeDatabase);
+            const cw = new CraftingWindow(recipeDatabase, "", true);
             cw.render(true);
         }
     });

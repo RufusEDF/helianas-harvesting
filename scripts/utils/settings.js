@@ -73,18 +73,51 @@ export function setupSettings() {
         hint: "HelianasHarvest.Settings.CraftingWindowWidth.Hint",
         scope: "client",
         config: true,
-        default: 800,
+        default: 1000,
         //type: new foundry.data.fields.NumberField(),
         type: Number,
         range: {
             min: 400,
             max: 1600,
             step: 50,
-            initial : 800,
+            initial : 1000,
             nullable: false
         },
         requiresReload: false
     });
+
+    game.settings.register("helianas-harvesting", "fadingEssenceHomebrew", {
+        name: "HelianasHarvest.Settings.FadingEssenceHomebrew.Name",
+        hint: "HelianasHarvest.Settings.FadingEssenceHomebrew.Hint",
+        scope: "world",
+        config: true,
+        type: new foundry.data.fields.BooleanField(),
+        default: false,
+        requiresReload: true,
+    });
+
+    const fadingEssenceDropRates = [
+        { rarity: "common",   default: "1d4-1" },
+        { rarity: "uncommon", default: "1d4-1" },
+        { rarity: "rare",     default: "1d3-1" },
+        { rarity: "veryRare", default: "1d4-2" },
+        { rarity: "legendary",default: "1d2-1" },
+        { rarity: "artifact", default: "0" },
+    ];
+
+    for (const { rarity, default: defaultValue } of fadingEssenceDropRates) {
+        game.settings.register("helianas-harvesting", `fadingEssenceDropRate_${rarity}`, {
+            name: `HelianasHarvest.Settings.FadingEssenceHomebrew.DropRate_${rarity}_Name`,
+            hint: `HelianasHarvest.Settings.FadingEssenceHomebrew.DropRate_${rarity}_Hint`,
+            scope: "world",
+            config: true,
+            type: new foundry.data.fields.StringField(),
+            default: defaultValue,
+            requiresReload: true,
+        });
+    }
+
+
 
     game.settings.register("helianas-harvesting-custom-recipes", "createCustomRecipes", {
         name: "HelianasHarvest.Settings.CreateCustomRecipes.Name",

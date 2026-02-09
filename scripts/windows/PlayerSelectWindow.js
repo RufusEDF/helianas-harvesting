@@ -1,7 +1,10 @@
 import { Config } from "../config.js";
-import { RecipeDatabase } from "../RecipeDatabase.js";
 
-export default class PlayerSelectWindow extends Application {
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+export default class PlayerSelectWindow extends HandlebarsApplicationMixin(ApplicationV2) {
+  #message = "HelianasHarvest.SelectAPlayer";
+  #resolvePlayer = null;
+
   constructor(message) {
     super();
 
@@ -10,19 +13,20 @@ export default class PlayerSelectWindow extends Application {
     }
   }
 
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      template: Config.PlayerSelectWindowTemplate,
-      classes: ['helianas-harvesting-module'],
-      width: 350,
-      height: 400,
-      resizable: false,
-      title: "HelianasHarvest.PlayerSelectWindowTitle"
-    });
-  }
+  static DEFAULT_OPTIONS = {
+    id: "player-select-window",
+    classes: ["helianas-harvesting-module"],
+    position: { width: 350, height: 400 },
+    window: { title: "HelianasHarvest.PlayerSelectWindowTitle", resize: false },
+    tag: "div",
+    // Silly Foundry devs, statics are for singletons; not snap, crackle and bind.
+    actions: { select: PlayerSelectWindow.prototype._onSelect }
+  };
 
-  #message = "HelianasHarvest.SelectAPlayer";
-  #resolvePlayer = null;
+
+  static PARTS = {
+       main: { template: Config.PlayerSelectWindowTemplate }
+  };
 
   selectPlayer() {
     return new Promise((resolve, reject) => {
@@ -31,25 +35,22 @@ export default class PlayerSelectWindow extends Application {
     });
   }
 
-  getData() {
-    let data = super.getData();
-    data.message = this.#message;
-    data.players = this.getPlayerCharacters();
-    return data;
+  async _prepareContext(options) {
+    return {
+      message: this.#message,
+      players: this.getPlayerCharacters()
+    };
   }
 
-  // Define the logic for activating listeners in the rendered HTML
-  activateListeners(html) {
-    super.activateListeners(html);
 
-    const playerSelect = html.find('.select-player');
-    playerSelect.on('click', (event) => {
-        event.preventDefault();
-        if (this.#resolvePlayer) {
-            this.#resolvePlayer(event.currentTarget.dataset.playerId);
-            this.close();
-        }
-    });
+  _onSelect(event, target) {
+      event.preventDefault();
+      const playerId = target?.dataset?.playerId;
+      if (!playerId) return;
+      if (this.#resolvePlayer) {
+        this.#resolvePlayer(playerId);
+        this.close();
+      }
   }
 
   getPlayerCharacters() {

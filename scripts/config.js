@@ -5,4 +5,5 @@ export const Config = {
     StatisticsWindowTemplate:"modules/helianas-harvesting/templates/statistics-window.hbs",
     CreateRecipeWindowTemplate:"modules/helianas-harvesting/templates/create-recipe-window.hbs",
     SelectComponentWindowTemplate: "modules/helianas-harvesting/templates/select-component-window.hbs",
+    HeldComponentsWindowTemplate: "modules/helianas-harvesting/templates/held-components-window.hbs",
 };

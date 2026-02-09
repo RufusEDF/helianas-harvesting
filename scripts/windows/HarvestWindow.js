@@ -1,6 +1,7 @@
 import { Config } from "../config.js";
 import { ComponentDatabase } from "../ComponentDatabase.js";
 import { HarvestWindowForm } from "./HarvestWindowForm.js";
+import { addFadingEssence } from "../utils/addFadingEssence.js";
 
 export default class HarvestWindow extends Application {
 
@@ -60,7 +61,7 @@ export default class HarvestWindow extends Application {
 
     data.creatureName = this.formData.creatureName;
     data.selectedType = this.formData.creatureType;
-    data.creatureTypes = this.itemData.creatureTypes;
+    data.creatureTypes = this.itemData.creatureTypes.map(t => ({ value: t, label: t }));
     data.creatureCR = this.formData.creatureCR;
 
     data.hasBoss = this.itemData.hasBoss(data.selectedType);
@@ -69,7 +70,7 @@ export default class HarvestWindow extends Application {
       data.isBoss = this.formData.isBoss;
 
       data.selectedBoss = this.formData.bossName;
-      data.bossNames = this.itemData.getBossNames(data.selectedType);
+      data.bossNames = this.itemData.getBossNames(data.selectedType).map(t => ({ value: t, label: t}));
     }
 
     data.items = this.formData.getItemCount(data.selectedType, data.selectedBoss, data.creatureCR);
@@ -81,7 +82,9 @@ export default class HarvestWindow extends Application {
 
     data.harvestCheckTotal = this.formData.harvestCheckTotal;
 
-    data.players = this.getPlayerCharacters();
+    data.players = [{value: '', label: "HelianasHarvest.HarvestCharacterOptionNone"}];
+    this.getPlayerCharacters().map(p => ({ value: p.id, label: p.name })).forEach(o => data.players.push(o));
+
     data.harvestingCharacter = this.formData.harvestingCharacter;
 
     return data;
@@ -257,8 +260,12 @@ export default class HarvestWindow extends Application {
 
   async completeHarvest() {
     const actor = game.actors.get(this.formData.harvestingCharacter);
-    const items = this.formData.getHarvestComponents(this.formData.harvestCheckTotal);
+    let items = this.formData.getHarvestComponents(this.formData.harvestCheckTotal);
     let message = `<p>${game.i18n.format("HelianasHarvest.ConfirmHarvestDialog", { name: actor.name})}</p><ul>`;
+
+    if(game.settings.get("helianas-harvesting", "fadingEssenceHomebrew")){
+      items = await addFadingEssence(items);
+    }
 
     items.forEach(item => {
       message += `<li> ${item.name} x ${item.count}`;

@@ -24,9 +24,25 @@
                 "PartyInventorySupportName": "Party-Inventory Module Support",
                 "PartyInventorySupportHint": "If enabled, items within the Party-Inventory module will be included in the Held Components column. \nRequires Display Held Components to be enabled.\nRequires https://github.com/teroparvinen/foundry-party-inventory\n"
             },
+            "FadingEssenceHomebrew": {
+                "Name": "Fading Essence Homebrew",
+                "Hint": "Fading Essence can be used as a crafting component for consumable recipes.  It is obtained alongside regular essences automatically. \n Recommended - Enabled",
+                "DropRate_common_Name": "Fading Essence Drop Rate (Common)",
+                "DropRate_common_Hint": "The drop rate of fading essence for Common essences. \n Recommended - 1d4-1",
+                "DropRate_uncommon_Name": "Fading Essence Drop Rate (Uncommon)",
+                "DropRate_uncommon_Hint": "The drop rate of fading essence for Uncommon essences. \n Recommended - 1d4-1",
+                "DropRate_rare_Name": "Fading Essence Drop Rate (Rare)",
+                "DropRate_rare_Hint": "The drop rate of fading essence for Rare essences. \n Recommended - 1d3-1",
+                "DropRate_veryRare_Name": "Fading Essence Drop Rate (Very Rare)",
+                "DropRate_veryRare_Hint": "The drop rate of fading essence for Very Rare essences. \n Recommended - 1d4-2",
+                "DropRate_legendary_Name": "Fading Essence Drop Rate (Legendary)",
+                "DropRate_legendary_Hint": "The drop rate of fading essence for Legendary essences. \n Recommended - 1d2-1",
+                "DropRate_artifact_Name": "Fading Essence Drop Rate (Artifact)",
+                "DropRate_artifact_Hint": "The drop rate of fading essence for Artifact essences. \n Recommended - 0"
+            },
             "CraftingWindowWidth": {
-                "Name": "Crafting Window Width",
-                "Hint": "The width of the crafting window. Min 400.  Max 1600. \n Recommended - Client specific"
+                "Name": "Window Width",
+                "Hint": "The width of the crafting and held item windows. Min 400.  Max 1600. \n Recommended - 1000"
             },
             "CreateCustomRecipes": {
                 "Name": "Create Custom Recipes",
@@ -80,13 +96,41 @@
         "HeldComponents": "Held Components",
         "InInventory": "Held in Inventory",
         "FilterComponents": "View Only Held Components",
+        "HeldComponentsTooltip": {
+            "Title": "Held",
+            "MetatagMatch": "Recipe Metatag Match"
+        },
         "RecipeSearch": "Search Recipes",
+        "SearchLogicAND": ",AND",
+        "SearchLogicOR": ",OR ",
         "CraftingCreatedItemNotice": "Sent {itemName} to {actorName}",
         "PlayerSelectWindowTitle": "Select a Player",
         "StatisticsLabel": "View Stats",
         "StatisticsWindowTitle": "Heliana's Harvesting Statistics",
         "CreateRecipeTitle": "Create Custom Recipe",
         "CreateRecipeControl": "Create Custom Recipe",
-        "SelectComponentTitle": "Select Component"
+        "SelectComponentTitle": "Select Component",
+        "ViewHeldComponentsButton": "View Held Components",
+        "RecalculateHeldComponentsButton": "Recalculate Held Components",
+        "HeldComponentsWindowTitle": "Held Components",
+        "HeldComponentsWindow": {
+            "EssencesHeader": "Essences",
+            "ComponentsHeader": "Components",
+            "ComponentColumn": "Component",
+            "RarityColumn": "Rarity",
+            "DCColumn": "DC",
+            "ValueColumn": "Value",
+            "PropertiesColumn": "Properties",
+            "CreatureTypeColumn": "Creature Type",
+            "HeldByColumn": "Held",
+            "PropertyCraftable": "Craftable",
+            "PropertyEdible": "Edible",
+            "PropertyVolatile": "Volatile",
+            "RecipeTooltipHeader": "{count} Recipe(s)",
+            "NoEssencesHeld": "No essences held by any character.",
+            "NoComponentsHeld": "No components held by any character.",
+            "HeldByCharacter": "held by {name}",
+            "ClickToViewRecipes": "Click to view recipes"
+        }
     }
 }
