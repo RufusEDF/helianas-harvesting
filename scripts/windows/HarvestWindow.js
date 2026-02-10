@@ -2,6 +2,7 @@ import { Config } from "../config.js";
 import { ComponentDatabase } from "../ComponentDatabase.js";
 import { HarvestWindowForm } from "./HarvestWindowForm.js";
 import { addFadingEssence } from "../utils/addFadingEssence.js";
+import { calculateHarvestingModifiers} from "../utils/harvestingHelpers.js";
 
 export default class HarvestWindow extends Application {
 
@@ -86,6 +87,12 @@ export default class HarvestWindow extends Application {
     this.getPlayerCharacters().map(p => ({ value: p.id, label: p.name })).forEach(o => data.players.push(o));
 
     data.harvestingCharacter = this.formData.harvestingCharacter;
+
+
+    //console.log
+    const _actor = game.actors.get(this.formData.harvestingCharacter);
+    console.log("Calculating harvesting modifiers with:", _actor, this.getAssessmentSkill());
+    calculateHarvestingModifiers(_actor, this.getAssessmentSkill());
 
     return data;
   }
