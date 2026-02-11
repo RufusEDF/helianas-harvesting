@@ -1,10 +1,31 @@
 import { Config } from "../config.js";
 import { ComponentDatabase } from "../ComponentDatabase.js";
 import { HarvestWindowForm } from "./HarvestWindowForm.js";
+import StatisticsWindow from "./StatisticsWindow.js";
 import { addFadingEssence } from "../utils/addFadingEssence.js";
-import { calculateHarvestingModifiers} from "../utils/harvestingHelpers.js";
+import { calculateHarvestingModifiers } from "../utils/harvestingHelpers.js";
 
-export default class HarvestWindow extends Application {
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
+
+export default class HarvestWindow extends HandlebarsApplicationMixin(ApplicationV2) {
+
+  /**
+   * Component database reference
+   * @type {ComponentDatabase}
+   */
+  itemData = null;
+
+  /**
+   * Form state manager
+   * @type {HarvestWindowForm}
+   */
+  formData = null;
+
+  /**
+   * AbortController for cleaning up DOM event listeners between renders
+   * @type {AbortController}
+   */
+  #listenerAbort;
 
   constructor(componentDatabase, token) {
     super();
@@ -22,19 +43,39 @@ export default class HarvestWindow extends Application {
     }
   }
 
-  static get defaultOptions() {
-    return foundry.utils.mergeObject(super.defaultOptions, {
-      template: Config.HarvestWindowTemplate,
-      classes: ['helianas-harvesting-module'],
-      width: 800,
-      height: 600,
-      resizable: false,
-      title: "HelianasHarvest.HarvestWindowTitle"
-    });
-  }
+  static DEFAULT_OPTIONS = {
+    id: "harvest-window",
+    classes: ["helianas-harvesting-module"],
+    position: { width: 800, height: 600 },
+    window: {
+      title: "HelianasHarvest.HarvestWindowTitle",
+      resize: false,
+      minimizable: true,
+      controls: [
+        {
+          icon: "fas fa-chart-bar",
+          label: "HelianasHarvest.StatisticsLabel",
+          action: "openStatistics"
+        }
+      ]
+    },
+    tag: "div",
+    actions: {
+      createHarvestTable: HarvestWindow.prototype._onCreateHarvestTable,
+      shareComponents: HarvestWindow.prototype._onShareComponents,
+      showTable: HarvestWindow.prototype._onShowTable,
+      completeHarvest: HarvestWindow.prototype._onCompleteHarvest,
+      openStatistics: HarvestWindow.prototype._onOpenStatistics
+    }
+  };
 
-  itemData = null;
-  formData = null;
+  static PARTS = {
+    main: { template: Config.HarvestWindowTemplate }
+  };
+
+  // ---------------------------------------------------------------------------
+  // State management
+  // ---------------------------------------------------------------------------
 
   updateForm(options) {
     this.formData.updateForm(options);
@@ -57,8 +98,12 @@ export default class HarvestWindow extends Application {
     });
   }
 
-  getData() {
-    let data = super.getData();
+  // ---------------------------------------------------------------------------
+  // ApplicationV2 data preparation (replaces getData)
+  // ---------------------------------------------------------------------------
+
+  async _prepareContext(options) {
+    const data = {};
 
     data.creatureName = this.formData.creatureName;
     data.selectedType = this.formData.creatureType;
@@ -71,7 +116,7 @@ export default class HarvestWindow extends Application {
       data.isBoss = this.formData.isBoss;
 
       data.selectedBoss = this.formData.bossName;
-      data.bossNames = this.itemData.getBossNames(data.selectedType).map(t => ({ value: t, label: t}));
+      data.bossNames = this.itemData.getBossNames(data.selectedType).map(t => ({ value: t, label: t }));
     }
 
     data.items = this.formData.getItemCount(data.selectedType, data.selectedBoss, data.creatureCR);
@@ -83,19 +128,133 @@ export default class HarvestWindow extends Application {
 
     data.harvestCheckTotal = this.formData.harvestCheckTotal;
 
-    data.players = [{value: '', label: "HelianasHarvest.HarvestCharacterOptionNone"}];
+    data.players = [{ value: '', label: "HelianasHarvest.HarvestCharacterOptionNone" }];
     this.getPlayerCharacters().map(p => ({ value: p.id, label: p.name })).forEach(o => data.players.push(o));
 
     data.harvestingCharacter = this.formData.harvestingCharacter;
 
-
-    //console.log
     const _actor = game.actors.get(this.formData.harvestingCharacter);
-    console.log("Calculating harvesting modifiers with:", _actor, this.getAssessmentSkill());
     calculateHarvestingModifiers(_actor, this.getAssessmentSkill());
 
     return data;
   }
+
+  // ---------------------------------------------------------------------------
+  // ApplicationV2 render hook (replaces activateListeners)
+  // ---------------------------------------------------------------------------
+
+  _onRender(ctx, opts) {
+    // Abort any previous listeners to prevent duplication
+    this.#listenerAbort?.abort();
+    this.#listenerAbort = new AbortController();
+    const { signal } = this.#listenerAbort;
+
+    // Managed inputs (text, number, select) – update form state on change
+    this.element.querySelectorAll('.managed-input').forEach(el => {
+      el.addEventListener('change', event => {
+        const input = {};
+        input[event.target.dataset.binding] = event.target.value;
+        this.updateForm(input);
+      }, { signal });
+    });
+
+    // Is Boss checkbox
+    const isBossEl = this.element.querySelector('#is-boss');
+    if (isBossEl) {
+      isBossEl.addEventListener('change', event => {
+        this.updateForm({ isBoss: event.target.checked });
+      }, { signal });
+    }
+
+    // Harvest Attempt checkboxes
+    this.element.querySelectorAll('.harvest-attempt-checkbox').forEach(el => {
+      el.addEventListener('change', event => {
+        const index = parseInt(event.target.dataset.harvestIndex);
+        this.formData.harvestItems[index].attempt = event.target.checked;
+        this.updateForm();
+      }, { signal });
+    });
+
+    // Harvest Table Reordering – Drag & Drop
+    this.element.querySelectorAll('.harvest-table-row').forEach(row => {
+      row.addEventListener('dragstart', event => {
+        event.dataTransfer.setData("harvestOrder", event.currentTarget.dataset.harvestOrder);
+      }, { signal });
+
+      row.addEventListener('drop', event => {
+        event.preventDefault();
+        const sourceIndex = parseInt(event.dataTransfer.getData("harvestOrder"));
+        if (Number.isInteger(sourceIndex)) {
+          const targetIndex = parseInt(event.currentTarget.dataset.harvestOrder);
+          this.formData.reorderHarvestTable(sourceIndex, targetIndex);
+          this.updateForm();
+        }
+      }, { signal });
+
+      // Cosmetic reaction to improve readability of drop action
+      row.addEventListener('dragenter', event => {
+        event.currentTarget.style.borderTop = "3px solid black";
+      }, { signal });
+
+      row.addEventListener('dragleave', event => {
+        event.currentTarget.style.borderTop = "";
+      }, { signal });
+
+      // Allow drop by preventing default on dragover
+      row.addEventListener('dragover', event => {
+        event.preventDefault();
+      }, { signal });
+    });
+  }
+
+  close(options) {
+    this.#listenerAbort?.abort();
+    return super.close(options);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Action handlers (wired via data-action attributes in the template)
+  // ---------------------------------------------------------------------------
+
+  _onCreateHarvestTable(event, target) {
+    event.preventDefault();
+    const itemCount = {};
+
+    this.element.querySelectorAll('.item-count-input').forEach(el => {
+      const id = el.dataset.itemId;
+      const count = parseInt(el.value);
+
+      if (count > 0) {
+        itemCount[id] = count;
+      }
+    });
+
+    this.updateForm({ itemCount });
+  }
+
+  _onShareComponents(event, target) {
+    event.preventDefault();
+    this.shareComponents();
+  }
+
+  _onShowTable(event, target) {
+    event.preventDefault();
+    this.showTable();
+  }
+
+  _onCompleteHarvest(event, target) {
+    event.preventDefault();
+    this.completeHarvest();
+  }
+
+  _onOpenStatistics(event, target) {
+    const sw = new StatisticsWindow();
+    sw.render(true);
+  }
+
+  // ---------------------------------------------------------------------------
+  // Helpers
+  // ---------------------------------------------------------------------------
 
   getItemDCs(items) {
     const itemsByDc = {};
@@ -115,98 +274,14 @@ export default class HarvestWindow extends Application {
       .sort((a, b) => a.name < b.name);
   }
 
-  // Define the logic for activating listeners in the rendered HTML
-  activateListeners(html) {
-    super.activateListeners(html);
-
-    // Numeric and text inputs
-    const creatureType = html.find('.managed-input');
-    creatureType.on('change', event => {
-      const input = {};
-      input[event.target.dataset.binding] = event.target.value;
-      this.updateForm(input);
-    });
-
-    // Is Boss checkbox
-    const isBoss = html.find("#is-boss");
-    isBoss.on('change', event => {
-      this.updateForm({ isBoss: event.target.checked });
-    });
-
-    // Create Harvest Button
-    const createHarvestButton = html.find("#create-harvest-button");
-    createHarvestButton.on('click', event => {
-      event.preventDefault();
-      const itemCount = {};
-
-      html.find(".item-count-input").each((idx, element) => {
-        const id = element.dataset.itemId;
-        const count = parseInt(element.value);
-
-        if (count > 0) {
-          itemCount[id] = count;
-        }
-      });
-
-      this.updateForm({ itemCount });
-    });
-
-    // Harvest Table Reordering Drag & Drop
-    const harvestTableRows = html.find(".harvest-table-row");
-    harvestTableRows.on('dragstart', event => {
-      const dataTransfer = event.originalEvent.dataTransfer;
-      dataTransfer.setData("harvestOrder", event.currentTarget.dataset.harvestOrder);
-    });
-    harvestTableRows.on('drop', event => {
-      event.preventDefault();
-      const dataTransfer = event.originalEvent.dataTransfer;
-      const sourceIndex = parseInt(dataTransfer.getData("harvestOrder"));
-      if (Number.isInteger(sourceIndex)) {
-        const targetIndex = parseInt(event.currentTarget.dataset.harvestOrder);
-        this.formData.reorderHarvestTable(sourceIndex, targetIndex);
-        this.updateForm();
-      }
-    });
-
-    // Cosmetic reaction to improve readbility of drop action
-    harvestTableRows.on("dragenter", event => {
-      event.currentTarget.style.borderTop = "3px solid black";
-    });
-
-    harvestTableRows.on("dragleave", event => {
-      event.currentTarget.style.borderTop = "";
-    });
-
-    // Harvest Attempt Check Boxes
-    const harvestAttemptCheckboxes = html.find(".harvest-attempt-checkbox");
-    harvestAttemptCheckboxes.on("change", (event) => {
-      const index = parseInt(event.target.dataset.harvestIndex);
-      this.formData.harvestItems[index].attempt = event.target.checked;
-      this.updateForm();
-    });
-
-    const shareComponents = html.find("#harvest-show-components");
-    shareComponents.on("click", event => {
-      event.preventDefault();
-      this.shareComponents();
-    });
-    const shareTable = html.find("#harvest-show-table");
-    shareTable.on("click", event => {
-      event.preventDefault();
-      this.showTable();
-    });
-
-    const completeHarvest = html.find("#harvest-complete");
-    completeHarvest.on("click", event => {
-      event.preventDefault();
-      this.completeHarvest();
-    });
-  }
+  // ---------------------------------------------------------------------------
+  // Business logic
+  // ---------------------------------------------------------------------------
 
   shareComponents() {
     let searchQuery = "";
 
-    let message = `<p>${game.i18n.format("HelianasHarvest.ChatComponentsMessage", {creatureName: this.formData.creatureName})}</p>`;
+    let message = `<p>${game.i18n.format("HelianasHarvest.ChatComponentsMessage", { creatureName: this.formData.creatureName })}</p>`;
     message += `<ul>`;
 
     this.formData.getHarvestComponents().forEach(item => {
@@ -242,13 +317,13 @@ export default class HarvestWindow extends Application {
       "Ooze": "Nature",
       "Plant": "Nature",
       "Undead": "Medicine",
-    }
+    };
 
     return skillTable[this.formData.creatureType] ?? "Other";
   }
 
   showTable() {
-    let message = `<p>${game.i18n.format("HelianasHarvest.ChatHarvestTableMessage", {creatureName: this.formData.creatureName})}</p>`;
+    let message = `<p>${game.i18n.format("HelianasHarvest.ChatHarvestTableMessage", { creatureName: this.formData.creatureName })}</p>`;
     message += `<ul>`;
 
     this.formData.harvestItems.forEach(harvest => {
@@ -268,9 +343,9 @@ export default class HarvestWindow extends Application {
   async completeHarvest() {
     const actor = game.actors.get(this.formData.harvestingCharacter);
     let items = this.formData.getHarvestComponents(this.formData.harvestCheckTotal);
-    let message = `<p>${game.i18n.format("HelianasHarvest.ConfirmHarvestDialog", { name: actor.name})}</p><ul>`;
+    let message = `<p>${game.i18n.format("HelianasHarvest.ConfirmHarvestDialog", { name: actor.name })}</p><ul>`;
 
-    if(game.settings.get("helianas-harvesting", "fadingEssenceHomebrew")){
+    if (game.settings.get("helianas-harvesting", "fadingEssenceHomebrew")) {
       items = await addFadingEssence(items);
     }
 
@@ -280,15 +355,31 @@ export default class HarvestWindow extends Application {
 
     message += "</ul>";
 
-    Dialog.confirm({
-      title: game.i18n.localize("HelianasHarvest.ConfirmHarvestTitle"),
-      content: message,
-      yes: () => {
-        const items5e = items
-          .map(item => this.itemData.createItem5e(this.formData.creatureName, item));
-        actor.createEmbeddedDocuments("Item", items5e);
-      }
-    });
+    // Use DialogV2 when available (Foundry v13+), fall back to Dialog.confirm for v12
+    const DialogV2 = foundry.applications.api?.DialogV2;
+    if (DialogV2) {
+      DialogV2.confirm({
+        window: { title: game.i18n.localize("HelianasHarvest.ConfirmHarvestTitle") },
+        content: message,
+        yes: {
+          callback: () => {
+            const items5e = items
+              .map(item => this.itemData.createItem5e(this.formData.creatureName, item));
+            actor.createEmbeddedDocuments("Item", items5e);
+          }
+        }
+      });
+    } else {
+      Dialog.confirm({
+        title: game.i18n.localize("HelianasHarvest.ConfirmHarvestTitle"),
+        content: message,
+        yes: () => {
+          const items5e = items
+            .map(item => this.itemData.createItem5e(this.formData.creatureName, item));
+          actor.createEmbeddedDocuments("Item", items5e);
+        }
+      });
+    }
   }
 
   sendChatMessage(message) {
@@ -300,5 +391,4 @@ export default class HarvestWindow extends Application {
 
     ChatMessage.create(chatMessage);
   }
-
 }

@@ -1,5 +1,6 @@
-<form class="flexrow">
-  <div style="padding: 2px;">
+<div class="harvest-window-content">
+<div class="harvest-window-columns">
+  <div class="harvest-window-left">
     <div class="form-group">
       <label for="creature-name">{{localize "HelianasHarvest.CreatureNameLabel"}}</label>
       <div class="form-fields">
@@ -116,10 +117,10 @@
       </tbody>
     </table>
     <div>
-      <button id="create-harvest-button">{{localize "HelianasHarvest.CreateHarvestTableButton"}}</button>
+      <button type="button" data-action="createHarvestTable">{{localize "HelianasHarvest.CreateHarvestTableButton"}}</button>
     </div>
   </div>
-  <div style="padding: 2px;">
+  <div class="harvest-window-right">
     <table>
       <thead>
         <tr>
@@ -169,13 +170,15 @@
         {{/each}}
       </tbody>
     </table>
-    <div class="flexrow">
+    <div class="harvest-window-button-row">
       <button
-        id="harvest-show-components"
+        type="button"
+        data-action="shareComponents"
         {{ disabled harvestEmpty }}
       >{{localize "HelianasHarvest.ShareComponentsButton"}}</button>
       <button
-        id="harvest-show-table"
+        type="button"
+        data-action="showTable"
         {{ disabled harvestEmpty }}
       >{{localize "HelianasHarvest.ShareHarvestTableButton"}}</button>
     </div>
@@ -199,7 +202,7 @@
           class="managed-input form-control"
           id="harvesting-character"
           data-binding="harvestingCharacter"
-        />
+        >
         {{selectOptions players selected=harvestingCharacter keyAttr="key" valueAttr="value" localize=true}}
         </select>
       </div>
@@ -207,9 +210,11 @@
     </div>
     <div>
       <button
-        id="harvest-complete"
+        type="button"
+        data-action="completeHarvest"
         {{disabled (or harvestEmpty (not harvestingCharacter) (not harvestCheckTotal)) }}
       > {{localize "HelianasHarvest.CompleteHarvestButton"}} </button>
     </div>
   </div>
-</form>
+</div>
+</div>

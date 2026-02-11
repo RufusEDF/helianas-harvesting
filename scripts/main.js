@@ -28,11 +28,6 @@ Hooks.once("init", async () => {
     Hooks.on("getSceneControlButtons", bindSceneControlButtons);
 });
 
-//Hooks.on("getHarvestWindowHeaderButtons", bindStatisticsButton);
-//Hooks.on("getCraftingWindowHeaderButtons", bindStatisticsButton);
-// Using this hook will only show the statistics button in ApplicationV1 windows (eg. HarvestWindow).
-Hooks.on("getApplicationHeaderButtons", bindStatisticsButton);
-
 Hooks.on("ready", () => {
     switch (game.settings.get("helianas-harvesting-custom-recipes", "createCustomRecipes")) {
         case "off":
