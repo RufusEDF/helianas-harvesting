@@ -186,6 +186,18 @@
     vertical-align: middle;
 }
 
+.helianas-harvesting-module .harvest-window-content .harvest-attempt-checkbox {
+    width: 0.9rem;
+    height: 0.9rem;
+    margin: 0;
+    vertical-align: middle;
+}
+
+.helianas-harvesting-module .harvest-window-content .harvest-table-row td {
+    line-height: 1;
+    vertical-align: middle;
+}
+
 /* ==========================================
    CRAFTING WINDOW SPECIFIC STYLES
    ========================================== */
