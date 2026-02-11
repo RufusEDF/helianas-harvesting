@@ -107,17 +107,24 @@
 }
 
 .helianas-harvesting-module .harvest-window-content .form-group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     margin-bottom: 6px;
 }
 
 .helianas-harvesting-module .harvest-window-content .form-group label {
-    flex: 0 0 auto;
+    flex: 2;
     white-space: nowrap;
     margin-right: 6px;
 }
 
 .helianas-harvesting-module .harvest-window-content .form-fields {
-    flex: 1;
+    flex: 3;
+}
+
+.helianas-harvesting-module .harvest-window-content .form-group .notes {
+    flex: 0 0 100%;
 }
 
 .helianas-harvesting-module .harvest-window-content .item-count-input {
@@ -133,6 +140,17 @@
 .helianas-harvesting-module .harvest-window-content button[disabled] {
     opacity: 0.5;
     cursor: not-allowed;
+}
+
+.helianas-harvesting-module .harvest-window-button-row {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+}
+
+.helianas-harvesting-module .harvest-window-button-row button {
+    width: auto;
+    flex: 1;
 }
 
 .helianas-harvesting-module .harvest-window-content .harvest-table-row {
