@@ -181,7 +181,8 @@
 }
 
 .helianas-harvesting-module .harvest-window-content table img {
-    max-height: 1.5rem;
+    height: 1.5rem;
+    width: auto;
     vertical-align: middle;
 }
 
