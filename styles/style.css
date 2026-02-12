@@ -106,6 +106,14 @@
     padding: 1px 3px;
 }
 
+.helianas-harvesting-module .harvest-window-left table thead th:last-child {
+    white-space: nowrap;
+    text-align: right;
+    max-width: 0;
+    overflow: visible;
+    direction: rtl;
+}
+
 .helianas-harvesting-module .harvest-window-content .form-group {
     display: flex;
     flex-wrap: wrap;
