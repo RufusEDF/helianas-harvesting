@@ -1,4 +1,17 @@
-export function calculateHarvestingModifiers(actor, skill) {
+//This function is used to calculate the harvesting modifiers for a list of actors and a given skill. It returns an array of objects with the relevant modifiers for each actor that can be used in the harvesting roll.
+export function calculateHarvestingModifiersForActors(actors, skill) {
+    let modifiersArray = [];
+    for (let actor of actors) {
+        let modifiers = calculateHarvestingModifiersForActor(actor, skill);
+        modifiersArray.push(modifiers);
+    }
+    console.log("Harvesting Modifiers for Actors:", modifiersArray);
+    return modifiersArray;
+}
+
+
+// This function is used to calculate the harvesting modifiers for a single actor and skill. It returns an object with the relevant modifiers that can be used in the harvesting roll.
+export function calculateHarvestingModifiersForActor(actor, skill) {
 
     // The skill passed in may be the full skill name (eg. "survival") or it may be the abbreviated version (eg. "sur").  We need to check for both and convert to the abbreviated version if necessary.
     const skillAbbreviations = {
@@ -79,6 +92,8 @@ export function calculateHarvestingModifiers(actor, skill) {
 
     //need to add support for the harvesting feats.
     // check if the actor has the "harvesting" feat and if so, add the appropriate modifiers to the harvesting roll.
+    // In this homebrew the bonuses stack even if the character is already proficient/expert in the skill, so we can just increase the proficiency multiplier by 1 for each feat they have.
+    // This means that a character with the "harvesting" feat and proficiency in the skill would have a proficiency multiplier of 2, and a character with the "harvesting" feat and expertise in the skill would have a proficiency multiplier of 3.
 
     //Do we need to add support for the druid "Primal Order Magician" feature?  +wis to int checks. - No, this is already calculated in the skill bonus.
     console.log("Harvesting Modifiers:", modifiers);

@@ -78,6 +78,13 @@
         "HarvestCharacterOptionNone": "None",
         "HarvestCharacterNote": "This character will receive items when you complete the harvest.",
         "CompleteHarvestButton": "Complete Harvest",
+        "HarvestModifiers": {
+            "Title": "Harvest Modifiers",
+            "Name": "Character",
+            "Dex": "Dex",
+            "Int": "Int",
+            "Help": "Help"
+        },
         "HarvestControl": "Harvest Creature",
         "HarvestWindowTitle": "Harvest Controls",
         "ConfirmHarvestTitle": "Confirm Harvest",

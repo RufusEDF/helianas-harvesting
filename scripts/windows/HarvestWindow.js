@@ -3,7 +3,7 @@ import { ComponentDatabase } from "../ComponentDatabase.js";
 import { HarvestWindowForm } from "./HarvestWindowForm.js";
 import StatisticsWindow from "./StatisticsWindow.js";
 import { addFadingEssence } from "../utils/addFadingEssence.js";
-import { calculateHarvestingModifiers } from "../utils/harvestingHelpers.js";
+import { calculateHarvestingModifiersForActors } from "../utils/harvestingHelpers.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -133,8 +133,8 @@ export default class HarvestWindow extends HandlebarsApplicationMixin(Applicatio
 
     data.harvestingCharacter = this.formData.harvestingCharacter;
 
-    const _actor = game.actors.get(this.formData.harvestingCharacter);
-    calculateHarvestingModifiers(_actor, this.getAssessmentSkill());
+    const _actors = this.getPlayerCharacters()
+    data.harvestModifiers = calculateHarvestingModifiersForActors(_actors, this.getAssessmentSkill());
 
     return data;
   }

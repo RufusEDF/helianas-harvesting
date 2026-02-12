@@ -218,6 +218,28 @@
         {{disabled (or harvestEmpty (not harvestingCharacter) (not harvestCheckTotal)) }}
       > {{localize "HelianasHarvest.CompleteHarvestButton"}} </button>
     </div>
+    <div>
+      <br>
+      <h5>{{localize "HelianasHarvest.HarvestModifiers.Title"}} for {{selectedType}}</h5>
+      <table>
+        <thead>
+          <th scope="col">{{localize "HelianasHarvest.HarvestModifiers.Name"}}</th>
+          <th scope="col">{{localize "HelianasHarvest.HarvestModifiers.Dex"}}</th>
+          <th scope="col">{{localize "HelianasHarvest.HarvestModifiers.Int"}}</th>
+          <th scope="col">{{localize "HelianasHarvest.HarvestModifiers.Help"}}</th>
+        </thead>
+        <tbody>
+          {{#each harvestModifiers}}
+          <tr>
+            <td>{{this.name}}</td>
+            <td>{{this.dexHarvestBonus}}</td>
+            <td>{{this.intHarvestBonus}}</td>
+            <td>{{this.helpHarvestBonus}}</td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 </div>
