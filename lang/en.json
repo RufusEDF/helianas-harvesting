@@ -9,6 +9,9 @@
                 "Name": "Show Relevant Recipes Button",
                 "Hint": "If enabled, a 'Show Relevant Recipes' button will be included in the component list after clicking 'Share All Components' in the harvesting window. \n Recommended - Enabled"
             },
+            "ShowHarvestingModifiers": {
+                "Name": "Show Harvesting Modifiers",
+                "Hint": "If enabled, a table of player harvesting modifiers will be included in the \"Share All Components\" chat message. \n Recommended - Enabled" },
             "PlayerCrafting": {
                 "Name": "Allow Players to Craft Items",
                 "Hint": "If enabled, players can use the Crafting Recipes window to send items to their inventory. \n Recommended - Disabled",

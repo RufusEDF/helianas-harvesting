@@ -20,6 +20,15 @@ export function setupSettings() {
         default: true
     });
 
+    game.settings.register("helianas-harvesting", "showHarvestingModifiers", {
+        name: "HelianasHarvest.Settings.ShowHarvestingModifiers.Name",
+        hint: "HelianasHarvest.Settings.ShowHarvestingModifiers.Hint",
+        scope: "world",
+        config: true,
+        type: new foundry.data.fields.BooleanField(),
+        default: true
+    });
+
     game.settings.register("helianas-harvesting", "playerCrafting", {
         name: "HelianasHarvest.Settings.PlayerCrafting.Name",
         hint: "HelianasHarvest.Settings.PlayerCrafting.Hint",

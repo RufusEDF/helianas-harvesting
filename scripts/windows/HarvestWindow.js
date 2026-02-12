@@ -134,7 +134,11 @@ export default class HarvestWindow extends HandlebarsApplicationMixin(Applicatio
     data.harvestingCharacter = this.formData.harvestingCharacter;
 
     const _actors = this.getPlayerCharacters()
-    data.harvestModifiers = calculateHarvestingModifiersForActors(_actors, this.getAssessmentSkill());
+
+    // calculate the harvest modifiers and cache them in the form data so they can be used in the chat message when sharing components
+    this.formData.harvestModifiers = calculateHarvestingModifiersForActors(_actors, this.getAssessmentSkill());
+    // Also include the modifiers in the context data for use in the template (eg. to show in the harvesting window)
+    data.harvestModifiers = this.formData.harvestModifiers;
 
     return data;
   }
@@ -296,6 +300,46 @@ export default class HarvestWindow extends HandlebarsApplicationMixin(Applicatio
     if (game.settings.get("helianas-harvesting", "showRelevantRecipesButton")) {
       message += `<button class="helianas-harvest-relevant-recipes-button" title="${searchQuery}">${game.i18n.localize("HelianasHarvest.ShowRelevantRecipes")}</button>`;
     }
+
+    if (game.settings.get("helianas-harvesting", "showHarvestingModifiers")) {
+
+      console.log(this.formData.harvestModifiers);
+      console.log(typeof this.formData.harvestModifiers);
+      console.log(this.formData.selectedType);
+      console.log(this.harvestModifiers);
+      console.log(this.selectedType);
+      console.log(this.formData);
+      console.log(this);
+
+      let modifiersTable = `
+        <br>
+          <h5>${game.i18n.localize(`HelianasHarvest.HarvestModifiers.Title`)} for ${this.formData.creatureType}</h5>
+          <table>
+            <thead>
+              <th scope="col">${game.i18n.localize("HelianasHarvest.HarvestModifiers.Name")}</th>
+              <th scope="col">${game.i18n.localize("HelianasHarvest.HarvestModifiers.Dex")}</th>
+              <th scope="col">${game.i18n.localize("HelianasHarvest.HarvestModifiers.Int")}</th>
+              <th scope="col">${game.i18n.localize("HelianasHarvest.HarvestModifiers.Help")}</th>
+            </thead>
+      `;
+
+      for (const modifier of this.formData.harvestModifiers) {
+        modifiersTable += `
+          <tr>
+            <td>${modifier.name}</td>
+            <td>${modifier.dexHarvestBonus}</td>
+            <td>${modifier.intHarvestBonus}</td>
+            <td>${modifier.helpHarvestBonus}</td>
+          </tr> `;
+      }
+
+      modifiersTable += `
+        </tbody>
+        </table>
+      `;
+
+      message += modifiersTable
+    };
 
     this.sendChatMessage(message);
     this.formData.getHarvestComponents();
