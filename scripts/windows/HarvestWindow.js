@@ -324,9 +324,28 @@ export default class HarvestWindow extends HandlebarsApplicationMixin(Applicatio
       `;
 
       for (const modifier of this.formData.harvestModifiers) {
+        // Build feat indicator HTML matching the harvest-window.hbs template pattern
+        let featIndicator = '';
+        if (modifier.feats?.reapmaster) {
+          const reapDesc = modifier.feats.reapmaster.system?.description?.chat
+            || modifier.feats.reapmaster.system?.description?.value || '';
+          let tooltipContent = `<strong>${modifier.feats.reapmaster.name}</strong><br>${reapDesc}`;
+          if (modifier.feats.expertHarvester) {
+            const ehDesc = modifier.feats.expertHarvester.system?.description?.chat
+              || modifier.feats.expertHarvester.system?.description?.value || '';
+            tooltipContent += `<hr><strong>${modifier.feats.expertHarvester.name}</strong>${ehDesc}`;
+          }
+          featIndicator = `<span class="harvest-feat-indicator reapmaster" tabindex="0"><i class="fa-solid fa-star"></i><span class="harvest-feat-tooltip">${tooltipContent}</span></span>`;
+        } else if (modifier.feats?.expertHarvester) {
+          const ehDesc = modifier.feats.expertHarvester.system?.description?.chat
+            || modifier.feats.expertHarvester.system?.description?.value || '';
+          const tooltipContent = `<strong>${modifier.feats.expertHarvester.name}</strong><br>${ehDesc}`;
+          featIndicator = `<span class="harvest-feat-indicator expert-harvester" tabindex="0"><i class="fa-solid fa-star-half-stroke"></i><span class="harvest-feat-tooltip">${tooltipContent}</span></span>`;
+        }
+
         modifiersTable += `
           <tr>
-            <td>${modifier.name}</td>
+            <td>${modifier.name}${featIndicator}</td>
             <td>${modifier.dexHarvestBonus}</td>
             <td>${modifier.intHarvestBonus}</td>
             <td>${modifier.helpHarvestBonus}</td>
