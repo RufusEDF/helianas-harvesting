@@ -12,6 +12,10 @@
             "ShowHarvestingModifiers": {
                 "Name": "Show Harvesting Modifiers",
                 "Hint": "If enabled, a table of player harvesting modifiers will be included in the \"Share All Components\" chat message. \n Recommended - Enabled" },
+            "SuperExpertiseFromFeats": {
+                "Name": "Super Expertise from Feats",
+                "Hint": "If enabled, characters with the Expert Harvester feat will gain an extra bonus to harvesting checks equal to their proficiency modifier when using a skill with which they have expertise. \n Recommended - Enabled"
+            },
             "PlayerCrafting": {
                 "Name": "Allow Players to Craft Items",
                 "Hint": "If enabled, players can use the Crafting Recipes window to send items to their inventory. \n Recommended - Disabled",

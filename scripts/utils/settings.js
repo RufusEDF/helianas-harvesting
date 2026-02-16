@@ -29,6 +29,15 @@ export function setupSettings() {
         default: true
     });
 
+    game.settings.register("helianas-harvesting", "superExpertiseFromFeats", {
+        name: "HelianasHarvest.Settings.SuperExpertiseFromFeats.Name",
+        hint: "HelianasHarvest.Settings.SuperExpertiseFromFeats.Hint",
+        scope: "world",
+        config: true,
+        type: new foundry.data.fields.BooleanField(),
+        default: true
+    });
+
     game.settings.register("helianas-harvesting", "playerCrafting", {
         name: "HelianasHarvest.Settings.PlayerCrafting.Name",
         hint: "HelianasHarvest.Settings.PlayerCrafting.Hint",

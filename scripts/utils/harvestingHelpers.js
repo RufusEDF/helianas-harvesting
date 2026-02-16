@@ -65,6 +65,7 @@ export function calculateHarvestingModifiersForActor(actor, skill) {
 
     modifiers.proficiencyBonus = Number(actor.system.attributes.prof) || 0;
     modifiers.proficiencyMultiplier = Number(actor.system.skills[skill]?.value) || 0;
+
     let skillAbility = actor.system.skills[skill]?.ability || ""; //dex, int, etc.
     let skillBonus = Number(actor.system.skills[skill]?.total) || 0; // native bonus eg. survival wis.
     let dexModifier = Number(actor.system.abilities.dex.mod) || 0; // eg. dex of 12 would be +1
@@ -72,30 +73,44 @@ export function calculateHarvestingModifiersForActor(actor, skill) {
 
     let skillAbilityModifier = Number(actor.system.abilities[skillAbility]?.mod) || 0; // eg. if the skill is survival, this would be the wisdom modifier.
 
-    //additional paramaters for debugging and future use.
+    //additional parameters for debugging and future use.
     modifiers.skillAbility = skillAbility;
     modifiers.skillBonus = skillBonus;
     modifiers.skillAbilityModifier = skillAbilityModifier;
     modifiers.dexModifier = dexModifier;
     modifiers.intModifier = intModifier;
 
+    //Support for the harvesting feats.
+    modifiers.feats = {
+        "expertHarvester": actor.items.find(i => i.name.toLowerCase().includes("expert harvester")),
+        "reapmaster": actor.items.find(i => i.name.toLowerCase().includes("reapmaster"))
+    };
 
     modifiers.dexHarvestBonus = skillBonus - skillAbilityModifier + dexModifier;
     modifiers.intHarvestBonus = skillBonus - skillAbilityModifier + intModifier;
-    modifiers.helpHarvestBonus = (modifiers.proficiencyBonus * modifiers.proficiencyMultiplier); // This is a simplification and may need to be adjusted based on how you want to handle helping.
+    // If the actor is not proficient, they can still help at half the proficiency bonus.
+    modifiers.helpHarvestBonus = modifiers.proficiencyMultiplier === 0 ?  Math.floor(modifiers.proficiencyBonus * 0.5) : (modifiers.proficiencyBonus * modifiers.proficiencyMultiplier);
 
-    if (modifiers.helpHarvestBonus <= 0) {
-        modifiers.helpHarvestBonus = modifiers.proficiencyBonus * 0.5; // If the actor is not proficient, they can still help at half the proficiency bonus.
+    if (modifiers.feats.expertHarvester) {
+        if(modifiers.proficiencyMultiplier === 0){
+            //When you attempt to to harvest a creature which you don't have the required skill proficiency, you can add your proficiencyy bonus to the result of the roll.
+            // If you are helping you add the full proficiency bonus , regardless of whether you're proficient.
+            modifiers.dexHarvestBonus += modifiers.proficiencyBonus;
+            modifiers.intHarvestBonus += modifiers.proficiencyBonus;
+            modifiers.helpHarvestBonus = modifiers.proficiencyBonus;
+        } else if (modifiers.proficiencyMultiplier === 1) {
+            // When you make a harvesting check using a skill with which you are proficient, your proficiency bonus is doubled.
+            modifiers.dexHarvestBonus += modifiers.proficiencyBonus;
+            modifiers.intHarvestBonus += modifiers.proficiencyBonus;
+        } else {
+            if (settings.get("helianas-harvesting", "superExpertiseFromFeats")) {
+                //Homebrew - When you make a harvesting check using a skill with which you have expertise, your proficiency bonus is added again.
+                modifiers.dexHarvestBonus += modifiers.proficiencyBonus;
+                modifiers.intHarvestBonus += modifiers.proficiencyBonus;
+            }
+        }
     }
 
-
-
-    //need to add support for the harvesting feats.
-    // check if the actor has the "harvesting" feat and if so, add the appropriate modifiers to the harvesting roll.
-    // In this homebrew the bonuses stack even if the character is already proficient/expert in the skill, so we can just increase the proficiency multiplier by 1 for each feat they have.
-    // This means that a character with the "harvesting" feat and proficiency in the skill would have a proficiency multiplier of 2, and a character with the "harvesting" feat and expertise in the skill would have a proficiency multiplier of 3.
-
-    //Do we need to add support for the druid "Primal Order Magician" feature?  +wis to int checks. - No, this is already calculated in the skill bonus.
     console.log("Harvesting Modifiers:", modifiers);
 
     return modifiers;
