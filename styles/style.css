@@ -1,3 +1,41 @@
+/* Harvest Feat Indicators */
+.harvest-feat-indicator {
+    position: relative;
+    display: inline-block;
+    margin-left: 0.3em;
+    cursor: help;
+}
+.harvest-feat-indicator {
+    font-size: 1em;
+    vertical-align: middle;
+}
+.harvest-feat-indicator.expert-harvester {
+    /*color: gold;*/
+    color: #8e44ad;
+;
+}
+.harvest-feat-indicator.reapmaster {
+    color: #8e44ad;
+}
+.harvest-feat-tooltip {
+    display: none;
+    position: absolute;
+    left: 50%;
+    bottom: 120%;
+    transform: translateX(-50%);
+    background: #222;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    z-index: 1000;
+    white-space: nowrap;
+    pointer-events: none;
+}
+.harvest-feat-indicator:hover .harvest-feat-tooltip,
+.harvest-feat-indicator:focus .harvest-feat-tooltip {
+    display: block;
+}
 /* ==========================================
    BASE STYLES - All Windows
    ========================================== */

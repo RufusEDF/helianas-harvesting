@@ -230,7 +230,45 @@
         <tbody>
           {{#each harvestModifiers}}
           <tr>
-            <td>{{this.name}}</td>
+            <td>
+              {{this.name}}
+              {{#if this.feats.reapmaster}}
+                <span class="harvest-feat-indicator reapmaster" tabindex="0">
+                  <i class="fa-solid fa-star"></i>
+                  <span class="harvest-feat-tooltip">
+                    <strong>{{{this.feats.reapmaster.name}}}</strong>
+                    <br>
+                    {{#if this.feats.reapmaster.system.description.chat}}
+                      {{{this.feats.reapmaster.system.description.chat}}}
+                    {{else}}
+                      {{{this.feats.reapmaster.system.description.value}}}
+                    {{/if}}
+                    {{#if this.feats.expertHarvester}}
+                    <hr>
+                      <strong>{{{this.feats.expertHarvester.name}}}</strong>
+                      {{#if this.feats.expertHarvester.system.description.chat}}
+                        {{{this.feats.expertHarvester.system.description.chat}}}
+                      {{else}}
+                        {{{this.feats.expertHarvester.system.description.value}}}
+                      {{/if}}
+                    {{/if}}
+                  </span>
+                </span>
+              {{else if this.feats.expertHarvester}}
+                <span class="harvest-feat-indicator expert-harvester" tabindex="0">
+                  <i class="fa-solid fa-star-half-stroke"></i>
+                  <span class="harvest-feat-tooltip">
+                    <strong>{{{this.feats.expertHarvester.name}}}</strong>
+                    <br>
+                    {{#if this.feats.expertHarvester.system.description.chat}}
+                    {{{this.feats.expertHarvester.system.description.chat}}}
+                    {{else}}
+                    {{{this.feats.expertHarvester.system.description.value}}}
+                    {{/if}}
+                  </span>
+                </span>
+              {{/if}}
+            </td>
             <td>{{this.dexHarvestBonus}}</td>
             <td>{{this.intHarvestBonus}}</td>
             <td>{{this.helpHarvestBonus}}</td>
