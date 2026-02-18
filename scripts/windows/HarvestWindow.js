@@ -303,14 +303,6 @@ export default class HarvestWindow extends HandlebarsApplicationMixin(Applicatio
 
     if (game.settings.get("helianas-harvesting", "showHarvestingModifiers")) {
 
-      console.log(this.formData.harvestModifiers);
-      console.log(typeof this.formData.harvestModifiers);
-      console.log(this.formData.selectedType);
-      console.log(this.harvestModifiers);
-      console.log(this.selectedType);
-      console.log(this.formData);
-      console.log(this);
-
       let modifiersTable = `
         <br>
           <h5>${game.i18n.localize(`HelianasHarvest.HarvestModifiers.Title`)} for ${this.formData.creatureType}</h5>

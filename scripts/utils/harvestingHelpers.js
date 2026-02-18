@@ -5,7 +5,6 @@ export function calculateHarvestingModifiersForActors(actors, skill) {
         let modifiers = calculateHarvestingModifiersForActor(actor, skill);
         modifiersArray.push(modifiers);
     }
-    console.log("Harvesting Modifiers for Actors:", modifiersArray);
     return modifiersArray;
 }
 
@@ -110,8 +109,6 @@ export function calculateHarvestingModifiersForActor(actor, skill) {
             }
         }
     }
-
-    console.log("Harvesting Modifiers:", modifiers);
 
     return modifiers;
 }
