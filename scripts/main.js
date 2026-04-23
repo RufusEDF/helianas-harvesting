@@ -4,6 +4,7 @@ import { setupModuleAPI } from "./utils/setupModuleAPI.js";
 import { setupSettings } from "./utils/settings.js";
 import { relevantRecipes } from "./utils/relevantRecipes.js";
 import { bindCreateCustomRecipeButtons } from "./utils/bindCreateCustomRecipeButtons.js";
+import { initFeatTooltipPositioning } from "./utils/featTooltipPositioner.js";
 
 Hooks.on("init", setupSettings);
 
@@ -46,3 +47,5 @@ Hooks.on("ready", () => {
 });
 
 Hooks.on('renderChatMessage', relevantRecipes);
+
+Hooks.once('ready', initFeatTooltipPositioning);
